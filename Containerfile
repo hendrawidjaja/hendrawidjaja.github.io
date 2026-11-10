@@ -20,13 +20,18 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN apk add --no-cache nodejs \
+RUN apk add --no-cache nodejs su-exec \
   && addgroup -S -g 1001 app \
   && adduser -S -u 1001 -G app app \
   && rm -rf /var/cache/apk/* /usr/share/man
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
 COPY --from=build --chown=app:app /app/.next/standalone ./
 COPY --from=build --chown=app:app /app/.next/static ./.next/static
 COPY --from=build --chown=app:app /app/public ./public
-USER app
+# Defaults for first boot on an empty volume (the volume hides ./data).
+COPY --from=build --chown=app:app /app/data /app/data-seed
 EXPOSE 3000
+# Entrypoint seeds/chowns /app/data as root, then drops to `app`.
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["node", "server.js"]

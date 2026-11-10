@@ -81,9 +81,10 @@ which keeps the host's `node_modules` out of the Linux container.
 
 ```bash
 podman build -t my-cv:latest -f Containerfile .
-export AUTH_JWT_SECRET="$(openssl rand -base64 32)"   # 32+ chars, keep it stable
+export AUTH_JWT_SECRET="$(openssl rand -base64 48)"   # 32+ chars, keep it stable
 podman run -d -p 3000:3000 --name my-cv \
   -e AUTH_JWT_SECRET="$AUTH_JWT_SECRET" \
+  -v my-cv-data:/app/data \
   localhost/my-cv:latest
 ```
 
@@ -91,6 +92,15 @@ podman run -d -p 3000:3000 --name my-cv \
 characters; the app refuses to issue or verify tokens without it. Keep the same
 value across restarts and deployments so existing tokens stay valid. Changing it
 invalidates every outstanding token.
+
+Mount a volume at `/app/data` in production. That directory holds the password
+hash and CV content; without it, credentials and edits disappear when the
+container is recreated. On first boot the entrypoint copies the bundled defaults
+into the empty volume, then drops from root to the non-root `app` user.
+
+> **Serverless hosting (Vercel/Netlify) is not supported for admin writes.** The
+> filesystem there is read-only or ephemeral, so password changes and CV edits
+> cannot persist. Use a container host with a volume.
 
 The production image is a snapshot of the code **at build time** — edits on the
 host do not reach it; re-run the build after every change. Dev and production
@@ -100,6 +110,27 @@ both use port 3000, so stop one before starting the other:
 podman stop my-cv-dev   # switch to production
 podman stop my-cv       # switch back to development
 ```
+
+### Deploying to a container host (Fly.io example)
+
+```bash
+fly launch --no-deploy --name <your-app>
+fly volumes create cv_data --size 1
+fly secrets set AUTH_JWT_SECRET="$(openssl rand -base64 48)"
+fly deploy
+```
+
+Add the mount to `fly.toml`:
+
+```toml
+[mounts]
+  source = "cv_data"
+  destination = "/app/data"
+```
+
+Render, Coolify, Railway, and plain Docker follow the same pattern: build the
+`Containerfile`, set `AUTH_JWT_SECRET`, and attach a persistent disk/volume at
+`/app/data`.
 
 ---
 

@@ -1,10 +1,9 @@
-import { Button } from "./ui/Button";
-import Image from "next/image";
-import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import type { CVProfile } from "../types/cv";
 import { toRenderableHtml } from "../utils/richText";
 import { Briefcase, Download, Edit, Github, Globe, Linkedin, Mail, MapPin, Phone } from "./Icons";
+import { AvatarImage } from "./ui/AvatarImage";
+import { Button } from "./ui/Button";
 
 interface HeroProps {
   onEditProfile: () => void;
@@ -17,7 +16,6 @@ const sharedClass: string =
 
 export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
   const { isEditMode } = useAuth();
-  const [imageError, setImageError] = useState(false);
 
   return (
     <section
@@ -172,30 +170,7 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
 
           <div className="flex flex-col items-center lg:col-span-4 lg:items-end">
             <div className="relative h-48 w-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md sm:h-56 sm:w-56 lg:h-64 lg:w-64 dark:border-slate-800 dark:bg-slate-900">
-              {!imageError && profile.avatarUrl ? (
-                <Image
-                  alt={profile.name}
-                  className="h-full w-full object-cover object-center"
-                  fill
-                  loading="eager"
-                  onError={() => setImageError(true)}
-                  referrerPolicy="no-referrer"
-                  sizes="(min-width: 1024px) 16rem, 12rem"
-                  src={profile.avatarUrl}
-                />
-              ) : (
-                <div className="flex h-full w-full flex-col items-center justify-center bg-linear-to-br from-slate-100 to-slate-200 p-6 text-center dark:from-slate-800 dark:to-slate-900">
-                  <span className="text-3xl font-extrabold text-blue-600 dark:text-blue-400">
-                    {profile.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </span>
-                  <span className="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-                    {profile.name}
-                  </span>
-                </div>
-              )}
+              <AvatarImage name={profile.name} src={profile.avatarUrl} />
             </div>
           </div>
         </div>
