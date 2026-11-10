@@ -2,6 +2,17 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   poweredByHeader: false,
+  // Serve images as-is instead of pulling Next's sharp/libvips optimizer into
+  // the runtime image. The CV has one local avatar; the ~18 MB saved is worth
+  // more than image resizing here.
+  images: {
+    unoptimized: true,
+  },
+  // Keep sharp/libvips out of the standalone trace entirely. Deleting it in a
+  // later image layer would still ship the ~18 MB in the COPY layer.
+  outputFileTracingExcludes: {
+    '*': ['node_modules/sharp/**/*', 'node_modules/@img/**/*'],
+  },
   // Podman on macOS (AppleHV + virtiofs) never propagates file-watch events
   // from host into the guest (podman#22343), so hot reload in the dev
   // container only works with polling. This is the documented last resort in

@@ -1,0 +1,18 @@
+{
+  // Agent-side hard block: `.env` and its variants are never readable or
+  // editable by tools. The exception keeps example files readable.
+  "$schema": "https://opencode.ai/config.json",
+  "permissions": [
+    { "action": "read", "resource": "*.env", "effect": "deny" },
+    { "action": "read", "resource": "*.env.*", "effect": "deny" },
+    { "action": "read", "resource": "*.env.example", "effect": "allow" },
+    { "action": "edit", "resource": "*.env", "effect": "deny" },
+    { "action": "edit", "resource": "*.env.*", "effect": "deny" },
+    // Best-effort guard against shell reads (`cat .env`, ...). Dynamic
+    // expansion can evade the scanner, so this is defense in depth, not a
+    // sandbox.
+    { "action": "shell", "resource": "*.env*", "effect": "deny" },
+    { "action": "glob", "resource": "*.env*", "effect": "deny" },
+    { "action": "sudo", "resource": "**", "effect": "deny" }
+  ]
+}

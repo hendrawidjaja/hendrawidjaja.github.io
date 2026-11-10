@@ -356,3 +356,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/react,rust,node,jetbrains,macos,windows,linux
+# Local secrets — never commit; agent reads are denied in opencode.jsonc
+.env
+.env.*
+!.env.example
