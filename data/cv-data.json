@@ -1,0 +1,379 @@
+{
+  "profile": {
+    "name": "Hendra Widjaja",
+    "title": "Lead Frontend Developer",
+    "headline": "Experienced with the full spectrum of JavaScript, modern frontend architecture, and engineering leadership.",
+    "summary": "<p>Detail-oriented, organized, leading team, analytical, experienced with full spectrum of javascript. Collaborative team player with ownership mentality and a track record of delivering the highest quality strategic solutions to resolve challenges and propel business growth.</p>",
+    "email": "hendrawidjaja@live.de",
+    "phone": "(62) 087831091213",
+    "location": "Jakarta, Indonesia",
+    "linkedin": "https://www.linkedin.com/in/hwi",
+    "github": "https://www.github.com/hendrawidjaja",
+    "website": "https://www.github.com/hendrawidjaja",
+    "avatarUrl": "/img_hendrawidjaja.png",
+    "availableForHire": true,
+    "statusText": "Available for Lead & Senior Frontend Roles",
+    "metrics": [
+      {
+        "id": "m1",
+        "label": "Experience",
+        "value": "9+ Years",
+        "context": "Across Germany and Indonesia"
+      },
+      {
+        "id": "m2",
+        "label": "Team Leadership",
+        "value": "7 Members",
+        "context": "Frontend & automation engineers led"
+      },
+      {
+        "id": "m3",
+        "label": "Core Stack",
+        "value": "React & Next",
+        "context": "TypeScript, Vite, Selenium, SEO"
+      },
+      {
+        "id": "m4",
+        "label": "Languages",
+        "value": "4 Spoken",
+        "context": "Indonesian, English, German, Mandarin"
+      }
+    ]
+  },
+  "experiences": [
+    {
+      "id": "exp-1",
+      "role": "Lead Frontend Developer",
+      "company": "Renos Marketplace Indonesia",
+      "location": "Jakarta, Indonesia",
+      "type": "Full-time",
+      "startDate": "Jan 2022",
+      "endDate": "Present",
+      "current": true,
+      "summary": "In-house frontend developer. Led 7 members for an online marketplace for home living company.",
+      "highlights": [
+        "Led 7 team members building the online marketplace web application.",
+        "Developed internal reusable frontend UI library for modularity.",
+        "Improved SEO metrics and core page speed performance.",
+        "Led 2 automation team members in developing robust Selenium test suites."
+      ],
+      "technologies": [
+        "React",
+        "Next.js",
+        "Vite",
+        "Selenium",
+        "JavaScript",
+        "SEO"
+      ]
+    },
+    {
+      "id": "exp-2",
+      "role": "Lead Developer",
+      "company": "Hello Kreasi Indonesia",
+      "location": "Jakarta, Indonesia",
+      "type": "Full-time",
+      "startDate": "Mar 2021",
+      "endDate": "Nov 2021",
+      "current": false,
+      "summary": "Led 5 team members to build chat app. Build dashboard monitoring for the chat app. Web and mobile testing.",
+      "highlights": [
+        "Led 5 team members delivering real-time chat application.",
+        "Built monitoring dashboard for real-time chat application metrics.",
+        "Conducted comprehensive web and mobile testing."
+      ],
+      "technologies": [
+        "Ionic",
+        "AngularJS",
+        "Firebase",
+        "React",
+        "Mobile Testing"
+      ]
+    },
+    {
+      "id": "exp-3",
+      "role": "Senior Frontend Developer",
+      "company": "MustEat",
+      "location": "Jakarta, Indonesia",
+      "type": "Full-time",
+      "startDate": "Jan 2020",
+      "endDate": "Oct 2020",
+      "current": false,
+      "summary": "Developed an F&B app where people can view, book and pay using mobile phone. The App covered for B2C and B2B.",
+      "highlights": [
+        "Engineered customer ordering and booking experience for mobile devices.",
+        "Built comprehensive administrative interfaces covering B2C and B2B workflows.",
+        "Integrated Firebase real-time data persistence."
+      ],
+      "technologies": [
+        "React",
+        "JavaScript",
+        "Firebase",
+        "Mobile Web"
+      ]
+    },
+    {
+      "id": "exp-4",
+      "role": "Senior Frontend Developer",
+      "company": "Douglas Perfumeries GmbH",
+      "location": "Düsseldorf, NRW, Germany",
+      "type": "Full-time",
+      "startDate": "Apr 2018",
+      "endDate": "Dec 2019",
+      "current": false,
+      "summary": "Collaborated with 10 other developers to build campaign page used for branding, promotions, meet&greet.",
+      "highlights": [
+        "Collaborated with 10 developers on high-traffic European e-commerce campaign pages.",
+        "Built internal tool to bind components by drag & drop for rapid promotional campaign assembly."
+      ],
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "NodeJS",
+        "React",
+        "Firebase"
+      ]
+    },
+    {
+      "id": "exp-5",
+      "role": "FullStack Developer",
+      "company": "Compador GmbH",
+      "location": "Jakarta, Indonesia",
+      "type": "Full-time",
+      "startDate": "Feb 2017",
+      "endDate": "Feb 2018",
+      "current": false,
+      "summary": "Developed dashboard app internal usage, and machine interface for letter sorting machine.",
+      "highlights": [
+        "Engineered industrial machine control interface for automated letter sorting machines.",
+        "Built internal enterprise operations dashboard."
+      ],
+      "technologies": [
+        "Java",
+        "Vaadin",
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ]
+    },
+    {
+      "id": "exp-6",
+      "role": "Frontend Developer",
+      "company": "deteringdesign GmbH",
+      "location": "Bielefeld, NRW, Germany",
+      "type": "Full-time",
+      "startDate": "Apr 2016",
+      "endDate": "Oct 2016",
+      "current": false,
+      "summary": "<p>Developed interactive configurator app for building.</p>",
+      "highlights": [
+        "<p>Built interactive digital configurator software for building and architectural visualization.</p>"
+      ],
+      "technologies": [
+        "PHP",
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "id": "edu-1",
+      "degree": "Bachelor of Science in Media Informatics",
+      "field": "Media Informatics",
+      "institution": "HTW Berlin (Hochschule für Technik und Wirtschaft Berlin)",
+      "location": "Berlin, Germany",
+      "startYear": "2012",
+      "endYear": "Oct 2016",
+      "honors": "Graduated in Berlin, Germany",
+      "highlights": [
+        "Studies in software engineering, media informatics, web development, and interactive digital systems."
+      ]
+    },
+    {
+      "id": "edu-2",
+      "degree": "Professional Certification Course",
+      "field": "Typo3 Enterprise CMS",
+      "institution": "Typo3",
+      "location": "Nuremberg, Germany",
+      "startYear": "2017",
+      "endYear": "July 2017",
+      "honors": "Certified",
+      "highlights": [
+        "Specialized training in Typo3 CMS extension architecture and enterprise template workflows."
+      ]
+    }
+  ],
+  "skillCategories": [
+    {
+      "id": "sk-1",
+      "name": "Technical & Frontend Engineering",
+      "skills": [
+        {
+          "name": "JavaScript (ES6+)",
+          "level": "Expert",
+          "featured": true
+        },
+        {
+          "name": "React",
+          "level": "Expert",
+          "featured": true
+        },
+        {
+          "name": "Next.js",
+          "level": "Expert",
+          "featured": true
+        },
+        {
+          "name": "Vite",
+          "level": "Expert",
+          "featured": true
+        },
+        {
+          "name": "HTML5 / CSS3",
+          "level": "Expert",
+          "featured": true
+        },
+        {
+          "name": "JS Frameworks",
+          "level": "Expert",
+          "featured": false
+        },
+        {
+          "name": "Java & Vaadin",
+          "level": "Proficient",
+          "featured": true
+        },
+        {
+          "name": "Selenium & Automation",
+          "level": "Proficient",
+          "featured": true
+        },
+        {
+          "name": "SEO & Page Speed",
+          "level": "Expert",
+          "featured": true
+        },
+        {
+          "name": "Figma",
+          "level": "Proficient",
+          "featured": false
+        },
+        {
+          "name": "Jira & Agile",
+          "level": "Expert",
+          "featured": false
+        }
+      ]
+    },
+    {
+      "id": "sk-2",
+      "name": "Spoken & Written Languages",
+      "skills": [
+        {
+          "name": "Bahasa Indonesia (Native)",
+          "level": "Expert",
+          "featured": true
+        },
+        {
+          "name": "English (Professional)",
+          "level": "Expert",
+          "featured": true
+        },
+        {
+          "name": "German / Deutsch (Professional)",
+          "level": "Proficient",
+          "featured": true
+        },
+        {
+          "name": "Mandarin (Conversational)",
+          "level": "Familiar",
+          "featured": false
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-1",
+      "title": "Renos Marketplace Platform",
+      "tagline": "Online Marketplace for Home Living",
+      "description": "Comprehensive e-commerce marketplace platform for home living products in Indonesia. Features custom reusable internal frontend library, accelerated page speed, and automated Selenium test integration.",
+      "role": "Lead Frontend Developer",
+      "year": "2022 - Present",
+      "technologies": [
+        "React",
+        "Next.js",
+        "Vite",
+        "Selenium",
+        "SEO"
+      ],
+      "highlights": [
+        "Led 7 frontend developers and 2 automation QA engineers.",
+        "Standardized component library and reduced page load times."
+      ],
+      "demoUrl": "https://www.github.com/hendrawidjaja",
+      "githubUrl": "https://www.github.com/hendrawidjaja",
+      "featured": true
+    },
+    {
+      "id": "proj-2",
+      "title": "Douglas Campaign Drag & Drop Builder",
+      "tagline": "Internal E-Commerce Campaign Assembly System",
+      "description": "Internal campaign creation tool developed for Douglas Perfumeries in Germany, allowing marketing teams to bind components via drag-and-drop for rapid promotional rollouts.",
+      "role": "Senior Frontend Developer",
+      "year": "2018 - 2019",
+      "technologies": [
+        "React",
+        "JavaScript",
+        "NodeJS",
+        "Firebase",
+        "HTML/CSS"
+      ],
+      "highlights": [
+        "Built visual drag-and-drop tool for non-technical campaign managers.",
+        "Supported multi-country European promotional campaigns and events."
+      ],
+      "githubUrl": "https://www.github.com/hendrawidjaja",
+      "featured": true
+    },
+    {
+      "id": "proj-3",
+      "title": "Hello Kreasi Real-Time Chat & Monitoring",
+      "tagline": "Real-time Messaging & Telemetry Dashboard",
+      "description": "Chat application with live administrative monitoring dashboard built across mobile and web platforms with cross-platform testing.",
+      "role": "Lead Developer",
+      "year": "2021",
+      "technologies": [
+        "Ionic",
+        "AngularJS",
+        "Firebase",
+        "React"
+      ],
+      "highlights": [
+        "Led 5 engineers building real-time messaging pipeline and metrics console."
+      ],
+      "githubUrl": "https://www.github.com/hendrawidjaja",
+      "featured": false
+    },
+    {
+      "id": "proj-4",
+      "title": "MustEat F&B Booking & Payment App",
+      "tagline": "B2C & B2B Mobile Dining Platform",
+      "description": "Food & beverage application enabling users to view menus, reserve tables, and complete digital payments directly on mobile devices.",
+      "role": "Senior Frontend Developer",
+      "year": "2020",
+      "technologies": [
+        "React",
+        "JavaScript",
+        "Firebase"
+      ],
+      "highlights": [
+        "Covered end-to-end user journeys for both dining guests and venue managers."
+      ],
+      "githubUrl": "https://www.github.com/hendrawidjaja",
+      "featured": false
+    }
+  ]
+}

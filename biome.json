@@ -1,0 +1,80 @@
+{
+  "$schema": "https://biomejs.dev",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": {
+          "level": "on",
+          "options": {
+            "sortOrder": "natural"
+          }
+        },
+        "useSortedInterfaceMembers": {
+          "level": "on",
+          "options": {
+            "partitionByNewLine": true
+          }
+        }
+      }
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "quoteStyle": "double"
+    }
+  },
+  "files": {
+    "includes": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.json",
+      "**/*.css",
+      "!**/node_modules",
+      "!**/.next/**",
+      "!**/out",
+      "!**/dist",
+      "!**/target",
+      "!**/Cargo.lock"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "trailingNewline": false
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "trailingNewline": false
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "nursery": {
+        "useTailwindSortedClasses": {
+          "level": "error"
+        }
+      },
+      "preset": "recommended"
+    }
+  },
+  "tailwind": {
+    "mergeFunctions": [
+      "cn",
+      "twMerge"
+    ]
+  }
+}
