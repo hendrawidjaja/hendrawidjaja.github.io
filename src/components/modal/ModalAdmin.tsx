@@ -7,6 +7,7 @@ import { Button } from "../ui/Button";
 import { TextField } from "../ui/TextField";
 import { ModalShell } from "./ModalShell";
 
+type AuthMode = "login" | "register";
 interface LoginState {
   error: string | null;
   isLoading: boolean;
@@ -27,8 +28,6 @@ interface RegisterState {
   password: string;
   username: string;
 }
-
-type AuthMode = "login" | "register";
 
 export const ModalAdmin = () => {
   const {
@@ -51,7 +50,7 @@ export const ModalAdmin = () => {
     error: null,
     isLoading: false,
     password: "",
-    username: "admin",
+    username: "",
   });
   const [registerState, setRegisterState] = useState<RegisterState>({
     confirmPass: "",
@@ -67,7 +66,6 @@ export const ModalAdmin = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  // Registration is only offered while the user store exists and is empty.
   useEffect(() => {
     if (!isLoginModalOpen || isAuthenticated) {
       setMode("login");

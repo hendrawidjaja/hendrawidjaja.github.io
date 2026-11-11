@@ -158,6 +158,23 @@ Render, Coolify, Railway, and plain Docker follow the same pattern: build the
 `Containerfile`, set `AUTH_JWT_SECRET`, and attach a persistent disk/volume at
 `/app/data`.
 
+### Deploying to Netlify or Vercel
+
+Both env vars must be set in the host dashboard, then the site redeployed:
+
+| Variable | Required | Notes |
+|---|---|---|
+| `AUTH_JWT_SECRET` | Yes | 32+ random characters; stable across deploys |
+| `DATABASE_URL` | Yes for admin use | Postgres (Neon, Supabase, …) |
+
+Set `DATABASE_URL` **before** logging in: without it the app falls back to the
+read-only `data/auth-config.json` bundle, so the bootstrap-login → forced
+password-change step cannot be saved and admin access never completes. With it,
+the first visit offers **Create admin account** and the hash persists.
+
+CV content edits still cannot persist on these hosts (serverless filesystems are
+read-only/immutable); only accounts and passwords move to Postgres.
+
 ---
 
 ## Default Admin Credentials

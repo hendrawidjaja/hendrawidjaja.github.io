@@ -18,6 +18,13 @@ const nextConfig = {
   outputFileTracingExcludes: {
     '*': ['node_modules/sharp/**/*', 'node_modules/@img/**/*'],
   },
+  // `data/` is read at request time through a runtime path, so Next's tracer
+  // cannot see it. Include it explicitly or serverless hosts (Netlify/Vercel)
+  // deploy functions without the CV/credential files and every auth call fails
+  // with "Authentication unavailable".
+  outputFileTracingIncludes: {
+    '*': ['./data/**/*'],
+  },
   // Podman on macOS (AppleHV + virtiofs) never propagates file-watch events
   // from host into the guest (podman#22343), so hot reload in the dev
   // container only works with polling. This is the documented last resort in

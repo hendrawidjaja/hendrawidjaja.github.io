@@ -25,6 +25,15 @@ const DATA_DIR = path.resolve(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "cv-data.json");
 const AUTH_FILE = path.join(DATA_DIR, "auth-config.json");
 
+/**
+ * Create `data/` on demand. Never do this at module scope: serverless hosts
+ * (Netlify/Vercel) load route modules with a read-only CWD, and a top-level
+ * mkdir would crash the function before any handler can return an error.
+ */
+function ensureDataDir(): void {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
 // 24h token TTL — short enough to force regular re-auth, long enough for UX
 const JWT_TTL_MS = 24 * 60 * 60 * 1000;
 
@@ -37,10 +46,6 @@ const DEFAULT_PASSWORD = "admin123";
 const MIN_PASSWORD_LENGTH = 12;
 /** Registration usernames: 3-32 chars, letters/numbers/._- only. */
 const USERNAME_PATTERN = /^[a-zA-Z0-9._-]{3,32}$/;
-
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
 
 /**
  * Secret used to sign JWTs. Supplied via AUTH_JWT_SECRET (>= 32 chars) so
@@ -165,6 +170,7 @@ function getAuthConfig(): AuthConfig {
     iterations: PBKDF2_ITERATIONS,
     tokenVersion: 0,
   };
+  ensureDataDir();
   fs.writeFileSync(AUTH_FILE, JSON.stringify(config, null, 2), "utf-8");
   return config;
 }
@@ -215,6 +221,7 @@ async function updateUserCredentials(
     iterations: next.iterations,
     tokenVersion: next.tokenVersion,
   };
+  ensureDataDir();
   fs.writeFileSync(AUTH_FILE, JSON.stringify(config, null, 2), "utf-8");
 }
 
@@ -239,6 +246,7 @@ function readCVData(): CVData {
 }
 
 function saveCVData(data: CVData): void {
+  ensureDataDir();
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf-8");
 }
 

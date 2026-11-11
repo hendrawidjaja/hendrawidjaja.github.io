@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import type { Pool } from "pg";
 
 /**
  * Postgres-backed user store.
@@ -28,31 +28,46 @@ type GlobalWithPool = typeof globalThis & {
 /** Reuse one pool across hot reloads and warm serverless invocations. */
 const globalForPg = globalThis as GlobalWithPool;
 
+/**
+ * Memoized pool constructor. `pg` is imported lazily so a deployment without
+ * `DATABASE_URL` never tries to load it — on serverless hosts the package is an
+ * external dependency and an eager require would crash the whole route module.
+ */
+let poolPromise: Promise<Pool> | null = null;
+
 function isLocalHost(connectionString: string): boolean {
   return /(^|@)(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/.test(connectionString);
 }
 
-function pool(): Pool {
-  if (globalForPg.__cvPgPool) return globalForPg.__cvPgPool;
-
-  const connectionString = process.env.DATABASE_URL;
-  if (!connectionString) {
-    throw new Error("DATABASE_URL is not set");
+function pool(): Promise<Pool> {
+  if (globalForPg.__cvPgPool) return Promise.resolve(globalForPg.__cvPgPool);
+  if (!poolPromise) {
+    poolPromise = (async () => {
+      const connectionString = process.env.DATABASE_URL;
+      if (!connectionString) {
+        throw new Error("DATABASE_URL is not set");
+      }
+      const { Pool: PgPool } = await import("pg");
+      const created = new PgPool({
+        connectionString,
+        max: 3,
+        // Hosted Postgres (Neon/Supabase/Render) requires TLS; local dev usually not.
+        ssl: isLocalHost(connectionString) ? undefined : { rejectUnauthorized: false },
+      });
+      globalForPg.__cvPgPool = created;
+      return created;
+    })().finally(() => {
+      poolPromise = null;
+    });
   }
-
-  globalForPg.__cvPgPool = new Pool({
-    connectionString,
-    max: 3,
-    // Hosted Postgres (Neon/Supabase/Render) requires TLS; local dev usually not.
-    ssl: isLocalHost(connectionString) ? undefined : { rejectUnauthorized: false },
-  });
-  return globalForPg.__cvPgPool;
+  return poolPromise;
 }
 
-function ensureSchema(): Promise<void> {
+async function ensureSchema(): Promise<void> {
   if (!globalForPg.__cvPgSchema) {
     globalForPg.__cvPgSchema = (async () => {
-      await pool().query(`
+      const client = await pool();
+      await client.query(`
         CREATE TABLE IF NOT EXISTS app_users (
           id BIGSERIAL PRIMARY KEY,
           username TEXT NOT NULL,
@@ -94,7 +109,8 @@ function toUser(row: UserRow): DbUser {
 
 export async function countUsers(): Promise<number> {
   await ensureSchema();
-  const result = await pool().query<{ count: string }>(
+  const client = await pool();
+  const result = await client.query<{ count: string }>(
     "SELECT COUNT(*)::text AS count FROM app_users",
   );
   return Number(result.rows[0]?.count ?? 0);
@@ -102,7 +118,8 @@ export async function countUsers(): Promise<number> {
 
 export async function findUserByUsername(username: string): Promise<DbUser | null> {
   await ensureSchema();
-  const result = await pool().query<UserRow>(
+  const client = await pool();
+  const result = await client.query<UserRow>(
     `SELECT username, password_hash, salt, iterations, token_version
        FROM app_users
       WHERE lower(username) = lower($1)
@@ -119,7 +136,8 @@ export async function findUserByUsername(username: string): Promise<DbUser | nul
  */
 export async function createFirstUser(user: DbUser): Promise<DbUser | null> {
   await ensureSchema();
-  const client = await pool().connect();
+  const db = await pool();
+  const client = await db.connect();
   try {
     await client.query("BEGIN");
     // Serialize "is this the first user?" checks across concurrent requests.
@@ -156,7 +174,8 @@ export async function updateUserPassword(
   },
 ): Promise<boolean> {
   await ensureSchema();
-  const result = await pool().query(
+  const client = await pool();
+  const result = await client.query(
     `UPDATE app_users
         SET password_hash = $2, salt = $3, iterations = $4, token_version = $5
       WHERE lower(username) = lower($1)`,
