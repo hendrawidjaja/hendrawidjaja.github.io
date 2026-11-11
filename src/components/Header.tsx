@@ -72,16 +72,6 @@ export const Header = ({ onOpenPdfModal, isDark, onToggleTheme }: HeaderProps) =
               <LogOut className="h-4 w-4" />
             </Button>
           )}
-
-          {isEditMode && (
-            <Button
-              className="flex shrink-0 items-center gap-2 rounded-lg bg-blue-600 px-3.5 py-2 text-xs font-medium whitespace-nowrap text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:text-sm dark:bg-blue-600 dark:hover:bg-blue-500"
-              onClick={onOpenPdfModal}
-            >
-              <Download className="h-4 w-4" />
-              <span>Export PDF Resume</span>
-            </Button>
-          )}
         </div>
       </div>
     </header>
