@@ -4,14 +4,17 @@ import { useEffect, useState } from "react";
 import {
   createEducationAction,
   createExperienceAction,
+  createPortfolioItemAction,
   createProjectAction,
   createSkillCategoryAction,
   deleteEducationAction,
   deleteExperienceAction,
+  deletePortfolioItemAction,
   deleteProjectAction,
   deleteSkillCategoryAction,
   updateEducationAction,
   updateExperienceAction,
+  updatePortfolioItemAction,
   updateProfileAction,
   updateProjectAction,
   updateSkillCategoryAction,
@@ -26,6 +29,7 @@ import { ModalEditItem } from "@/src/components/modal/ModalEditItem";
 import { ModalPdfExport } from "@/src/components/modal/ModalPdfExport";
 import { SectionEducation } from "@/src/components/section/SectionEducation";
 import { SectionExperience } from "@/src/components/section/SectionExperience";
+import { SectionPortfolio } from "@/src/components/section/SectionPortfolio";
 import { SectionProjects } from "@/src/components/section/SectionProjects";
 import { SectionSkills } from "@/src/components/section/SectionSkills";
 import { ToastProvider, useToast } from "@/src/components/Toast";
@@ -36,12 +40,13 @@ import type {
   CVProfile,
   Education,
   ModalType,
+  PortfolioItem,
   Project,
   SkillCategory,
   WorkExperience,
 } from "@/src/types/cv";
 
-type DeleteSaveKind = "Experience" | "Education" | "Skill Category" | "Project";
+type DeleteSaveKind = "Experience" | "Education" | "Skill Category" | "Project" | "Portfolio";
 function CVInner({ initialData }: { initialData: CVData }) {
   const { showToast } = useToast();
   const { openLoginModal } = useAuth();
@@ -120,7 +125,7 @@ function CVInner({ initialData }: { initialData: CVData }) {
   interface EntitySaveConfig {
     create: (token: string, data: unknown) => Promise<IdEntity>;
     insertAtTop: boolean;
-    listKey: "experiences" | "education" | "skillCategories" | "projects";
+    listKey: "experiences" | "education" | "skillCategories" | "projects" | "portfolio";
     toast: { created: string; updated: string };
     update: (token: string, id: string, data: unknown) => Promise<IdEntity>;
   }
@@ -166,6 +171,17 @@ function CVInner({ initialData }: { initialData: CVData }) {
         updated: "Project updated successfully",
       },
     },
+
+    Portfolio: {
+      create: (token, data) => createPortfolioItemAction(token, data as Omit<PortfolioItem, "id">),
+      update: (token, id, data) => updatePortfolioItemAction(token, id, data),
+      listKey: "portfolio",
+      insertAtTop: true,
+      toast: {
+        created: "Portfolio item added",
+        updated: "Portfolio item updated",
+      },
+    },
   };
 
   const kindByType = {
@@ -173,6 +189,7 @@ function CVInner({ initialData }: { initialData: CVData }) {
     education: "Education",
     skillCategory: "Skill Category",
     project: "Project",
+    portfolio: "Portfolio",
   } as const;
 
   /**
@@ -245,9 +262,13 @@ function CVInner({ initialData }: { initialData: CVData }) {
     setDeleteAction((prev) => ({ ...prev, target: { id, type: "Project", name } }));
   };
 
+  const handleDeletePortfolioItem = (id: string, name: string) => {
+    setDeleteAction((prev) => ({ ...prev, target: { id, type: "Portfolio", name } }));
+  };
+
   interface DeleteConfig {
     action: (token: string, id: string) => Promise<void>;
-    listKey: "experiences" | "education" | "skillCategories" | "projects";
+    listKey: "experiences" | "education" | "skillCategories" | "projects" | "portfolio";
   }
 
   const DELETE_CONFIG: Record<DeleteSaveKind, DeleteConfig> = {
@@ -258,6 +279,7 @@ function CVInner({ initialData }: { initialData: CVData }) {
       listKey: "skillCategories",
     },
     Project: { action: deleteProjectAction, listKey: "projects" },
+    Portfolio: { action: deletePortfolioItemAction, listKey: "portfolio" },
   };
 
   const handleConfirmDelete = async () => {
@@ -312,6 +334,13 @@ function CVInner({ initialData }: { initialData: CVData }) {
           onDeleteProject={handleDeleteProject}
           onEditProject={(proj) => openEdit("project", proj)}
           projects={cvData.projects}
+        />
+
+        <SectionPortfolio
+          items={cvData.portfolio}
+          onAddItem={() => openEdit("portfolio", null)}
+          onDeleteItem={handleDeletePortfolioItem}
+          onEditItem={(item) => openEdit("portfolio", item)}
         />
 
         <SectionSkills

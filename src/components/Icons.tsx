@@ -233,6 +233,14 @@ export const Code = ({ className = "w-4 h-4", ...props }: IconProps) => (
   </BaseIcon>
 );
 
+export const Images = ({ className = "w-4 h-4", ...props }: IconProps) => (
+  <BaseIcon className={className} {...props}>
+    <rect height="18" rx="2" ry="2" width="18" x="3" y="3" />
+    <circle cx="9" cy="9" r="2" />
+    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+  </BaseIcon>
+);
+
 export const Star = ({ className = "w-4 h-4", ...props }: IconProps) => (
   <BaseIcon className={className} {...props}>
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />

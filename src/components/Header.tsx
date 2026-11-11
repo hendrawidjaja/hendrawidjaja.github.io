@@ -1,7 +1,8 @@
-import { Button } from "./ui/Button";
+import { MENU } from "@/src/constant";
 import { useAuth } from "../context/AuthContext";
 import { Download, Edit, LogOut, Moon, Sun, Unlock } from "./Icons";
 import { Logo } from "./Logo";
+import { Button } from "./ui/Button";
 
 interface HeaderProps {
   isDark: boolean;
@@ -9,13 +10,6 @@ interface HeaderProps {
   onToggleTheme: () => void;
 }
 
-const MENU = [
-  { href: "#experience", text: "Experience" },
-  { href: "#education", text: "Education" },
-  { href: "#skills", text: "Skills" },
-  { href: "#projects", text: "Projects" },
-  { href: "#contact", text: "Contact" },
-];
 export const Header = ({ onOpenPdfModal, isDark, onToggleTheme }: HeaderProps) => {
   const { isAuthenticated, isEditMode, toggleEditMode, logout } = useAuth();
 
@@ -25,15 +19,18 @@ export const Header = ({ onOpenPdfModal, isDark, onToggleTheme }: HeaderProps) =
         <Logo className="h-14 w-14 shrink-0" />
 
         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex dark:text-slate-300">
-          {MENU.map((item) => (
-            <a
-              className="shrink-0 whitespace-nowrap transition-colors hover:text-slate-900 dark:hover:text-white"
-              href={item.href}
-              key={item.text}
-            >
-              {item.text}
-            </a>
-          ))}
+          {MENU.map(
+            (item) =>
+              item.isVisible !== false && (
+                <a
+                  className="shrink-0 whitespace-nowrap transition-colors hover:text-slate-900 dark:hover:text-white"
+                  href={item.href}
+                  key={item.text}
+                >
+                  {item.text}
+                </a>
+              ),
+          )}
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">

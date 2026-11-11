@@ -1,5 +1,5 @@
-import { Button } from "./ui/Button";
 import { Edit, Trash2 } from "./Icons";
+import { Button } from "./ui/Button";
 
 interface BtnEditDeleteProps {
   deleteTitle?: string;
@@ -22,6 +22,7 @@ export const BtnEditDelete = ({
     >
       <Edit className="h-3.5 w-3.5" />
     </Button>
+
     <Button
       className="rounded p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-rose-600 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-rose-400"
       onClick={onDelete}

@@ -72,12 +72,32 @@ export interface Project {
   year: string;
 }
 
+export interface PortfolioItem {
+  description: string;
+  id: string;
+  /** Image URLs or paths under `public/`, shown as a gallery. */
+  images: string[];
+  link?: string;
+  tagline: string;
+  technologies: string[];
+  title: string;
+  year: string;
+}
+
 export interface CVData {
   education: Education[];
   experiences: WorkExperience[];
+  portfolio: PortfolioItem[];
   profile: CVProfile;
   projects: Project[];
   skillCategories: SkillCategory[];
 }
 
-export type ModalType = "profile" | "experience" | "education" | "skillCategory" | "project" | null;
+export type ModalType =
+  | "profile"
+  | "experience"
+  | "education"
+  | "skillCategory"
+  | "project"
+  | "portfolio"
+  | null;

@@ -57,14 +57,7 @@
         "Improved SEO metrics and core page speed performance.",
         "Led 2 automation team members in developing robust Selenium test suites."
       ],
-      "technologies": [
-        "React",
-        "Next.js",
-        "Vite",
-        "Selenium",
-        "JavaScript",
-        "SEO"
-      ]
+      "technologies": ["React", "Next.js", "Vite", "Selenium", "JavaScript", "SEO"]
     },
     {
       "id": "exp-2",
@@ -81,13 +74,7 @@
         "Built monitoring dashboard for real-time chat application metrics.",
         "Conducted comprehensive web and mobile testing."
       ],
-      "technologies": [
-        "Ionic",
-        "AngularJS",
-        "Firebase",
-        "React",
-        "Mobile Testing"
-      ]
+      "technologies": ["Ionic", "AngularJS", "Firebase", "React", "Mobile Testing"]
     },
     {
       "id": "exp-3",
@@ -104,12 +91,7 @@
         "Built comprehensive administrative interfaces covering B2C and B2B workflows.",
         "Integrated Firebase real-time data persistence."
       ],
-      "technologies": [
-        "React",
-        "JavaScript",
-        "Firebase",
-        "Mobile Web"
-      ]
+      "technologies": ["React", "JavaScript", "Firebase", "Mobile Web"]
     },
     {
       "id": "exp-4",
@@ -125,14 +107,7 @@
         "Collaborated with 10 developers on high-traffic European e-commerce campaign pages.",
         "Built internal tool to bind components by drag & drop for rapid promotional campaign assembly."
       ],
-      "technologies": [
-        "HTML",
-        "CSS",
-        "JavaScript",
-        "NodeJS",
-        "React",
-        "Firebase"
-      ]
+      "technologies": ["HTML", "CSS", "JavaScript", "NodeJS", "React", "Firebase"]
     },
     {
       "id": "exp-5",
@@ -148,13 +123,7 @@
         "Engineered industrial machine control interface for automated letter sorting machines.",
         "Built internal enterprise operations dashboard."
       ],
-      "technologies": [
-        "Java",
-        "Vaadin",
-        "HTML",
-        "CSS",
-        "JavaScript"
-      ]
+      "technologies": ["Java", "Vaadin", "HTML", "CSS", "JavaScript"]
     },
     {
       "id": "exp-6",
@@ -169,12 +138,7 @@
       "highlights": [
         "<p>Built interactive digital configurator software for building and architectural visualization.</p>"
       ],
-      "technologies": [
-        "PHP",
-        "HTML",
-        "CSS",
-        "JavaScript"
-      ]
+      "technologies": ["PHP", "HTML", "CSS", "JavaScript"]
     }
   ],
   "education": [
@@ -302,13 +266,7 @@
       "description": "Comprehensive e-commerce marketplace platform for home living products in Indonesia. Features custom reusable internal frontend library, accelerated page speed, and automated Selenium test integration.",
       "role": "Lead Frontend Developer",
       "year": "2022 - Present",
-      "technologies": [
-        "React",
-        "Next.js",
-        "Vite",
-        "Selenium",
-        "SEO"
-      ],
+      "technologies": ["React", "Next.js", "Vite", "Selenium", "SEO"],
       "highlights": [
         "Led 7 frontend developers and 2 automation QA engineers.",
         "Standardized component library and reduced page load times."
@@ -324,13 +282,7 @@
       "description": "Internal campaign creation tool developed for Douglas Perfumeries in Germany, allowing marketing teams to bind components via drag-and-drop for rapid promotional rollouts.",
       "role": "Senior Frontend Developer",
       "year": "2018 - 2019",
-      "technologies": [
-        "React",
-        "JavaScript",
-        "NodeJS",
-        "Firebase",
-        "HTML/CSS"
-      ],
+      "technologies": ["React", "JavaScript", "NodeJS", "Firebase", "HTML/CSS"],
       "highlights": [
         "Built visual drag-and-drop tool for non-technical campaign managers.",
         "Supported multi-country European promotional campaigns and events."
@@ -345,15 +297,8 @@
       "description": "Chat application with live administrative monitoring dashboard built across mobile and web platforms with cross-platform testing.",
       "role": "Lead Developer",
       "year": "2021",
-      "technologies": [
-        "Ionic",
-        "AngularJS",
-        "Firebase",
-        "React"
-      ],
-      "highlights": [
-        "Led 5 engineers building real-time messaging pipeline and metrics console."
-      ],
+      "technologies": ["Ionic", "AngularJS", "Firebase", "React"],
+      "highlights": ["Led 5 engineers building real-time messaging pipeline and metrics console."],
       "githubUrl": "https://www.github.com/hendrawidjaja",
       "featured": false
     },
@@ -364,16 +309,11 @@
       "description": "Food & beverage application enabling users to view menus, reserve tables, and complete digital payments directly on mobile devices.",
       "role": "Senior Frontend Developer",
       "year": "2020",
-      "technologies": [
-        "React",
-        "JavaScript",
-        "Firebase"
-      ],
-      "highlights": [
-        "Covered end-to-end user journeys for both dining guests and venue managers."
-      ],
+      "technologies": ["React", "JavaScript", "Firebase"],
+      "highlights": ["Covered end-to-end user journeys for both dining guests and venue managers."],
       "githubUrl": "https://www.github.com/hendrawidjaja",
       "featured": false
     }
-  ]
+  ],
+  "portfolio": []
 }

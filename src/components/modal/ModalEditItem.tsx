@@ -5,6 +5,7 @@ import type {
   CVProfile,
   Education,
   ModalType,
+  PortfolioItem,
   Project,
   SkillCategory,
   WorkExperience,
@@ -13,13 +14,20 @@ import { AlertCircle, Plus, Trash2, X } from "../Icons";
 import { Button } from "../ui/Button";
 import { TextField } from "../ui/TextField";
 
-export type EditableEntity = CVProfile | WorkExperience | Education | SkillCategory | Project;
+export type EditableEntity =
+  | CVProfile
+  | WorkExperience
+  | Education
+  | SkillCategory
+  | Project
+  | PortfolioItem;
 
 type EditableEntityPayload =
   | Partial<WorkExperience>
   | Partial<Education>
   | Partial<SkillCategory>
-  | Partial<Project>;
+  | Partial<Project>
+  | Partial<PortfolioItem>;
 
 export type { EditableEntityPayload };
 
@@ -99,6 +107,16 @@ export const ModalEditItem = ({
           title: "",
           year: "2024",
         });
+      } else if (type === "portfolio") {
+        setFormData({
+          description: "",
+          images: [""],
+          link: "",
+          tagline: "",
+          technologies: [],
+          title: "",
+          year: "2026",
+        });
       } else if (type === "profile") {
         setFormData({});
       }
@@ -107,7 +125,7 @@ export const ModalEditItem = ({
 
   if (!isOpen || !type) return null;
 
-  const isNew = Boolean(initialData && "id" in initialData && !initialData.id);
+  const isNew = !initialData || !("id" in initialData) || !initialData.id;
 
   const handleSubmit = async () => {
     setIsSaving(true);
@@ -681,6 +699,135 @@ export const ModalEditItem = ({
                 >
                   Feature this project prominently with a star badge
                 </label>
+              </div>
+            </div>
+          )}
+
+          {type === "portfolio" && (
+            <div className="space-y-4">
+              <div className={gridClass}>
+                <TextField
+                  className="portfolio-title"
+                  label="Piece Title *"
+                  onChange={(v) => setFormData({ ...formData, title: v })}
+                  placeholder="e.g. Renos Marketplace Redesign"
+                  required
+                  value={formData.title || ""}
+                />
+                <TextField
+                  className="tagline"
+                  label="Tagline"
+                  onChange={(v) => setFormData({ ...formData, tagline: v })}
+                  placeholder="e.g. Visual case study"
+                  value={formData.tagline || ""}
+                />
+              </div>
+
+              <div>
+                <span className={labelClass}>Description</span>
+                <RichTextEditor
+                  label="Portfolio Description"
+                  onChange={(html) => setFormData({ ...formData, description: html })}
+                  placeholder="Describe the work, your role, and the outcome…"
+                  rows={3}
+                  value={formData.description || ""}
+                />
+              </div>
+
+              <div className={gridClass}>
+                <TextField
+                  className="year"
+                  label="Year"
+                  onChange={(v) => setFormData({ ...formData, year: v })}
+                  value={formData.year || ""}
+                />
+                <TextField
+                  className="portfolio-link"
+                  label="Project / Case Study URL"
+                  onChange={(v) => setFormData({ ...formData, link: v })}
+                  type="url"
+                  value={formData.link || ""}
+                />
+              </div>
+
+              <TextField
+                className="technologies"
+                label="Technologies (comma separated)"
+                onChange={(v) =>
+                  setFormData({
+                    ...formData,
+                    technologies: v
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean),
+                  })
+                }
+                value={Array.isArray(formData.technologies) ? formData.technologies.join(", ") : ""}
+              />
+
+              <div>
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                    Images
+                  </span>
+                  <Button
+                    className="flex items-center gap-1 text-xs text-blue-600 hover:underline dark:text-blue-400"
+                    onClick={() =>
+                      setFormData({
+                        ...formData,
+                        images: [...(formData.images || []), ""],
+                      })
+                    }
+                  >
+                    <Plus className="h-3 w-3" /> Add Image
+                  </Button>
+                </div>
+
+                {(formData.images || []).map((image: string, index: number) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: image order is editable by design
+                  <div className="mb-2 flex items-center gap-2" key={index}>
+                    <div className="h-12 w-16 shrink-0 overflow-hidden rounded border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+                      {image ? (
+                        /* biome-ignore lint/performance/noImgElement: editor preview of an admin-supplied URL */
+                        <img
+                          alt={`${formData.title || "Portfolio"} preview ${index + 1}`}
+                          className="h-full w-full object-cover"
+                          onError={(event) => {
+                            event.currentTarget.style.visibility = "hidden";
+                          }}
+                          src={image}
+                        />
+                      ) : (
+                        <span className="grid h-full place-items-center text-[10px] text-slate-400">
+                          Preview
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex-1">
+                      <TextField
+                        className="image-url"
+                        onChange={(v) => {
+                          const next = [...formData.images];
+                          next[index] = v;
+                          setFormData({ ...formData, images: next });
+                        }}
+                        placeholder="/portfolio/screenshot.png or https://…"
+                        value={image}
+                      />
+                    </div>
+
+                    <Button
+                      className="rounded p-1.5 text-slate-400 hover:text-rose-500"
+                      onClick={() => {
+                        const next = formData.images.filter((_: string, i: number) => i !== index);
+                        setFormData({ ...formData, images: next });
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
               </div>
             </div>
           )}

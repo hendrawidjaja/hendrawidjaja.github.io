@@ -7,6 +7,7 @@ import type {
   CVData,
   CVProfile,
   Education,
+  PortfolioItem,
   Project,
   SkillCategory,
   WorkExperience,
@@ -107,7 +108,10 @@ function parseJwt(token: string): Record<string, unknown> | null {
     const header = Buffer.from(headerB64, "base64url").toString("utf-8");
     const payload = Buffer.from(payloadB64, "base64url").toString("utf-8");
     const signingInput = `${headerB64}.${payloadB64}`;
-    const expectedSig = crypto.createHmac("sha256", jwtSecret()).update(signingInput).digest("base64url");
+    const expectedSig = crypto
+      .createHmac("sha256", jwtSecret())
+      .update(signingInput)
+      .digest("base64url");
 
     if (!safeEqual(sigB64, expectedSig)) return null;
 
@@ -121,12 +125,12 @@ function parseJwt(token: string): Record<string, unknown> | null {
 
 interface AuthConfig {
   hash: string;
-  salt: string;
-  username: string;
   /** PBKDF2 work factor for `hash`; absent on configs created before 2026. */
   iterations?: number;
+  salt: string;
   /** Bumped whenever credentials change, revoking outstanding JWTs. */
   tokenVersion?: number;
+  username: string;
 }
 
 function authConfigIterations(config: AuthConfig): number {
@@ -384,7 +388,7 @@ interface CollectionConfig<T extends { id: string }> {
   idPrefix: string;
   /** New entries go to the front (used by experiences & projects). */
   insertAtTop?: boolean;
-  key: "experiences" | "education" | "skillCategories" | "projects";
+  key: "experiences" | "education" | "skillCategories" | "projects" | "portfolio";
   label: string;
   normalize?: (entry: T) => T;
 }
@@ -466,6 +470,29 @@ const projectRepo = collectionRepositories<Project>({
   }),
 });
 
+/** Only allow local paths, HTTP(S), and inline images as gallery sources. */
+const IMAGE_SOURCE_PATTERN = /^(?:\/|https?:\/\/|data:image\/)/i;
+
+function normalizeImageSources(images: unknown): string[] {
+  if (!Array.isArray(images)) return [];
+  return images
+    .filter((image): image is string => typeof image === "string")
+    .map((image) => image.trim())
+    .filter((image) => image !== "" && IMAGE_SOURCE_PATTERN.test(image));
+}
+
+const portfolioRepo = collectionRepositories<PortfolioItem>({
+  key: "portfolio",
+  label: "Portfolio item",
+  idPrefix: "folio",
+  insertAtTop: true,
+  normalize: (entry) => ({
+    ...entry,
+    images: normalizeImageSources(entry.images),
+    technologies: entry.technologies || [],
+  }),
+});
+
 export async function createExperienceAction(
   token: string,
   exp: Omit<WorkExperience, "id">,
@@ -540,6 +567,29 @@ export async function updateProjectAction(
 
 export async function deleteProjectAction(token: string, id: string): Promise<void> {
   return projectRepo.remove(token, id);
+}
+
+export async function createPortfolioItemAction(
+  token: string,
+  item: Omit<PortfolioItem, "id">,
+): Promise<PortfolioItem> {
+  return portfolioRepo.create(token, sanitizeRichFields(item) as Omit<PortfolioItem, "id">);
+}
+
+export async function updatePortfolioItemAction(
+  token: string,
+  id: string,
+  updates: Partial<PortfolioItem>,
+): Promise<PortfolioItem> {
+  const normalized = sanitizeRichFields(updates);
+  if (normalized.images !== undefined) {
+    normalized.images = normalizeImageSources(normalized.images);
+  }
+  return portfolioRepo.update(token, id, normalized);
+}
+
+export async function deletePortfolioItemAction(token: string, id: string): Promise<void> {
+  return portfolioRepo.remove(token, id);
 }
 
 export async function updateProfileAction(token: string, profile: CVProfile): Promise<CVProfile> {

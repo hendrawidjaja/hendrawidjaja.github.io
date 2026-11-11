@@ -1,3 +1,4 @@
+import { WORDING } from "@/src/constant";
 import { useAuth } from "../context/AuthContext";
 import { KeyRound, Lock, Unlock } from "./Icons";
 import { Button } from "./ui/Button";
@@ -33,7 +34,7 @@ export const Footer = () => {
         </div>
 
         <p className="order-2 text-sm md:order-0">
-          &#xA9; Copyright {new Date().getFullYear()}, Hendra Widjaja
+          &#xA9; Copyright {new Date().getFullYear()}, {WORDING.FULLNAME}
         </p>
 
         <div className="order-3 flex items-center gap-2">
