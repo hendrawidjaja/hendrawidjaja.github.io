@@ -84,3 +84,7 @@ html.exporting .export-url {
     box-shadow: none;
   }
 }
+
+.nl-badge-frame {
+  display: none;
+}
