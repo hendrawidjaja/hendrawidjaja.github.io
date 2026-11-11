@@ -13,13 +13,13 @@ a valid, unexpired token whose credential version matches the current password.
   `src/server/user-db.ts`); otherwise the legacy `data/auth-config.json` is used.
   Hashes created by older builds with 10,000 iterations are upgraded
   transparently on the next successful login.
-- **First run:** with Postgres the table starts empty and the first account
-  created through the registration dialog becomes the admin. Registration is
-  closed atomically after that (advisory lock + empty-table check). Without
-  Postgres, first run creates `admin / admin123`; that password is a bootstrap
-  value: login succeeds but returns `mustChangePassword: true`, the UI forces
-  the password dialog, and every content mutation is rejected until it is
-  replaced.
+- **First run:** with Postgres, the store is seeded with `admin / admin123` on
+  the first auth call (`createFirstUser` under an advisory lock). Public
+  registration is always closed, so no one can claim the first account. That
+  password is a bootstrap value: login succeeds but returns
+  `mustChangePassword: true`, the UI forces the password dialog, and every
+  content mutation is rejected until it is replaced. Without Postgres, first run
+  creates the same account in `data/auth-config.json`.
 - **Password policy:** new passwords must be at least 12 characters and must not
   be the bootstrap password.
 - **Tokens:** JWT (HMAC-SHA256), 24-hour TTL, kept client-side in `localStorage`

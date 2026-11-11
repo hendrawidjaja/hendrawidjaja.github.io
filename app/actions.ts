@@ -324,11 +324,36 @@ export async function getCVDataAction(): Promise<CVData> {
   return readCVData();
 }
 
+/** Bootstrap username created in the Postgres store when it is empty. */
+const DEFAULT_USERNAME = "admin";
+
+/**
+ * Seed the bootstrap admin in Postgres when the store is empty.
+ *
+ * This must happen before any login or registration can claim the first
+ * account: the default `admin / admin123` exists from the start, so the public
+ * registration endpoint can never be used to take over the deployment.
+ * `createFirstUser` is atomic, so concurrent requests cannot double-seed.
+ */
+async function ensureDefaultDbAdmin(): Promise<void> {
+  if (!hasUserDatabase()) return;
+  if ((await countUsers()) > 0) return;
+  const salt = crypto.randomBytes(16).toString("hex");
+  await createFirstUser({
+    username: DEFAULT_USERNAME,
+    salt,
+    hash: hashPassword(DEFAULT_PASSWORD, salt),
+    iterations: PBKDF2_ITERATIONS,
+    tokenVersion: 0,
+  });
+}
+
 /** Login → issue a JWT instead of a session token. */
 export async function loginAction(
   username: string,
   pass: string,
 ): Promise<{ token: string; user: { username: string }; mustChangePassword: boolean }> {
+  await ensureDefaultDbAdmin();
   const user = await findUser(username);
   const iterations = user?.iterations ?? PBKDF2_ITERATIONS;
   // Hash unconditionally so a missing username costs the same as a wrong
@@ -350,9 +375,12 @@ export async function loginAction(
     });
   }
 
-  // Legacy default password keeps editing locked until it is replaced.
-  const mustChangePassword =
-    !hasUserDatabase() && safeEqual(hash, hashPassword(DEFAULT_PASSWORD, user.salt, iterations));
+  // The bootstrap password keeps editing locked until it is replaced. Only the
+  // seeded admin can have it: registration and password changes reject it.
+  const mustChangePassword = safeEqual(
+    hash,
+    hashPassword(DEFAULT_PASSWORD, user.salt, iterations),
+  );
 
   const payload = {
     sub: user.username,
@@ -411,20 +439,20 @@ export async function changePasswordAction(
   return { success: true, message: "Password updated. Please sign in again." };
 }
 
-/** Whether public registration is available (Postgres configured + no users). */
+/**
+ * Public registration is closed: the Postgres store is seeded with the
+ * bootstrap admin, so there is never a free first slot to claim.
+ */
 export async function registrationStatusAction(): Promise<{
   dbConfigured: boolean;
   open: boolean;
 }> {
-  if (!hasUserDatabase()) {
-    return { dbConfigured: false, open: false };
-  }
-  return { dbConfigured: true, open: (await countUsers()) === 0 };
+  return { dbConfigured: hasUserDatabase(), open: false };
 }
 
 /**
- * Register the first (and only self-service) account. The Postgres store must
- * be configured; once any user exists, registration closes permanently.
+ * Registration is permanently closed. The endpoint is kept for URL
+ * compatibility; seeding the bootstrap admin makes `createFirstUser` fail.
  */
 export async function registerAction(
   username: string,
@@ -433,6 +461,7 @@ export async function registerAction(
   if (!hasUserDatabase()) {
     throw new Error("Registration requires DATABASE_URL to be configured");
   }
+  await ensureDefaultDbAdmin();
   if (!USERNAME_PATTERN.test(username)) {
     throw new Error(
       "Username must be 3-32 characters using letters, numbers, dot, dash, or underscore",

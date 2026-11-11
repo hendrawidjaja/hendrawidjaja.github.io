@@ -45,8 +45,8 @@ and verified against the running app.
 - **Change password** — requires the current password; a new hash is written to
   Postgres (`DATABASE_URL` set) or `data/auth-config.json` (legacy) with a fresh
   salt.
-- **First-user registration** — with `DATABASE_URL` set and no users yet, the
-  login dialog offers account creation; it closes after the first account.
+- **Default admin** — both stores start with `admin / admin123`; Postgres seeds
+  it automatically, so public registration stays closed.
 - **Instant toasts** — success/error feedback per operation.
 
 ## Data & persistence

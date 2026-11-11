@@ -63,13 +63,15 @@ hosts. The schema (`app_users`) is created automatically on first use.
 export DATABASE_URL="postgres://user:pass@host:5432/dbname"
 ```
 
-- **Registration is first-user-only.** While the table is empty, the login
-  dialog offers “Create admin account”; the first account created becomes the
-  admin. As soon as one user exists, registration closes permanently (`403`).
-- The username is 3–32 characters (`letters`, `digits`, `.`, `_`, `-`); the
-  password must be at least 12 characters.
-- Without `DATABASE_URL` the legacy single-admin JSON store is used and
-  registration is not offered.
+- **A default admin is seeded automatically.** When `app_users` is empty, the
+  first login attempt creates `admin / admin123` (bootstrap only). Public
+  registration is closed (`403`), so nobody can claim the first account before
+  you do.
+- That bootstrap password must be replaced on first login — see *Default Admin
+  Credentials* below. New usernames are 3–32 characters (`letters`, `digits`,
+  `.`, `_`, `-`); new passwords must be at least 12 characters.
+- Without `DATABASE_URL` the legacy single-admin JSON store is used; it also
+  starts as `admin / admin123`.
 - Hosted Postgres requires TLS; connections to `localhost`/`127.0.0.1` skip it.
 
 > The user store is only one half of persistence: `data/cv-data.json` edits
@@ -170,7 +172,7 @@ Both env vars must be set in the host dashboard, then the site redeployed:
 Set `DATABASE_URL` **before** logging in: without it the app falls back to the
 read-only `data/auth-config.json` bundle, so the bootstrap-login → forced
 password-change step cannot be saved and admin access never completes. With it,
-the first visit offers **Create admin account** and the hash persists.
+`admin / admin123` signs in and the new hash persists.
 
 CV content edits still cannot persist on these hosts (serverless filesystems are
 read-only/immutable); only accounts and passwords move to Postgres.
@@ -179,16 +181,14 @@ read-only/immutable); only accounts and passwords move to Postgres.
 
 ## Default Admin Credentials
 
-### With `DATABASE_URL` (Postgres)
-
-The store starts empty: open the Admin dialog and choose **Create admin
-account**. That first account is the only self-service registration; edit mode
-is enabled immediately with the password you chose.
-
-### Without `DATABASE_URL` (legacy JSON store)
+Both stores start with the same bootstrap account:
 
 - **Username**: `admin`
-- **Password**: `admin123` (bootstrap only)
+- **Password**: `admin123`
+
+With `DATABASE_URL`, the account is created in Postgres the first time a login
+is attempted. Public registration is disabled, so this account exists before
+anyone else can register.
 
 To sign in:
 1. Click the **Admin** button (lock icon) in the top right or bottom footer.
