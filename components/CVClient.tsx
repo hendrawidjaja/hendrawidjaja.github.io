@@ -47,6 +47,12 @@ import type {
 } from "@/src/types/cv";
 
 type DeleteSaveKind = "Experience" | "Education" | "Skill Category" | "Project" | "Portfolio";
+
+interface DeleteConfig {
+  action: (token: string, id: string) => Promise<void>;
+  listKey: "experiences" | "education" | "skillCategories" | "projects" | "portfolio";
+}
+
 function CVInner({ initialData }: { initialData: CVData }) {
   const { showToast } = useToast();
   const { openLoginModal } = useAuth();
@@ -265,11 +271,6 @@ function CVInner({ initialData }: { initialData: CVData }) {
   const handleDeletePortfolioItem = (id: string, name: string) => {
     setDeleteAction((prev) => ({ ...prev, target: { id, type: "Portfolio", name } }));
   };
-
-  interface DeleteConfig {
-    action: (token: string, id: string) => Promise<void>;
-    listKey: "experiences" | "education" | "skillCategories" | "projects" | "portfolio";
-  }
 
   const DELETE_CONFIG: Record<DeleteSaveKind, DeleteConfig> = {
     Experience: { action: deleteExperienceAction, listKey: "experiences" },
