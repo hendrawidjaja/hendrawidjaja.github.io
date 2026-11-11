@@ -360,3 +360,4 @@ $RECYCLE.BIN/
 .env
 .env.*
 !.env.example
+.neon

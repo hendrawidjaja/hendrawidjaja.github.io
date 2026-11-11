@@ -14,5 +14,12 @@
     { "action": "shell", "resource": "*.env*", "effect": "deny" },
     { "action": "glob", "resource": "*.env*", "effect": "deny" },
     { "action": "sudo", "resource": "**", "effect": "deny" }
-  ]
+  ],
+  "mcp": {
+    "Neon": {
+      "type": "remote",
+      "url": "https://mcp.neon.tech/mcp",
+      "enabled": true
+    }
+  }
 }
