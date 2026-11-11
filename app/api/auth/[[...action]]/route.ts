@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
-import { changePasswordAction, loginAction, logoutAction, verifyAuthAction } from "@/app/actions";
+import {
+  changePasswordAction,
+  loginAction,
+  logoutAction,
+  registerAction,
+  registrationStatusAction,
+  verifyAuthAction,
+} from "@/app/actions";
 import { checkRateLimit, clearFailures, recordFailure } from "@/src/server/rate-limit";
 
 /**
- * All four auth endpoints in one route file, dispatched by the trailing
- * segment: /api/auth/{login,verify,change-password,logout}.
+ * Auth endpoints dispatched by the trailing segment:
+ * /api/auth/{login,register,register-status,verify,change-password,logout}.
  * (Catch-all optional segment keeps the same URLs the client already calls.)
  */
 type RouteContext = { params: Promise<{ action?: string[] }> };
@@ -32,10 +39,7 @@ function clientIp(request: Request): string {
 }
 
 /** Auth responses must never be cached (tokens, retry hints). */
-function json(
-  body: unknown,
-  init?: { status?: number; retryAfterSec?: number },
-): NextResponse {
+function json(body: unknown, init?: { status?: number; retryAfterSec?: number }): NextResponse {
   const headers: Record<string, string> = { "Cache-Control": "no-store" };
   if (init?.retryAfterSec) headers["Retry-After"] = String(init.retryAfterSec);
   return NextResponse.json(body, { status: init?.status ?? 200, headers });
@@ -53,11 +57,25 @@ async function parseBody(request: Request): Promise<Record<string, unknown> | nu
 
 export async function GET(request: Request, { params }: RouteContext) {
   const [action] = (await params).action ?? [];
+
+  if (action === "register-status") {
+    try {
+      return json(await registrationStatusAction());
+    } catch (error) {
+      console.error("[auth] registration status failed:", error);
+      return json({ error: "Authentication unavailable" }, { status: 500 });
+    }
+  }
+
   if (action !== "verify") {
     return json({ error: "Not found" }, { status: 404 });
   }
-  const authenticated = await verifyAuthAction(bearerToken(request));
-  return json({ authenticated });
+  try {
+    return json({ authenticated: await verifyAuthAction(bearerToken(request)) });
+  } catch (error) {
+    console.error("[auth] verify failed:", error);
+    return json({ error: "Authentication unavailable" }, { status: 500 });
+  }
 }
 
 export async function POST(request: Request, { params }: RouteContext) {
@@ -93,6 +111,46 @@ export async function POST(request: Request, { params }: RouteContext) {
           return json({ error: message }, { status: 401 });
         }
         console.error("[auth] login failed:", message);
+        return json({ error: "Authentication unavailable" }, { status: 500 });
+      }
+    }
+
+    case "register": {
+      const body = await parseBody(request);
+      if (!body) return json({ error: "Invalid request body" }, { status: 400 });
+
+      const username = typeof body.username === "string" ? body.username.trim() : "";
+      const password = typeof body.password === "string" ? body.password : "";
+      const key = `register:${clientIp(request)}`;
+
+      const limit = checkRateLimit(key, LOGIN_LIMIT, LOGIN_WINDOW_MS);
+      if (limit.limited) {
+        return json(
+          { error: "Too many attempts. Try again later." },
+          { status: 429, retryAfterSec: limit.retryAfterSec },
+        );
+      }
+
+      try {
+        const result = await registerAction(username, password);
+        clearFailures(key);
+        return json(result);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Registration failed";
+        if (message === "Registration is closed") {
+          return json({ error: message }, { status: 403 });
+        }
+        if (
+          message.startsWith("Username") ||
+          message.startsWith("Password") ||
+          message.startsWith("Choose a password")
+        ) {
+          return json({ error: message }, { status: 400 });
+        }
+        if (message.includes("DATABASE_URL")) {
+          return json({ error: "Registration is not configured" }, { status: 503 });
+        }
+        console.error("[auth] registration failed:", message);
         return json({ error: "Authentication unavailable" }, { status: 500 });
       }
     }

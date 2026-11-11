@@ -1,6 +1,12 @@
 import type React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { loginAdmin, logoutAdmin, verifyToken } from "../services/api";
+import {
+  getStoredUsername,
+  loginAdmin,
+  logoutAdmin,
+  registerAdmin,
+  verifyToken,
+} from "../services/api";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -25,6 +31,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   openLoginModal: () => void;
   openPasswordModal: () => void;
+  register: (username: string, pass: string) => Promise<{ mustChangePassword: boolean }>;
   setEditMode: (val: boolean) => void;
   toggleEditMode: () => void;
   username: string | null;
@@ -44,10 +51,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     async function check() {
       try {
         const valid = await verifyToken();
-        setAuthState((prev) => ({ ...prev, isAuthenticated: valid }));
-        if (valid) {
-          setAuthState((prev) => ({ ...prev, username: "admin" }));
-        }
+        setAuthState((prev) => ({
+          ...prev,
+          isAuthenticated: valid,
+          username: valid ? getStoredUsername() : null,
+        }));
       } catch {
         setAuthState((prev) => ({ ...prev, isAuthenticated: false }));
       } finally {
@@ -71,6 +79,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       isPasswordModalOpen: mustChangePassword,
     }));
     return { mustChangePassword };
+  };
+
+  const register = async (u: string, p: string) => {
+    const res = await registerAdmin(u, p);
+    setAuthState((prev) => ({
+      ...prev,
+      isAuthenticated: true,
+      username: res.user.username,
+      isEditMode: true,
+      isLoginModalOpen: false,
+      isPasswordModalOpen: false,
+    }));
+    return { mustChangePassword: false };
   };
 
   const logout = async () => {
@@ -113,6 +134,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         logout,
         openLoginModal: () => setAuthState((prev) => ({ ...prev, isLoginModalOpen: true })),
         openPasswordModal: () => setAuthState((prev) => ({ ...prev, isPasswordModalOpen: true })),
+        register,
         setEditMode,
         toggleEditMode,
         username: authState.username,

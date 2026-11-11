@@ -2,6 +2,11 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
   poweredByHeader: false,
+  // `pg` has optional native bindings; keep it external so Node resolves it at
+  // runtime instead of bundling it into the server output. (Next also
+  // auto-externalizes `pg`; listing it explicitly guards against that list
+  // changing.)
+  serverExternalPackages: ['pg'],
   // Serve images as-is instead of pulling Next's sharp/libvips optimizer into
   // the runtime image. The CV has one local avatar; the ~18 MB saved is worth
   // more than image resizing here.

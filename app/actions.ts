@@ -3,6 +3,13 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import {
+  countUsers,
+  createFirstUser,
+  findUserByUsername,
+  hasUserDatabase,
+  updateUserPassword,
+} from "@/src/server/user-db";
 import type {
   CVData,
   CVProfile,
@@ -28,6 +35,8 @@ const LEGACY_PBKDF2_ITERATIONS = 10_000;
 /** Bootstrap password that every deployment should replace on first login. */
 const DEFAULT_PASSWORD = "admin123";
 const MIN_PASSWORD_LENGTH = 12;
+/** Registration usernames: 3-32 chars, letters/numbers/._- only. */
+const USERNAME_PATTERN = /^[a-zA-Z0-9._-]{3,32}$/;
 
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -160,6 +169,55 @@ function getAuthConfig(): AuthConfig {
   return config;
 }
 
+/** Normalized credential record shared by the Postgres and legacy stores. */
+interface UserRecord {
+  hash: string;
+  iterations: number;
+  salt: string;
+  tokenVersion: number;
+  username: string;
+}
+
+function legacyUserRecord(config: AuthConfig): UserRecord {
+  return {
+    username: config.username,
+    salt: config.salt,
+    hash: config.hash,
+    iterations: authConfigIterations(config),
+    tokenVersion: authConfigTokenVersion(config),
+  };
+}
+
+/**
+ * Resolve a user by name. With `DATABASE_URL` set the Postgres store is the
+ * only source of truth; otherwise the legacy JSON admin file is used.
+ */
+async function findUser(username: string): Promise<UserRecord | null> {
+  if (hasUserDatabase()) {
+    return findUserByUsername(username);
+  }
+  return legacyUserRecord(getAuthConfig());
+}
+
+/** Persist a credential change for the active store. */
+async function updateUserCredentials(
+  user: UserRecord,
+  next: { hash: string; iterations: number; salt: string; tokenVersion: number },
+): Promise<void> {
+  if (hasUserDatabase()) {
+    await updateUserPassword(user.username, next);
+    return;
+  }
+  const config: AuthConfig = {
+    username: user.username,
+    salt: next.salt,
+    hash: next.hash,
+    iterations: next.iterations,
+    tokenVersion: next.tokenVersion,
+  };
+  fs.writeFileSync(AUTH_FILE, JSON.stringify(config, null, 2), "utf-8");
+}
+
 /**
  * `data/cv-data.json` is the single source of truth for CV content.
  * It must exist and be valid JSON with the CVData shape — there is no code
@@ -221,13 +279,15 @@ function sanitizeRichFields<T extends Record<string, any>>(record: T): T {
 }
 
 /**
- * Verify a JWT token: decode, check signature, and ensure it hasn't expired.
- * Returns { valid, payload } if valid, otherwise { valid: false }.
+ * Verify a JWT token: decode, check signature, ensure it hasn't expired, and
+ * confirm the user still exists with the same credential version.
  *
  * `iat` is written in *seconds* (standard JWT convention) while the TTL and
  * `Date.now()` are in milliseconds — convert before comparing.
  */
-function verifyJwt(token: string): { valid: boolean; payload?: Record<string, unknown> } {
+async function verifyJwt(
+  token: string,
+): Promise<{ valid: boolean; payload?: Record<string, unknown> }> {
   if (!token) return { valid: false };
   const parsed = parseJwt(token);
   if (!parsed) return { valid: false };
@@ -237,18 +297,18 @@ function verifyJwt(token: string): { valid: boolean; payload?: Record<string, un
   // Reject tokens "from the future" beyond a small clock-skew allowance.
   if (issuedAtMs - now > 60 * 1000) return { valid: false };
   if (now - issuedAtMs > JWT_TTL_MS) return { valid: false };
+
+  const sub = parsed.sub;
+  if (typeof sub !== "string") return { valid: false };
+  const user = await findUser(sub);
+  if (!user) return { valid: false };
+
   // Revocation: tokens from before the last credential change are rejected.
   const tokenVersion = Number(parsed.ver ?? 0);
-  if (!Number.isInteger(tokenVersion) || tokenVersion !== authConfigTokenVersion(getAuthConfig())) {
+  if (!Number.isInteger(tokenVersion) || tokenVersion !== user.tokenVersion) {
     return { valid: false };
   }
   return { valid: true, payload: parsed as Record<string, unknown> };
-}
-
-/** Extract the username from a verified JWT payload, or return null. */
-function jwtUsername(payload: Record<string, unknown>): string | null {
-  const sub = payload.sub;
-  return typeof sub === "string" ? sub : null;
 }
 
 /** CV data source of truth — read from data/cv-data.json. */
@@ -261,52 +321,48 @@ export async function loginAction(
   username: string,
   pass: string,
 ): Promise<{ token: string; user: { username: string }; mustChangePassword: boolean }> {
-  const authConfig = getAuthConfig();
-  const iterations = authConfigIterations(authConfig);
-
-  // Hash unconditionally so a wrong username costs the same as a wrong password
-  // (prevents timing-based username enumeration).
-  const hash = hashPassword(pass, authConfig.salt, iterations);
-  const usernameOk = safeEqual(username, authConfig.username);
-  const passwordOk = safeEqual(hash, authConfig.hash);
-  if (!usernameOk || !passwordOk) {
+  const user = await findUser(username);
+  const iterations = user?.iterations ?? PBKDF2_ITERATIONS;
+  // Hash unconditionally so a missing username costs the same as a wrong
+  // password (prevents timing-based username enumeration).
+  const hash = hashPassword(pass, user?.salt ?? "invalid-salt", iterations);
+  const usernameOk = safeEqual(username, user?.username ?? "");
+  const passwordOk = user ? safeEqual(hash, user.hash) : false;
+  if (!user || !usernameOk || !passwordOk) {
     throw new Error("Invalid credentials");
   }
 
   // Transparently upgrade hashes created with the old work factor.
   if (iterations < PBKDF2_ITERATIONS) {
-    const upgraded: AuthConfig = {
-      ...authConfig,
-      hash: hashPassword(pass, authConfig.salt),
+    await updateUserCredentials(user, {
+      salt: user.salt,
+      hash: hashPassword(pass, user.salt),
       iterations: PBKDF2_ITERATIONS,
-      tokenVersion: authConfigTokenVersion(authConfig),
-    };
-    fs.writeFileSync(AUTH_FILE, JSON.stringify(upgraded, null, 2), "utf-8");
+      tokenVersion: user.tokenVersion,
+    });
   }
 
-  // Editing stays locked until the bootstrap password is replaced.
-  const mustChangePassword = safeEqual(
-    hash,
-    hashPassword(DEFAULT_PASSWORD, authConfig.salt, iterations),
-  );
+  // Legacy default password keeps editing locked until it is replaced.
+  const mustChangePassword =
+    !hasUserDatabase() && safeEqual(hash, hashPassword(DEFAULT_PASSWORD, user.salt, iterations));
 
   const payload = {
-    sub: authConfig.username,
-    ver: authConfigTokenVersion(authConfig),
+    sub: user.username,
+    ver: user.tokenVersion,
     mustChange: mustChangePassword,
     iat: Math.floor(Date.now() / 1000),
   };
   const token = signJwt(payload);
   return {
     token,
-    user: { username: authConfig.username },
+    user: { username: user.username },
     mustChangePassword,
   };
 }
 
 /** Verify JWT and return true/false (replaces verifySession / verifyAuthAction). */
 export async function verifyAuthAction(token?: string | null): Promise<boolean> {
-  const result = verifyJwt(token ?? "");
+  const result = await verifyJwt(token ?? "");
   return result.valid;
 }
 
@@ -319,8 +375,9 @@ export async function changePasswordAction(
   currentPass: string,
   newPass: string,
 ): Promise<{ success: boolean; message: string }> {
-  const jwt = verifyJwt(token);
-  if (!jwt.valid) {
+  const jwt = await verifyJwt(token);
+  const username = jwt.payload?.sub;
+  if (!jwt.valid || typeof username !== "string") {
     throw new Error("Unauthorized");
   }
   if (!newPass || newPass.length < MIN_PASSWORD_LENGTH) {
@@ -329,23 +386,76 @@ export async function changePasswordAction(
   if (newPass === DEFAULT_PASSWORD) {
     throw new Error("New password must not be the default password");
   }
-  const authConfig = getAuthConfig();
-  const currentHash = hashPassword(currentPass, authConfig.salt, authConfigIterations(authConfig));
-  if (!safeEqual(currentHash, authConfig.hash)) {
+  const user = await findUser(username);
+  if (!user) throw new Error("Unauthorized");
+  const currentHash = hashPassword(currentPass, user.salt, user.iterations);
+  if (!safeEqual(currentHash, user.hash)) {
     throw new Error("Current password incorrect");
   }
   const newSalt = crypto.randomBytes(16).toString("hex");
-  const newHash = hashPassword(newPass, newSalt);
-  const updated: AuthConfig = {
-    username: authConfig.username,
+  await updateUserCredentials(user, {
     salt: newSalt,
-    hash: newHash,
+    hash: hashPassword(newPass, newSalt),
     iterations: PBKDF2_ITERATIONS,
     // Revoke every token issued with the old credentials.
-    tokenVersion: authConfigTokenVersion(authConfig) + 1,
-  };
-  fs.writeFileSync(AUTH_FILE, JSON.stringify(updated, null, 2), "utf-8");
+    tokenVersion: user.tokenVersion + 1,
+  });
   return { success: true, message: "Password updated. Please sign in again." };
+}
+
+/** Whether public registration is available (Postgres configured + no users). */
+export async function registrationStatusAction(): Promise<{
+  dbConfigured: boolean;
+  open: boolean;
+}> {
+  if (!hasUserDatabase()) {
+    return { dbConfigured: false, open: false };
+  }
+  return { dbConfigured: true, open: (await countUsers()) === 0 };
+}
+
+/**
+ * Register the first (and only self-service) account. The Postgres store must
+ * be configured; once any user exists, registration closes permanently.
+ */
+export async function registerAction(
+  username: string,
+  pass: string,
+): Promise<{ token: string; user: { username: string }; mustChangePassword: boolean }> {
+  if (!hasUserDatabase()) {
+    throw new Error("Registration requires DATABASE_URL to be configured");
+  }
+  if (!USERNAME_PATTERN.test(username)) {
+    throw new Error(
+      "Username must be 3-32 characters using letters, numbers, dot, dash, or underscore",
+    );
+  }
+  if (!pass || pass.length < MIN_PASSWORD_LENGTH) {
+    throw new Error(`Password must be at least ${MIN_PASSWORD_LENGTH} characters`);
+  }
+  if (pass === DEFAULT_PASSWORD) {
+    throw new Error("Choose a password other than the default");
+  }
+
+  const salt = crypto.randomBytes(16).toString("hex");
+  const created = await createFirstUser({
+    username,
+    salt,
+    hash: hashPassword(pass, salt),
+    iterations: PBKDF2_ITERATIONS,
+    tokenVersion: 0,
+  });
+  if (!created) {
+    throw new Error("Registration is closed");
+  }
+
+  const token = signJwt({
+    sub: created.username,
+    ver: created.tokenVersion,
+    mustChange: false,
+    iat: Math.floor(Date.now() / 1000),
+  });
+  return { token, user: { username: created.username }, mustChangePassword: false };
 }
 
 /** Stateless JWT logout — JWTs carry an expiry, so the client simply discards the token. */
@@ -376,8 +486,8 @@ function newEntityId(prefix: string): string {
  * allowed to edit. Tokens minted while the default password is still in force
  * may only be used to change the password.
  */
-function verifyEditorJwt(token: string): void {
-  const jwt = verifyJwt(token);
+async function verifyEditorJwt(token: string): Promise<void> {
+  const jwt = await verifyJwt(token);
   if (!jwt.valid) throw new Error("Unauthorized");
   if (jwt.payload?.mustChange) {
     throw new Error("Change the default admin password before editing content");
@@ -396,8 +506,8 @@ interface CollectionConfig<T extends { id: string }> {
 function collectionRepositories<T extends { id: string }>(config: CollectionConfig<T>) {
   const getCollection = (cv: CVData): T[] => cv[config.key] as unknown as T[];
 
-  function create(token: string, input: Omit<T, "id">): T {
-    verifyEditorJwt(token);
+  async function create(token: string, input: Omit<T, "id">): Promise<T> {
+    await verifyEditorJwt(token);
     const cv = readCVData();
     const entry = config.normalize
       ? config.normalize({ ...input, id: newEntityId(config.idPrefix) } as T)
@@ -409,8 +519,8 @@ function collectionRepositories<T extends { id: string }>(config: CollectionConf
     return entry;
   }
 
-  function update(token: string, id: string, updates: Partial<T>): T {
-    verifyEditorJwt(token);
+  async function update(token: string, id: string, updates: Partial<T>): Promise<T> {
+    await verifyEditorJwt(token);
     const cv = readCVData();
     const list = getCollection(cv);
     const idx = list.findIndex((e) => e.id === id);
@@ -420,8 +530,8 @@ function collectionRepositories<T extends { id: string }>(config: CollectionConf
     return list[idx];
   }
 
-  function remove(token: string, id: string): void {
-    verifyEditorJwt(token);
+  async function remove(token: string, id: string): Promise<void> {
+    await verifyEditorJwt(token);
     const cv = readCVData();
     const list = getCollection(cv);
     cv[config.key] = list.filter((e) => e.id !== id) as never;
@@ -593,7 +703,7 @@ export async function deletePortfolioItemAction(token: string, id: string): Prom
 }
 
 export async function updateProfileAction(token: string, profile: CVProfile): Promise<CVProfile> {
-  verifyEditorJwt(token);
+  await verifyEditorJwt(token);
   if (!profile.name) throw new Error("Name is required");
   const cv = readCVData();
   cv.profile = { ...cv.profile, ...sanitizeRichFields(profile) };

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "../../components/Toast";
 import { useAuth } from "../../context/AuthContext";
-import { changeAdminPassword } from "../../services/api";
+import { changeAdminPassword, registrationStatus } from "../../services/api";
 import { AlertCircle, Check, KeyRound, Lock, LogOut } from "../Icons";
 import { Button } from "../ui/Button";
 import { TextField } from "../ui/TextField";
@@ -21,6 +21,15 @@ interface PasswordState {
   newPass: string;
 }
 
+interface RegisterState {
+  confirmPass: string;
+  error: string | null;
+  password: string;
+  username: string;
+}
+
+type AuthMode = "login" | "register";
+
 export const ModalAdmin = () => {
   const {
     isAuthenticated,
@@ -31,14 +40,24 @@ export const ModalAdmin = () => {
     login,
     logout,
     openLoginModal,
+    register,
+    username,
   } = useAuth();
 
   const { showToast } = useToast();
+  const [mode, setMode] = useState<AuthMode>("login");
+  const [registerOpen, setRegisterOpen] = useState(false);
   const [loginState, setLoginState] = useState<LoginState>({
     error: null,
     isLoading: false,
     password: "",
     username: "admin",
+  });
+  const [registerState, setRegisterState] = useState<RegisterState>({
+    confirmPass: "",
+    error: null,
+    password: "",
+    username: "",
   });
   const [passState, setPassState] = useState<PasswordState>({
     confirmPass: "",
@@ -47,6 +66,25 @@ export const ModalAdmin = () => {
     newPass: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  // Registration is only offered while the user store exists and is empty.
+  useEffect(() => {
+    if (!isLoginModalOpen || isAuthenticated) {
+      setMode("login");
+      return;
+    }
+    let active = true;
+    registrationStatus()
+      .then((status) => {
+        if (active) setRegisterOpen(status.open);
+      })
+      .catch(() => {
+        if (active) setRegisterOpen(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [isLoginModalOpen, isAuthenticated]);
 
   if (!isLoginModalOpen && !isPasswordModalOpen) {
     return null;
@@ -66,6 +104,34 @@ export const ModalAdmin = () => {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Invalid credentials";
       setLoginState((prev) => ({ ...prev, error: msg }));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterSubmit = async () => {
+    setRegisterState((prev) => ({ ...prev, error: null }));
+    if (registerState.password !== registerState.confirmPass) {
+      setRegisterState((prev) => ({ ...prev, error: "Passwords do not match" }));
+      return;
+    }
+    if (registerState.password.length < 12) {
+      setRegisterState((prev) => ({ ...prev, error: "Password must be at least 12 characters" }));
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await register(registerState.username.trim(), registerState.password);
+      showToast(
+        `Account "${registerState.username.trim()}" created. Edit Mode enabled.`,
+        "success",
+      );
+      setRegisterState({ username: "", password: "", confirmPass: "", error: null });
+      setMode("login");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Registration failed";
+      setRegisterState((prev) => ({ ...prev, error: msg }));
     } finally {
       setIsLoading(false);
     }
@@ -101,6 +167,7 @@ export const ModalAdmin = () => {
   };
 
   const close = isLoginModalOpen ? closeLoginModal : closePasswordModal;
+  const isRegisterMode = isLoginModalOpen && mode === "register";
 
   const headerChildren = (
     <div className="flex items-center gap-2.5">
@@ -110,12 +177,18 @@ export const ModalAdmin = () => {
 
       <div>
         <h3 className="text-base font-bold text-slate-900 dark:text-white">
-          {isLoginModalOpen ? "Admin Authentication" : "Change Admin Password"}
+          {isRegisterMode
+            ? "Create Admin Account"
+            : isLoginModalOpen
+              ? "Admin Authentication"
+              : "Change Admin Password"}
         </h3>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          {isLoginModalOpen
-            ? "Sign in to edit, add, or remove CV content"
-            : "Update credentials for CV management"}
+          {isRegisterMode
+            ? "First account setup — registration closes once a user exists"
+            : isLoginModalOpen
+              ? "Sign in to edit, add, or remove CV content"
+              : "Update credentials for CV management"}
         </p>
       </div>
     </div>
@@ -136,7 +209,7 @@ export const ModalAdmin = () => {
               <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs text-emerald-800 sm:text-sm dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">
                 <Check className="h-4 w-4 shrink-0 text-emerald-600" />
                 <span>
-                  You are currently authenticated as <strong>admin</strong>.
+                  You are currently authenticated as <strong>{username ?? "admin"}</strong>.
                 </span>
               </div>
 
@@ -161,6 +234,60 @@ export const ModalAdmin = () => {
                 </Button>
               </div>
             </div>
+          ) : isRegisterMode ? (
+            <form action={handleRegisterSubmit} className="space-y-4">
+              {registerState.error && (
+                <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-300">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>{registerState.error}</span>
+                </div>
+              )}
+
+              <TextField
+                autoComplete="username"
+                label="Username"
+                onChange={(value) => setRegisterState((prev) => ({ ...prev, username: value }))}
+                placeholder="e.g. hendra"
+                required
+                type="text"
+                value={registerState.username}
+              />
+
+              <TextField
+                autoComplete="new-password"
+                label="Password (minimum 12 characters)"
+                onChange={(value) => setRegisterState((prev) => ({ ...prev, password: value }))}
+                required
+                type="password"
+                value={registerState.password}
+              />
+
+              <TextField
+                autoComplete="new-password"
+                label="Confirm Password"
+                onChange={(value) => setRegisterState((prev) => ({ ...prev, confirmPass: value }))}
+                required
+                type="password"
+                value={registerState.confirmPass}
+              />
+
+              <div className="flex items-center justify-between gap-3 pt-2">
+                <Button
+                  className="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  onClick={() => setMode("login")}
+                >
+                  Back to sign in
+                </Button>
+
+                <Button
+                  className="rounded-lg bg-blue-600 px-5 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 disabled:opacity-50"
+                  disabled={isLoading}
+                  type="submit"
+                >
+                  {isLoading ? "Creating..." : "Create Account"}
+                </Button>
+              </div>
+            </form>
           ) : (
             <form action={handleLoginSubmit} className="space-y-4">
               {loginState.error && (
@@ -173,7 +300,7 @@ export const ModalAdmin = () => {
               <TextField
                 autoComplete="username"
                 label="Username"
-                onChange={(username) => setLoginState((prev) => ({ ...prev, username }))}
+                onChange={(value) => setLoginState((prev) => ({ ...prev, username: value }))}
                 required
                 type="text"
                 value={loginState.username}
@@ -205,6 +332,18 @@ export const ModalAdmin = () => {
                   {isLoading ? "Authenticating..." : "Sign In"}
                 </Button>
               </div>
+
+              {registerOpen && (
+                <p className="pt-1 text-center text-xs text-slate-500 dark:text-slate-400">
+                  First time here?{" "}
+                  <Button
+                    className="font-semibold text-blue-600 hover:underline dark:text-blue-400"
+                    onClick={() => setMode("register")}
+                  >
+                    Create admin account
+                  </Button>
+                </p>
+              )}
             </form>
           )}
         </div>

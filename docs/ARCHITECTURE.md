@@ -36,7 +36,8 @@ src/types/cv.ts          CVData domain types — the data contract
 src/utils/richText.ts    Sanitizer + text/html conversion utilities
 data/
   cv-data.json           SINGLE SOURCE OF TRUTH for all CV content
-  auth-config.json       PBKDF2-salted admin password hash
+  auth-config.json       PBKDF2-salted admin hash (legacy, only without DATABASE_URL)
+src/server/user-db.ts    Postgres user store (used when DATABASE_URL is set)
 public/                  Static assets (avatar image)
 ```
 

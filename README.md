@@ -53,6 +53,31 @@ npm run dev
 
 ---
 
+## User accounts (Postgres)
+
+With `DATABASE_URL` set, users and password hashes live in Postgres instead of
+`data/auth-config.json`, which is what makes admin login work on serverless
+hosts. The schema (`app_users`) is created automatically on first use.
+
+```bash
+export DATABASE_URL="postgres://user:pass@host:5432/dbname"
+```
+
+- **Registration is first-user-only.** While the table is empty, the login
+  dialog offers “Create admin account”; the first account created becomes the
+  admin. As soon as one user exists, registration closes permanently (`403`).
+- The username is 3–32 characters (`letters`, `digits`, `.`, `_`, `-`); the
+  password must be at least 12 characters.
+- Without `DATABASE_URL` the legacy single-admin JSON store is used and
+  registration is not offered.
+- Hosted Postgres requires TLS; connections to `localhost`/`127.0.0.1` skip it.
+
+> The user store is only one half of persistence: `data/cv-data.json` edits
+> still need a writable volume. So on Vercel/Netlify you can log in once a
+> `DATABASE_URL` exists, but CV content changes still fail there.
+
+---
+
 ## Running with Containers (Podman)
 
 ### Development (hot reload — no rebuild needed)
@@ -98,9 +123,10 @@ hash and CV content; without it, credentials and edits disappear when the
 container is recreated. On first boot the entrypoint copies the bundled defaults
 into the empty volume, then drops from root to the non-root `app` user.
 
-> **Serverless hosting (Vercel/Netlify) is not supported for admin writes.** The
-> filesystem there is read-only or ephemeral, so password changes and CV edits
-> cannot persist. Use a container host with a volume.
+> **Serverless hosting (Vercel/Netlify):** accounts and password changes can
+> persist via `DATABASE_URL` (see *User accounts*), but the filesystem is
+> read-only or ephemeral, so CV content edits cannot persist. Use a container
+> host with a volume for full admin functionality.
 
 The production image is a snapshot of the code **at build time** — edits on the
 host do not reach it; re-run the build after every change. Dev and production
@@ -136,6 +162,14 @@ Render, Coolify, Railway, and plain Docker follow the same pattern: build the
 
 ## Default Admin Credentials
 
+### With `DATABASE_URL` (Postgres)
+
+The store starts empty: open the Admin dialog and choose **Create admin
+account**. That first account is the only self-service registration; edit mode
+is enabled immediately with the password you chose.
+
+### Without `DATABASE_URL` (legacy JSON store)
+
 - **Username**: `admin`
 - **Password**: `admin123` (bootstrap only)
 
@@ -148,9 +182,10 @@ To sign in:
 4. After the change you are signed out and must log in again with the new
    password. You can change it later via **Password** in the footer.
 
-> Login and password-change attempts are rate limited: 5 failures per 15 minutes
-> per IP (login also scoped per username), then `429` with `Retry-After`. The
-> limiter is in-memory, so it applies to a single running instance.
+> Login, registration, and password-change attempts are rate limited: 5 failures
+> per 15 minutes per IP (login also scoped per username), then `429` with
+> `Retry-After`. The limiter is in-memory, so it applies to a single running
+> instance.
 
 ---
 
@@ -158,7 +193,8 @@ To sign in:
 
 - `app/`: Next.js App Router pages, server actions, and REST routes (`/api/cv/*`, `/api/auth/*`). Server actions handle all authenticated CV mutations.
 - `data/cv-data.json`: Local JSON file storing your custom CV data, created and updated automatically.
-- `data/auth-config.json`: Local salted password hash storage.
+- `data/auth-config.json`: Legacy salted password hash (only when `DATABASE_URL` is unset).
+- `src/server/user-db.ts`: Postgres user store (`app_users`), used when `DATABASE_URL` is set.
 - `src/`: React frontend with Tailwind CSS v4, Lucide icons, and PDF export engine.
 
 ---

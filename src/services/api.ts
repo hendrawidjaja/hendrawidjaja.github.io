@@ -20,6 +20,20 @@ export function setStoredToken(token: string | null): void {
   } catch {}
 }
 
+/** Read the username from the stored JWT payload (display only, never trusted). */
+export function getStoredUsername(): string | null {
+  const token = getStoredToken();
+  if (!token) return null;
+  try {
+    const payload = token.split(".")[1];
+    const json = atob(payload.replace(/-/g, "+").replace(/_/g, "/"));
+    const parsed = JSON.parse(json) as { sub?: unknown };
+    return typeof parsed.sub === "string" ? parsed.sub : null;
+  } catch {
+    return null;
+  }
+}
+
 function getAuthHeaders(): HeadersInit {
   const token = getStoredToken();
   const headers: HeadersInit = {
@@ -60,6 +74,28 @@ export async function loginAdmin(
     user: { username: string };
     mustChangePassword?: boolean;
   }>("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ username, password }),
+  });
+  setStoredToken(data.token);
+  return data;
+}
+
+export async function registrationStatus(): Promise<{ dbConfigured: boolean; open: boolean }> {
+  return apiRequest<{ dbConfigured: boolean; open: boolean }>("/api/auth/register-status", {
+    method: "GET",
+  });
+}
+
+export async function registerAdmin(
+  username: string,
+  password: string,
+): Promise<{ token: string; user: { username: string }; mustChangePassword?: boolean }> {
+  const data = await apiRequest<{
+    token: string;
+    user: { username: string };
+    mustChangePassword?: boolean;
+  }>("/api/auth/register", {
     method: "POST",
     body: JSON.stringify({ username, password }),
   });

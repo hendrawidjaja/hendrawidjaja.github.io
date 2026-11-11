@@ -42,8 +42,11 @@ and verified against the running app.
 - **Delete confirmation modal** — destructive deletes require typed intent.
 - **Reset data** — removed by design; `docs/ARCHITECTURE.md` explains why
   (`data/cv-data.json` is the single source of truth).
-- **Change password** — requires the current password; new hash written to
-  `data/auth-config.json` with a fresh salt.
+- **Change password** — requires the current password; a new hash is written to
+  Postgres (`DATABASE_URL` set) or `data/auth-config.json` (legacy) with a fresh
+  salt.
+- **First-user registration** — with `DATABASE_URL` set and no users yet, the
+  login dialog offers account creation; it closes after the first account.
 - **Instant toasts** — success/error feedback per operation.
 
 ## Data & persistence

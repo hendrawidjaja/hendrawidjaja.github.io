@@ -9,20 +9,28 @@ a valid, unexpired token whose credential version matches the current password.
 - Credentials are checked by `loginAction` (`app/actions.ts`); the error is a
   generic "Invalid credentials" for both a wrong username and a wrong password.
 - **Password storage:** PBKDF2-SHA512, 210,000 iterations, 64-byte key, random
-  16-byte salt — `data/auth-config.json`. Hashes created by older builds with
-  10,000 iterations are upgraded transparently on the next successful login.
-- **First run** creates `admin / admin123`. That password is a bootstrap value:
-  login succeeds but returns `mustChangePassword: true`, the UI forces the
-  password dialog, and every content mutation is rejected until it is replaced.
+  16-byte salt. With `DATABASE_URL` set, hashes live in Postgres (`app_users`,
+  `src/server/user-db.ts`); otherwise the legacy `data/auth-config.json` is used.
+  Hashes created by older builds with 10,000 iterations are upgraded
+  transparently on the next successful login.
+- **First run:** with Postgres the table starts empty and the first account
+  created through the registration dialog becomes the admin. Registration is
+  closed atomically after that (advisory lock + empty-table check). Without
+  Postgres, first run creates `admin / admin123`; that password is a bootstrap
+  value: login succeeds but returns `mustChangePassword: true`, the UI forces
+  the password dialog, and every content mutation is rejected until it is
+  replaced.
 - **Password policy:** new passwords must be at least 12 characters and must not
   be the bootstrap password.
 - **Tokens:** JWT (HMAC-SHA256), 24-hour TTL, kept client-side in `localStorage`
   and sent as `Authorization: Bearer <token>`. Payload carries `sub`, `iat`,
   `ver` (credential version) and `mustChange`.
-- **Revocation:** changing the password bumps `tokenVersion` in
-  `data/auth-config.json`; existing tokens carry the old `ver` and are rejected
-  immediately. Logout is a client-side discard only — the token stays valid
-  until its TTL expires (accepted for a single-admin, stateless design).
+- **Revocation:** changing the password bumps `tokenVersion` in the active user
+  store (Postgres row or `data/auth-config.json`); existing tokens carry the old
+  `ver` and are rejected immediately. Verification re-reads the store, so a
+  token for a deleted user is invalid. Logout is a client-side discard only —
+  the token stays valid until its TTL expires (accepted for a single-admin,
+  stateless design).
 - **Signing secret:** `AUTH_JWT_SECRET` (at least 32 characters). It is required
   in production — the app fails closed if it is missing. In development an
   ephemeral per-process secret is generated and a warning is logged, so tokens
@@ -41,6 +49,7 @@ a valid, unexpired token whose credential version matches the current password.
 | Endpoint | Key | Budget |
 |---|---|---|
 | `POST /api/auth/login` | client IP + lowercased username | 5 failures / 15 min |
+| `POST /api/auth/register` | client IP | 5 failures / 15 min |
 | `POST /api/auth/change-password` | client IP | 5 failures / 15 min |
 
 - Only **failed** attempts count; a successful call clears the bucket.
@@ -108,9 +117,11 @@ Add one before public exposure.
 ## Hardening checklist for public internet exposure
 
 1. Set a strong, stable `AUTH_JWT_SECRET` (32+ random characters) in the runtime
-   environment and change the bootstrap password immediately after first login.
+   environment and change the bootstrap password immediately after first login
+   (or register the first Postgres account with a strong password).
 2. Move the rate-limit counters to a shared store (Redis/Upstash) if running
    more than one instance.
 3. Serve over HTTPS and add a nonce-based CSP at the proxy.
-4. Keep `data/` on a persistent volume with backups; it holds the CV and the
-   credential hash.
+4. Keep `data/` on a persistent volume with backups; it holds the CV. If
+   `DATABASE_URL` is set, back up the `app_users` table too — it holds the
+   credential hashes.

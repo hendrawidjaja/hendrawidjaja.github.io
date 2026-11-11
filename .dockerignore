@@ -2,6 +2,7 @@ node_modules
 .next
 .git
 .idea
+cv-api
 *.tsbuildinfo
 docs
 README.md
