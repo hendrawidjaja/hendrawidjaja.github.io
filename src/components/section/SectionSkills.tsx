@@ -1,4 +1,4 @@
-import { Button } from "../ui/Button";
+import { Button } from "@/src/ui/Button";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import type { SkillCategory } from "../../types/cv";

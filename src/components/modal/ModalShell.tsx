@@ -1,4 +1,4 @@
-import { Button } from "../ui/Button";
+import { Button } from "@/src/ui/Button";
 import React, { useEffect, useRef, PropsWithChildren, ReactNode } from "react";
 import { useKeyPress } from "../../hooks/use-keypress";
 import { useFocusTrap } from "../../hooks/use-focus-trap";

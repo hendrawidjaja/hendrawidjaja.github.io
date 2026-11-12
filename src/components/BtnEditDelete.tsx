@@ -1,5 +1,5 @@
+import { Button } from "@/src/ui/Button";
 import { Edit, Trash2 } from "./Icons";
-import { Button } from "./ui/Button";
 
 interface BtnEditDeleteProps {
   deleteTitle?: string;

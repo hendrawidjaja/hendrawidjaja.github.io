@@ -1,4 +1,4 @@
-import { Button } from "./ui/Button";
+import { Button } from "@/src/ui/Button";
 import type React from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 import { AlertCircle, CheckCircle2, Info, X } from "./Icons";

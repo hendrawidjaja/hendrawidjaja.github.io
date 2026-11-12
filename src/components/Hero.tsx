@@ -2,8 +2,8 @@ import { useAuth } from "../context/AuthContext";
 import type { CVProfile } from "../types/cv";
 import { toRenderableHtml } from "../utils/richText";
 import { Briefcase, Download, Edit, Github, Globe, Linkedin, Mail, MapPin, Phone } from "./Icons";
-import { AvatarImage } from "./ui/AvatarImage";
-import { Button } from "./ui/Button";
+import { AvatarImage } from "@/src/ui/AvatarImage";
+import { Button } from "@/src/ui/Button";
 
 interface HeroProps {
   onEditProfile: () => void;

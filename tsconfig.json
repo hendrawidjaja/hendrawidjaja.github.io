@@ -20,7 +20,15 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/components": ["./src/components"]
+      "@/components": ["./src/components"],
+      "@/components/modal": ["./src/components/modal"],
+      "@/ui": ["./src/ui"],
+      "@/context": ["./src/context"],
+      "@/constant": ["./src/constant"],
+      "@/hooks": ["./src/hooks"],
+      "@/services": ["./src/services"],
+      "@/types": ["./src/types"],
+      "@/utils": ["./src/utils"]
     }
   },
   "include": [

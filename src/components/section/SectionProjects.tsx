@@ -1,4 +1,3 @@
-import { Fragment, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
 import type { Project } from "../../types/cv";
 import { toRenderableHtml } from "../../utils/richText";
@@ -20,7 +19,6 @@ export const SectionProjects = ({
   onDeleteProject,
 }: SectionProjectsProps) => {
   const { isEditMode } = useAuth();
-  const refContent = useRef("");
 
   return (
     <SectionShell
@@ -40,7 +38,7 @@ export const SectionProjects = ({
         <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((proj) => (
             <div
-              className={`page-break-avoid flex flex-col justify-between ${"rounded-xl border border-slate-300 bg-white p-6 shadow-xs transition-all hover:border-slate-400 dark:border-slate-800/80 dark:bg-slate-900/60 dark:hover:border-slate-700"}`}
+              className={`page-break-avoid flex flex-col ${"rounded-xl border border-slate-300 bg-white p-6 shadow-xs transition-all hover:border-slate-400 dark:border-slate-800/80 dark:bg-slate-900/60 dark:hover:border-slate-700"}`}
               key={proj.id}
             >
               <div className="flex items-start justify-between gap-2">
@@ -94,7 +92,7 @@ export const SectionProjects = ({
               )}
 
               <div
-                className="rich-text mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+                className="rich-text mt-3 line-clamp-5 min-h-[8.125rem] text-sm leading-relaxed text-slate-600 dark:text-slate-400"
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: Biome Problem
                 dangerouslySetInnerHTML={{ __html: toRenderableHtml(proj.description) }}
               />
@@ -114,46 +112,46 @@ export const SectionProjects = ({
                 </ul>
               )}
 
-              <div className="mt-6 border-t border-slate-300 pt-4 dark:border-slate-800">
-                {proj.technologies && proj.technologies.length > 0 && (
-                  <div className="mb-4 flex min-h-10 flex-wrap content-start items-start gap-1">
-                    {proj.technologies.map((t) => (
-                      <span
-                        className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[11px] text-slate-600 dark:bg-slate-800 dark:text-slate-300"
-                        key={t}
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                )}
+              {/*<div className="mt-6 border-t border-slate-300 pt-4 dark:border-slate-800">*/}
+              {/*  {proj.technologies && proj.technologies.length > 0 && (*/}
+              {/*    <div className="mb-4 flex min-h-10 flex-wrap content-start items-start gap-1">*/}
+              {/*      {proj.technologies.map((t) => (*/}
+              {/*        <span*/}
+              {/*          className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[11px] text-slate-600 dark:bg-slate-800 dark:text-slate-300"*/}
+              {/*          key={t}*/}
+              {/*        >*/}
+              {/*          {t}*/}
+              {/*        </span>*/}
+              {/*      ))}*/}
+              {/*    </div>*/}
+              {/*  )}*/}
 
-                <div className="flex items-center gap-3 text-xs font-medium text-slate-600 dark:text-slate-300">
-                  {proj.demoUrl && (
-                    <a
-                      className="no-export no-print inline-flex items-center gap-1 text-blue-600 hover:underline dark:text-blue-400"
-                      href={proj.demoUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <ExternalLink className="h-3.5 w-3.5" />
-                      <span>Live System</span>
-                    </a>
-                  )}
+              {/*  <div className="flex items-center gap-3 text-xs font-medium text-slate-600 dark:text-slate-300">*/}
+              {/*    {proj.demoUrl && (*/}
+              {/*      <a*/}
+              {/*        className="no-export no-print inline-flex items-center gap-1 text-blue-600 hover:underline dark:text-blue-400"*/}
+              {/*        href={proj.demoUrl}*/}
+              {/*        rel="noopener noreferrer"*/}
+              {/*        target="_blank"*/}
+              {/*      >*/}
+              {/*        <ExternalLink className="h-3.5 w-3.5" />*/}
+              {/*        <span>Live System</span>*/}
+              {/*      </a>*/}
+              {/*    )}*/}
 
-                  {proj.githubUrl && (
-                    <a
-                      className="no-export no-print inline-flex items-center gap-1 transition-colors hover:text-slate-900 dark:hover:text-white"
-                      href={proj.githubUrl}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <Github className="h-3.5 w-3.5" />
-                      <span>Source Code</span>
-                    </a>
-                  )}
-                </div>
-              </div>
+              {/*    {proj.githubUrl && (*/}
+              {/*      <a*/}
+              {/*        className="no-export no-print inline-flex items-center gap-1 transition-colors hover:text-slate-900 dark:hover:text-white"*/}
+              {/*        href={proj.githubUrl}*/}
+              {/*        rel="noopener noreferrer"*/}
+              {/*        target="_blank"*/}
+              {/*      >*/}
+              {/*        <Github className="h-3.5 w-3.5" />*/}
+              {/*        <span>Source Code</span>*/}
+              {/*      </a>*/}
+              {/*    )}*/}
+              {/*  </div>*/}
+              {/*</div>*/}
             </div>
           ))}
         </div>

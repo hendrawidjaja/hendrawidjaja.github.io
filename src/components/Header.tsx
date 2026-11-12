@@ -2,7 +2,7 @@ import { MENU } from "@/src/constant";
 import { useAuth } from "../context/AuthContext";
 import { Download, Edit, LogOut, Moon, Sun, Unlock } from "./Icons";
 import { Logo } from "./Logo";
-import { Button } from "./ui/Button";
+import { Button } from "@/src/ui/Button";
 
 interface HeaderProps {
   isDark: boolean;

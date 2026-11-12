@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useToast } from "../../components/Toast";
 import type { CVData } from "../../types/cv";
 import { Download, FileText, Loader2, Printer } from "../Icons";
-import { Button } from "../ui/Button";
+import { Button } from "@/src/ui/Button";
 import { ModalShell } from "./ModalShell";
 
 interface ModalPdfExportProps {

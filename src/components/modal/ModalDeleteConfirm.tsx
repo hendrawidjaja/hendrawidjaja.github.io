@@ -1,5 +1,5 @@
 import { AlertTriangle } from "../Icons";
-import { Button } from "../ui/Button";
+import { Button } from "@/src/ui/Button";
 import { ModalShell } from "./ModalShell";
 
 interface ModalDeleteConfirmProps {

@@ -3,8 +3,8 @@ import { useToast } from "../../components/Toast";
 import { useAuth } from "../../context/AuthContext";
 import { changeAdminPassword, registrationStatus } from "../../services/api";
 import { AlertCircle, Check, KeyRound, Lock, LogOut } from "../Icons";
-import { Button } from "../ui/Button";
-import { TextField } from "../ui/TextField";
+import { Button } from "@/src/ui/Button";
+import { TextField } from "@/src/ui/TextField";
 import { ModalShell } from "./ModalShell";
 
 type AuthMode = "login" | "register";

@@ -11,8 +11,8 @@ import type {
   WorkExperience,
 } from "../../types/cv";
 import { AlertCircle, Plus, Trash2, X } from "../Icons";
-import { Button } from "../ui/Button";
-import { TextField } from "../ui/TextField";
+import { Button } from "@/src/ui/Button";
+import { TextField } from "@/src/ui/TextField";
 
 export type EditableEntity =
   | CVProfile

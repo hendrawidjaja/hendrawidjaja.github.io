@@ -11,7 +11,7 @@ import {
   Underline,
   Unlink,
 } from "./Icons";
-import { Button } from "./ui/Button";
+import { Button } from "@/src/ui/Button";
 
 interface RichTextEditorProps {
   label?: string;

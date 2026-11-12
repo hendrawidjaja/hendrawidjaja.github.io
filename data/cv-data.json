@@ -1,7 +1,7 @@
 {
   "profile": {
     "name": "Hendra Widjaja",
-    "title": "Lead Frontend Developer",
+    "title": "(Lead) Frontend Developer",
     "headline": "Experienced with the full spectrum of JavaScript, modern frontend architecture, and engineering leadership.",
     "summary": "<p>Detail-oriented, organized, leading team, analytical, experienced with full spectrum of javascript. Collaborative team player with ownership mentality and a track record of delivering the highest quality strategic solutions to resolve challenges and propel business growth.</p>",
     "email": "hendrawidjaja@live.de",
@@ -12,18 +12,18 @@
     "website": "https://www.github.com/hendrawidjaja",
     "avatarUrl": "/img_hendrawidjaja.png",
     "availableForHire": true,
-    "statusText": "Available for Lead & Senior Frontend Roles",
+    "statusText": "Available for Frontend Roles or software engineer",
     "metrics": [
       {
         "id": "m1",
         "label": "Experience",
-        "value": "9+ Years",
+        "value": "> 7+ ",
         "context": "Across Germany and Indonesia"
       },
       {
         "id": "m2",
         "label": "Team Leadership",
-        "value": "7 Members",
+        "value": "> 15 Members",
         "context": "Frontend & automation engineers led"
       },
       {
@@ -266,13 +266,10 @@
       "description": "Comprehensive e-commerce marketplace platform for home living products in Indonesia. Features custom reusable internal frontend library, accelerated page speed, and automated Selenium test integration.",
       "role": "Lead Frontend Developer",
       "year": "2022 - Present",
-      "technologies": ["React", "Next.js", "Vite", "Selenium", "SEO"],
       "highlights": [
         "Led 7 frontend developers and 2 automation QA engineers.",
         "Standardized component library and reduced page load times."
       ],
-      "demoUrl": "https://www.github.com/hendrawidjaja",
-      "githubUrl": "https://www.github.com/hendrawidjaja",
       "featured": true
     },
     {
@@ -282,12 +279,10 @@
       "description": "Internal campaign creation tool developed for Douglas Perfumeries in Germany, allowing marketing teams to bind components via drag-and-drop for rapid promotional rollouts.",
       "role": "Senior Frontend Developer",
       "year": "2018 - 2019",
-      "technologies": ["React", "JavaScript", "NodeJS", "Firebase", "HTML/CSS"],
       "highlights": [
         "Built visual drag-and-drop tool for non-technical campaign managers.",
         "Supported multi-country European promotional campaigns and events."
       ],
-      "githubUrl": "https://www.github.com/hendrawidjaja",
       "featured": true
     },
     {
@@ -297,9 +292,7 @@
       "description": "Chat application with live administrative monitoring dashboard built across mobile and web platforms with cross-platform testing.",
       "role": "Lead Developer",
       "year": "2021",
-      "technologies": ["Ionic", "AngularJS", "Firebase", "React"],
       "highlights": ["Led 5 engineers building real-time messaging pipeline and metrics console."],
-      "githubUrl": "https://www.github.com/hendrawidjaja",
       "featured": false
     },
     {
@@ -309,11 +302,50 @@
       "description": "Food & beverage application enabling users to view menus, reserve tables, and complete digital payments directly on mobile devices.",
       "role": "Senior Frontend Developer",
       "year": "2020",
-      "technologies": ["React", "JavaScript", "Firebase"],
       "highlights": ["Covered end-to-end user journeys for both dining guests and venue managers."],
-      "githubUrl": "https://www.github.com/hendrawidjaja",
       "featured": false
     }
   ],
-  "portfolio": []
+  "portfolio": [
+    {
+      "id": "case-1",
+      "title": "Renos Marketplace — Buyer & Seller Experience",
+      "tagline": "End-to-end home-living marketplace frontend",
+      "year": "2022 - Present",
+      "description": "Redesigned and shipped the buyer and seller web experience for an Indonesian home-living marketplace, including a reusable internal frontend UI library, accelerated page speed, and automated Selenium test coverage across critical checkout flows.",
+      "technologies": ["React", "Next.js", "Vite", "Selenium", "SEO", "TypeScript", "HTML/CSS"],
+      "images": [
+        "/img/portfolio/renos-home.jpg",
+        "/img/portfolio/renos-product.jpg",
+        "/img/portfolio/renos-checkout.jpg"
+      ]
+    },
+    {
+      "id": "case-2",
+      "title": "Douglas Campaign Drag & Drop Builder",
+      "tagline": "Visual campaign assembly for non-technical marketers",
+      "year": "2018 - 2019",
+      "description": "Internal campaign creation tool for Douglas Perfumeries (Germany) letting marketing teams compose promotional pages by dragging and dropping components, supporting multi-country European rollouts and meet&greet branding events.",
+      "technologies": ["React", "JavaScript", "NodeJS", "Firebase", "HTML/CSS"],
+      "images": ["/img/portfolio/douglas-builder.jpg", "/img/portfolio/douglas-canvas.jpg"]
+    },
+    {
+      "id": "case-3",
+      "title": "Hello Kreasi Chat & Telemetry Dashboard",
+      "tagline": "Real-time messaging with live admin monitoring",
+      "year": "2021",
+      "description": "Cross-platform chat application with a live administrative monitoring dashboard spanning mobile and web, including real-time metrics and comprehensive web and mobile testing.",
+      "technologies": ["Ionic", "AngularJS", "Firebase", "React"],
+      "images": ["/img/portfolio/hello-chat.jpg", "/img/portfolio/hello-dashboard.jpg"]
+    },
+    {
+      "id": "case-4",
+      "title": "MustEat F&B Booking & Payment App",
+      "tagline": "B2C & B2B mobile dining platform",
+      "year": "2020",
+      "description": "Food & beverage application letting users view menus, reserve tables, and complete digital payments on mobile, covering both dining-guest and venue-manager workflows with Firebase persistence.",
+      "technologies": ["React", "JavaScript", "Firebase"],
+      "images": ["/img/portfolio/musteat-menu.jpg", "/img/portfolio/musteat-payment.jpg"]
+    }
+  ]
 }
