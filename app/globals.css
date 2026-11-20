@@ -47,7 +47,9 @@ button:not(:disabled),
   cursor: pointer;
 }
 
-.export-url {
+.export-url,
+.no-print,
+.nl-badge-frame {
   display: none;
 }
 
@@ -66,10 +68,6 @@ html.exporting .export-url {
     print-color-adjust: exact;
   }
 
-  .no-print {
-    display: none;
-  }
-
   .print-only {
     display: block;
   }
@@ -85,6 +83,21 @@ html.exporting .export-url {
   }
 }
 
-.nl-badge-frame {
-  display: none;
+dialog {
+  border: none;
+  margin: auto;
+  padding: 0;
+}
+
+dialog:modal {
+  position: fixed;
+  inset: 0;
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  background-color: rgb(2 6 23 / 0.6);
+  backdrop-filter: blur(2px);
+  overflow: hidden;
+  overscroll-behavior: contain;
 }

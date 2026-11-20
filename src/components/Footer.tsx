@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { KeyRound, Lock, Unlock } from "./Icons";
 import { Button } from "@/src/ui/Button";
 
+
 const mutedButtonClass =
   "flex items-center gap-1 transition-colors hover:text-slate-900 dark:hover:text-white";
 export const Footer = () => {
@@ -14,7 +15,7 @@ export const Footer = () => {
       className="border-t border-slate-300 bg-white py-12 transition-colors dark:border-slate-800 dark:bg-slate-950"
       id="contact"
     >
-      <div className="no-print mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
+      <div className="no-print mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 md:flex-row lg:px-8">
         <div className="order-1 flex flex-wrap items-center gap-4 text-xs text-slate-500 md:order-2 md:flex-1 dark:text-slate-400">
           <a
             className="transition-colors hover:text-slate-900 dark:hover:text-white"

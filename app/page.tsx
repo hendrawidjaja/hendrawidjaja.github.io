@@ -1,4 +1,4 @@
-import { CVClient } from "@/components/CVClient";
+import { CVClient } from "@/src/components/CVClient";
 import { getCVDataAction } from "./actions";
 
 export default async function Page() {

@@ -1,6 +1,6 @@
 import type { CVProfile, Education, Project, SkillCategory, WorkExperience } from "../types/cv";
 
-const TOKEN_KEY = "executive_cv_auth_token";
+const TOKEN_KEY = "cv_auth_token";
 
 export function getStoredToken(): string | null {
   try {
@@ -20,7 +20,6 @@ export function setStoredToken(token: string | null): void {
   } catch {}
 }
 
-/** Read the username from the stored JWT payload (display only, never trusted). */
 export function getStoredUsername(): string | null {
   const token = getStoredToken();
   if (!token) return null;

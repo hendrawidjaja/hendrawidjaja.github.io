@@ -1,12 +1,15 @@
+import type { ComponentPropsWithoutRef } from "react";
 import { Button } from "@/src/ui/Button";
 import { Edit, Trash2 } from "./Icons";
 
-interface BtnEditDeleteProps {
+interface BtnEditDeleteProps extends ComponentPropsWithoutRef<"button"> {
   deleteTitle?: string;
   editTitle?: string;
   onDelete: () => void;
   onEdit: () => void;
 }
+
+const BtnSharedClass = "rounded p-1.5 text-slate-500 transition-colors hover:bg-slate-100";
 
 export const BtnEditDelete = ({
   deleteTitle = "Delete entry",
@@ -16,7 +19,7 @@ export const BtnEditDelete = ({
 }: BtnEditDeleteProps) => (
   <div className="flex items-end gap-2">
     <Button
-      className="rounded p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-blue-600 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-blue-400"
+      className={`${BtnSharedClass} hover:text-blue-600 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-blue-400`}
       onClick={onEdit}
       title={editTitle}
     >
@@ -24,7 +27,7 @@ export const BtnEditDelete = ({
     </Button>
 
     <Button
-      className="rounded p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-rose-600 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-rose-400"
+      className={`${BtnSharedClass} hover:text-rose-600 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-rose-400`}
       onClick={onDelete}
       title={deleteTitle}
     >

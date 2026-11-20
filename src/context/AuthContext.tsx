@@ -73,7 +73,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       ...prev,
       isAuthenticated: true,
       username: res.user.username,
-      // Editing stays server-side locked until the bootstrap password is replaced.
       isEditMode: !mustChangePassword,
       isLoginModalOpen: false,
       isPasswordModalOpen: mustChangePassword,

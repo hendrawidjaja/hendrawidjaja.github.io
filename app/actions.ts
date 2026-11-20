@@ -26,9 +26,8 @@ const DATA_FILE = path.join(DATA_DIR, "cv-data.json");
 const AUTH_FILE = path.join(DATA_DIR, "auth-config.json");
 
 /**
- * Create `data/` on demand. Never do this at module scope: serverless hosts
- * (Netlify/Vercel) load route modules with a read-only CWD, and a top-level
- * mkdir would crash the function before any handler can return an error.
+ * Create `data/` on demand. Never do this at module scope: serverless hosts (Netlify/Vercel) load route modules
+ * with a read-only CWD, and a top-level mkdir would crash the function before any handler can return an error.
  */
 function ensureDataDir(): void {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -39,18 +38,20 @@ const JWT_TTL_MS = 24 * 60 * 60 * 1000;
 
 /** Current PBKDF2 work factor (OWASP guidance for HMAC-SHA512). */
 const PBKDF2_ITERATIONS = 210_000;
+
 /** Work factor used by hashes created before the hardening pass. */
 const LEGACY_PBKDF2_ITERATIONS = 10_000;
+
 /** Bootstrap password that every deployment should replace on first login. */
 const DEFAULT_PASSWORD = "admin123";
 const MIN_PASSWORD_LENGTH = 12;
+
 /** Registration usernames: 3-32 chars, letters/numbers/._- only. */
 const USERNAME_PATTERN = /^[a-zA-Z0-9._-]{3,32}$/;
 
 /**
- * Secret used to sign JWTs. Supplied via AUTH_JWT_SECRET (>= 32 chars) so
- * tokens survive restarts and are shared if the app is ever scaled. In
- * development an ephemeral secret is generated per process; production fails
+ * Secret used to sign JWTs. Supplied via AUTH_JWT_SECRET (>= 32 chars) so tokens survive restarts and are shared
+ * if the app is ever scaled. In development an ephemeral secret is generated per process; production fails
  * closed. Resolved lazily so `next build` does not require the runtime secret.
  */
 let cachedJwtSecret: string | null = null;
@@ -118,7 +119,6 @@ function parseJwt(token: string): Record<string, unknown> | null {
     const payloadB64 = parts[1];
     const sigB64 = parts[2];
 
-    // Re-compute signature and compare — simple HMAC check
     const header = Buffer.from(headerB64, "base64url").toString("utf-8");
     const payload = Buffer.from(payloadB64, "base64url").toString("utf-8");
     const signingInput = `${headerB64}.${payloadB64}`;
@@ -129,7 +129,6 @@ function parseJwt(token: string): Record<string, unknown> | null {
 
     if (!safeEqual(sigB64, expectedSig)) return null;
 
-    // Very light payload parse: { sub, iat, exp }
     const parsed = JSON.parse(payload);
     return typeof parsed === "object" && parsed !== null ? parsed : null;
   } catch {
@@ -200,7 +199,14 @@ function legacyUserRecord(config: AuthConfig): UserRecord {
  */
 async function findUser(username: string): Promise<UserRecord | null> {
   if (hasUserDatabase()) {
-    return findUserByUsername(username);
+    try {
+      return await findUserByUsername(username);
+    } catch (err) {
+      console.warn(
+        "[auth] Postgres lookup failed, falling back to JSON file:",
+        err instanceof Error ? err.message : err,
+      );
+    }
   }
   return legacyUserRecord(getAuthConfig());
 }
@@ -353,7 +359,11 @@ export async function loginAction(
   username: string,
   pass: string,
 ): Promise<{ token: string; user: { username: string }; mustChangePassword: boolean }> {
-  await ensureDefaultDbAdmin();
+  try {
+    await ensureDefaultDbAdmin();
+  } catch {
+    // Postgres unavailable — fall back to JSON auth file
+  }
   const user = await findUser(username);
   const iterations = user?.iterations ?? PBKDF2_ITERATIONS;
   // Hash unconditionally so a missing username costs the same as a wrong
@@ -377,10 +387,7 @@ export async function loginAction(
 
   // The bootstrap password keeps editing locked until it is replaced. Only the
   // seeded admin can have it: registration and password changes reject it.
-  const mustChangePassword = safeEqual(
-    hash,
-    hashPassword(DEFAULT_PASSWORD, user.salt, iterations),
-  );
+  const mustChangePassword = safeEqual(hash, hashPassword(DEFAULT_PASSWORD, user.salt, iterations));
 
   const payload = {
     sub: user.username,
@@ -461,7 +468,12 @@ export async function registerAction(
   if (!hasUserDatabase()) {
     throw new Error("Registration requires DATABASE_URL to be configured");
   }
-  await ensureDefaultDbAdmin();
+  try {
+    await ensureDefaultDbAdmin();
+  } catch {
+    // Postgres unavailable — registration cannot proceed
+    throw new Error("Database is not available for registration");
+  }
   if (!USERNAME_PATTERN.test(username)) {
     throw new Error(
       "Username must be 3-32 characters using letters, numbers, dot, dash, or underscore",
@@ -497,18 +509,14 @@ export async function registerAction(
 
 /** Stateless JWT logout — JWTs carry an expiry, so the client simply discards the token. */
 export async function logoutAction(token: string): Promise<void> {
-  // No server-side revocation needed; the token's expiry (iat+24h) governs validity.
-  // The client should remove the cookie/local token store.
   return;
 }
 
 /**
- * Generic CRUD factory for the array-valued CV collections
- * (experiences, education, skillCategories, projects).
+ * Generic CRUD factory for the array-valued CV collections (experiences, education, skillCategories, projects).
  *
- * Each collection gets create/update/delete from one implementation, so auth
- * checks, sanitization, id generation, and error labels stay identical
- * everywhere. `insertAt === "top"` preserves the legacy
+ * Each collection gets create/update/delete from one implementation, so auth checks, sanitization, id generation,
+ * and error labels stay identical everywhere. `insertAt === "top"` preserves the legacy
  * experiences/projects ordering (newest first).
  *
  * Per-collection `normalize` hooks keep only genuinely entity-specific bits
@@ -533,7 +541,6 @@ async function verifyEditorJwt(token: string): Promise<void> {
 
 interface CollectionConfig<T extends { id: string }> {
   idPrefix: string;
-  /** New entries go to the front (used by experiences & projects). */
   insertAtTop?: boolean;
   key: "experiences" | "education" | "skillCategories" | "projects" | "portfolio";
   label: string;

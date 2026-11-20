@@ -1,8 +1,8 @@
 import { MENU } from "@/src/constant";
-import { useAuth } from "../context/AuthContext";
-import { Download, Edit, LogOut, Moon, Sun, Unlock } from "./Icons";
-import { Logo } from "./Logo";
 import { Button } from "@/src/ui/Button";
+import { useAuth } from "../context/AuthContext";
+import { Edit, LogOut, Moon, Sun, Unlock } from "./Icons";
+import { Logo } from "./Logo";
 
 interface HeaderProps {
   isDark: boolean;
@@ -10,12 +10,12 @@ interface HeaderProps {
   onToggleTheme: () => void;
 }
 
-export const Header = ({ onOpenPdfModal, isDark, onToggleTheme }: HeaderProps) => {
+export const Header = ({ isDark, onToggleTheme }: HeaderProps) => {
   const { isAuthenticated, isEditMode, toggleEditMode, logout } = useAuth();
 
   return (
     <header className="no-print sticky top-0 z-40 w-full border-b border-slate-300 bg-white/90 backdrop-blur-md transition-colors dark:border-slate-800 dark:bg-slate-950/90">
-      <div className="mx-auto flex h-24 w-full max-w-6xl items-center gap-8">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-4 px-4 sm:h-20 sm:gap-6 lg:h-24 lg:gap-8 lg:px-8">
         <Logo className="h-14 w-14 shrink-0" />
 
         <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 md:flex dark:text-slate-300">

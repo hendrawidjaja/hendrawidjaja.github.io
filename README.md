@@ -88,11 +88,13 @@ The dev container (`Containerfile.dev`) bind-mounts this directory, so edits
 you make on the host are served automatically at [http://localhost:3000](http://localhost:3000):
 
 ```bash
-podman build -t my-cv-dev -f Containerfile.dev .
-podman run -d -p 3000:3000 --name my-cv-dev \
-  -v "$PWD":/app -v my-cv-dev-node-modules:/app/node_modules \
-  localhost/my-cv-dev:latest
+./run-container.sh            # builds and runs on port 3000
+PORT=3001 ./run-container.sh  # or another host port
 ```
+
+The script frees the port first: it stops any container publishing it (this
+project's or another project's) and kills a host process listening on it, then
+starts the container.
 
 Dependencies install into the `my-cv-dev-node-modules` volume on first start,
 which keeps the host's `node_modules` out of the Linux container.

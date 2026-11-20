@@ -7,7 +7,6 @@ interface AvatarImageProps {
   name: string;
   src: string;
 }
-
 interface AttemptState {
   attempt: Attempt;
   src: string;
@@ -33,7 +32,6 @@ export function AvatarImage({ src, name, alt, className }: AvatarImageProps) {
     attempt: src ? "picture" : "failed",
   }));
 
-  // Reset when the parent supplies a different image.
   if (state.src !== src) {
     setState({ src, attempt: src ? "picture" : "failed" });
   }
@@ -48,7 +46,6 @@ export function AvatarImage({ src, name, alt, className }: AvatarImageProps) {
   };
 
   const handleLoad = (event: SyntheticEvent<HTMLImageElement>) => {
-    // A "load" with no pixels means the format decoded to nothing.
     if (event.currentTarget.naturalWidth === 0) handleError();
   };
 

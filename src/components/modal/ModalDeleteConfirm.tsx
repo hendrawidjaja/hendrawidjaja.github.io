@@ -1,28 +1,26 @@
-import { AlertTriangle } from "../Icons";
 import { Button } from "@/src/ui/Button";
-import { ModalShell } from "./ModalShell";
+import { AlertTriangle } from "../Icons";
+import { DialogShell } from "./DialogShell";
 
 interface ModalDeleteConfirmProps {
   isDeleting: boolean;
-  isOpen: boolean;
   itemName: string;
   itemType: string;
   onCancel: () => void;
   onConfirm: () => void;
+  open: boolean;
 }
 
 export const ModalDeleteConfirm = ({
   isDeleting,
-  isOpen,
   itemName,
   itemType,
   onCancel,
   onConfirm,
-}: ModalDeleteConfirmProps) => {
-  if (!isOpen) return null;
-
-  return (
-    <ModalShell innerClassName="p-6" isOpen={isOpen} maxW="sm" onClose={onCancel}>
+  open,
+}: ModalDeleteConfirmProps) => (
+  <DialogShell className="max-w-sm" onClose={onCancel} open={open}>
+    <div className="p-6">
       <div className="mb-4 flex items-center gap-3">
         <div className="rounded-full bg-rose-50 p-2.5 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400">
           <AlertTriangle className="h-5 w-5" />
@@ -57,6 +55,6 @@ export const ModalDeleteConfirm = ({
           {isDeleting ? "Deleting..." : "Delete Entry"}
         </Button>
       </div>
-    </ModalShell>
-  );
-};
+    </div>
+  </DialogShell>
+);

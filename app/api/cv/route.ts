@@ -6,6 +6,6 @@ export async function GET() {
     const data = await getCVDataAction();
     return NextResponse.json(data);
   } catch {
-    return NextResponse.json({ error: "Failed to fetch CV data" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });
   }
 }

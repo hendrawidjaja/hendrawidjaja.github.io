@@ -4,7 +4,6 @@ import { createContext, useCallback, useContext, useState } from "react";
 import { AlertCircle, CheckCircle2, Info, X } from "./Icons";
 
 export type ToastType = "success" | "error" | "info";
-
 interface ToastItem {
   id: string;
   message: string;

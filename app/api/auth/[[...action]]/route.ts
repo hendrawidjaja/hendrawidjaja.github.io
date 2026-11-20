@@ -70,6 +70,7 @@ export async function GET(request: Request, { params }: RouteContext) {
   if (action !== "verify") {
     return json({ error: "Not found" }, { status: 404 });
   }
+
   try {
     return json({ authenticated: await verifyAuthAction(bearerToken(request)) });
   } catch (error) {
@@ -104,14 +105,12 @@ export async function POST(request: Request, { params }: RouteContext) {
         return json({ token, user, mustChangePassword });
       } catch (error) {
         const message = error instanceof Error ? error.message : "Authentication failed";
-        // Only real credential failures are 401s; misconfiguration must not
-        // masquerade as a bad password.
         if (message === "Invalid credentials") {
           recordFailure(key, LOGIN_WINDOW_MS);
           return json({ error: message }, { status: 401 });
         }
-        console.error("[auth] login failed:", message);
-        return json({ error: "Authentication unavailable" }, { status: 500 });
+        console.error("[auth] login failed:", error);
+        return json({ error: `Authentication unavailable: ${message}` }, { status: 500 });
       }
     }
 
@@ -178,7 +177,6 @@ export async function POST(request: Request, { params }: RouteContext) {
         return json(result);
       } catch (error) {
         const message = error instanceof Error ? error.message : "Authentication failed";
-        // Only real auth failures consume the budget; policy violations are 400s.
         if (message === "Unauthorized" || message === "Current password incorrect") {
           recordFailure(key, PASSWORD_WINDOW_MS);
           return json({ error: message }, { status: 401 });

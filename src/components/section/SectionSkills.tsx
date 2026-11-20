@@ -32,7 +32,7 @@ export const SectionSkills = ({
 
   return (
     <section className="border-b border-slate-300 py-12 sm:py-16 dark:border-slate-800" id="skills">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl px-4 lg:px-8">
         <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">

@@ -11,7 +11,6 @@ interface Bucket {
 }
 
 const buckets = new Map<string, Bucket>();
-/** Cap memory if an attacker sprays unique keys; expired buckets are pruned first. */
 const MAX_BUCKETS = 10_000;
 
 export interface RateLimitState {

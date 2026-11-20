@@ -42,7 +42,6 @@ export const SectionExperience = ({
               className="group page-break-avoid relative border-slate-200 pl-0 transition-colors sm:border-l-2 sm:pl-6 dark:border-slate-800"
               key={exp.id}
             >
-              <div className="absolute top-1.5 -left-1.75 hidden h-3 w-3 rounded-full bg-slate-300 transition-colors group-hover:bg-blue-600 sm:block dark:bg-slate-700" />
 
               <CardShell>
                 <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-start">

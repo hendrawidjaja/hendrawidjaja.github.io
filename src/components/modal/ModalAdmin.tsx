@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
+import { Button } from "@/src/ui/Button";
+import { TextField } from "@/src/ui/TextField";
 import { useToast } from "../../components/Toast";
 import { useAuth } from "../../context/AuthContext";
 import { changeAdminPassword, registrationStatus } from "../../services/api";
 import { AlertCircle, Check, KeyRound, Lock, LogOut } from "../Icons";
-import { Button } from "@/src/ui/Button";
-import { TextField } from "@/src/ui/TextField";
-import { ModalShell } from "./ModalShell";
+import { DialogShell } from "./DialogShell";
 
 type AuthMode = "login" | "register";
+
 interface LoginState {
   error: string | null;
   isLoading: boolean;
@@ -71,7 +72,9 @@ export const ModalAdmin = () => {
       setMode("login");
       return;
     }
+
     let active = true;
+
     registrationStatus()
       .then((status) => {
         if (active) setRegisterOpen(status.open);
@@ -84,20 +87,18 @@ export const ModalAdmin = () => {
     };
   }, [isLoginModalOpen, isAuthenticated]);
 
-  if (!isLoginModalOpen && !isPasswordModalOpen) {
-    return null;
-  }
-
   const handleLoginSubmit = async () => {
     setLoginState((prev) => ({ ...prev, error: null }));
     setIsLoading(true);
     try {
       const result = await login(loginState.username, loginState.password);
+
       if (result.mustChangePassword) {
         showToast("Default password in use — set a new password to unlock editing.", "info");
       } else {
         showToast("Authenticated as Admin. Edit Mode is now enabled!", "success");
       }
+
       setLoginState((prev) => ({ ...prev, password: "" }));
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Invalid credentials";
@@ -121,10 +122,7 @@ export const ModalAdmin = () => {
     setIsLoading(true);
     try {
       await register(registerState.username.trim(), registerState.password);
-      showToast(
-        `Account "${registerState.username.trim()}" created. Edit Mode enabled.`,
-        "success",
-      );
+      showToast(`Account "${registerState.username.trim()}" created. Edit Mode enabled.`, "success");
       setRegisterState({ username: "", password: "", confirmPass: "", error: null });
       setMode("login");
     } catch (err: unknown) {
@@ -150,7 +148,6 @@ export const ModalAdmin = () => {
     setIsLoading(true);
     try {
       await changeAdminPassword(passState.currentPass, passState.newPass);
-      // The server revokes every token when the password changes.
       await logout();
       showToast("Password changed. Please sign in with your new password.", "success");
       setPassState({ currentPass: "", newPass: "", confirmPass: "", error: null });
@@ -167,7 +164,7 @@ export const ModalAdmin = () => {
   const close = isLoginModalOpen ? closeLoginModal : closePasswordModal;
   const isRegisterMode = isLoginModalOpen && mode === "register";
 
-  const headerChildren = (
+  const header = (
     <div className="flex items-center gap-2.5">
       <div className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
         {isLoginModalOpen ? <Lock className="h-4 w-4" /> : <KeyRound className="h-4 w-4" />}
@@ -193,13 +190,7 @@ export const ModalAdmin = () => {
   );
 
   return (
-    <ModalShell
-      headerChildren={headerChildren}
-      innerClassName="overflow-hidden"
-      isOpen={isLoginModalOpen || isPasswordModalOpen}
-      maxW="md"
-      onClose={close}
-    >
+    <DialogShell className="max-w-md" header={header} onClose={close} open={isLoginModalOpen || isPasswordModalOpen}>
       {isLoginModalOpen && (
         <div className="p-6">
           {isAuthenticated ? (
@@ -401,6 +392,6 @@ export const ModalAdmin = () => {
           </div>
         </form>
       )}
-    </ModalShell>
+    </DialogShell>
   );
 };

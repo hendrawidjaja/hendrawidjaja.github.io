@@ -22,16 +22,16 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
       className="relative border-b border-slate-300 pt-10 pb-12 sm:pt-14 sm:pb-16 dark:border-slate-800"
       id="top"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl px-4 lg:px-8">
         {isEditMode && (
-          <div className="no-print mb-6 flex items-center justify-between rounded-lg border border-blue-200 bg-blue-50 p-3 text-xs text-blue-800 sm:text-sm dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300">
+          <div className="no-print mb-6 flex flex-col gap-2 rounded-lg border border-blue-200 bg-blue-50 p-3 text-xs text-blue-800 sm:flex-row sm:items-center sm:justify-between sm:text-sm dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300">
             <div className="flex items-center gap-2">
               <span className="font-semibold">Admin Edit Mode:</span>
               <span>You can add, edit, or remove entries across any CV section below.</span>
             </div>
 
             <Button
-              className="shrink-0 rounded-md bg-blue-600 px-2.5 py-1 text-xs font-medium text-white transition-colors hover:bg-blue-700"
+              className="shrink-0 self-start rounded-md bg-blue-600 px-2.5 py-1 text-xs font-medium text-white transition-colors hover:bg-blue-700"
               onClick={onEditProfile}
             >
               Edit Profile Info
@@ -73,7 +73,6 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
               )}
             </div>
 
-            {/* Plain text: the server strips all markup from `headline` on write, React escapes on render. */}
             <p className="mt-4 text-base leading-relaxed font-normal text-balance text-slate-700 sm:text-lg dark:text-slate-300">
               {profile.headline}
             </p>
@@ -166,6 +165,10 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
                 <span>Inquire for Roles</span>
               </a>
             </div>
+
+            {profile.metrics.map((metric) => metric.label === "" && (
+              <>{metric.value}</>
+            ))}
           </div>
 
           <div className="flex flex-col items-center lg:col-span-4 lg:items-end">
@@ -175,23 +178,23 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
           </div>
         </div>
 
-        {profile.metrics && profile.metrics.length > 0 && (
-          <div className="mt-12 grid grid-cols-2 gap-6 border-t border-slate-300 pt-8 md:grid-cols-4 dark:border-slate-800/80">
-            {profile.metrics.map((metric) => (
-              <div className="flex flex-col" key={metric.id}>
-                <span className="font-mono text-2xl font-bold tracking-tight text-slate-900 tabular-nums sm:text-3xl dark:text-white">
-                  {metric.value}
-                </span>
-                <span className="mt-1 text-xs font-semibold text-slate-700 sm:text-sm dark:text-slate-300">
-                  {metric.label}
-                </span>
-                <span className="text-xs leading-snug text-slate-500 dark:text-slate-400">
-                  {metric.context}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
+        {/*{profile.metrics && profile.metrics.length > 0 && (*/}
+        {/*  <div className="mt-12 grid grid-cols-2 gap-6 border-t border-slate-300 pt-8 md:grid-cols-4 dark:border-slate-800/80">*/}
+        {/*    {profile.metrics.map((metric) => (*/}
+        {/*      <div className="flex flex-col" key={metric.id}>*/}
+        {/*        <span className="font-mono text-2xl font-bold tracking-tight text-slate-900 tabular-nums sm:text-3xl dark:text-white">*/}
+        {/*          {metric.value}*/}
+        {/*        </span>*/}
+        {/*        <span className="mt-1 text-xs font-semibold text-slate-700 sm:text-sm dark:text-slate-300">*/}
+        {/*          {metric.label}*/}
+        {/*        </span>*/}
+        {/*        <span className="text-xs leading-snug text-slate-500 dark:text-slate-400">*/}
+        {/*          {metric.context}                          123*/}
+        {/*        </span>*/}
+        {/*      </div>*/}
+        {/*    ))}*/}
+        {/*  </div>*/}
+        {/*)}*/}
       </div>
     </section>
   );
