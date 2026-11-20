@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getCVDataAction } from "@/app/actions";
+import { getCVDataAction } from "@/src/app/actions";
 
 export async function GET() {
   try {

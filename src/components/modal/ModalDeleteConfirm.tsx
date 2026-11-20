@@ -25,6 +25,7 @@ export const ModalDeleteConfirm = ({
         <div className="rounded-full bg-rose-50 p-2.5 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400">
           <AlertTriangle className="h-5 w-5" />
         </div>
+
         <div>
           <h3 className="text-base font-bold text-slate-900 dark:text-white">Delete {itemType}?</h3>
           <p className="text-xs text-slate-500 dark:text-slate-400">

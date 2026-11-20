@@ -32,14 +32,14 @@ Practical commands and conventions for working on this repository.
   (needed for Tailwind v4 `@theme`/`@custom-variant` syntax in `globals.css`).
   Biome is a real devDependency, so IDE integrations resolve it locally.
 - **After touching rich-text rendering** — check print CSS too:
-  `.rich-text` rules live in `app/globals.css` (media print handled by the same
+  `.rich-text` rules live in `../src/app` (media print handled by the same
   block; toggling `dark` off during export is done in `PdfExportModal`).
 - **After changes** Delete the node_modules and .next folder. Build again with `bun dev`
 
 ## Conventions
 
 - **Quotes / style** — Biome decides; do not hand-merge formatting. Use double quote
-- **Server mutations** belong in `app/actions.ts` (auth check + sanitize +
+- **Server mutations** belong in `../src/app` (auth check + sanitize +
   merge + write). API routes call actions; components call actions or the
   service layer, never `fs`.
 - **Rich text fields**: `summary`, `description`, `headline`, `tagline`,

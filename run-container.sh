@@ -1,12 +1,10 @@
 #!/usr/bin/env sh
-# Build and run the dev container. Whatever holds the host port -- a container
-# from this or another project, or a host process -- is stopped first, so a run
-# never fails with "address already in use".
+# Build and run the dev container via compose. Whatever holds the host port -- a
+# container from this or another project, or a host process -- is stopped first,
+# so a run never fails with "address already in use".
 set -eu
 
 PORT=${PORT:-3000}
-IMAGE=my-cv-dev
-NAME=my-cv-dev
 
 podman ps --format '{{.ID}} {{.Ports}}' | awk -v p=":$PORT->" 'index($0, p) {print $1}' |
   while read -r id; do
@@ -25,11 +23,5 @@ if [ -n "$pids" ]; then
   fi
 fi
 
-podman build -t "$IMAGE" -f Containerfile.dev . >/dev/null
-podman rm -f "$NAME" >/dev/null 2>&1 || true
-podman run -d -p "$PORT:3000" --name "$NAME" \
-  -v "$PWD":/app \
-  -v my-cv-dev-node-modules:/app/node_modules \
-  -v my-cv-dev-next:/app/.next \
-  "localhost/$IMAGE:latest" \
-  sh -c 'bun install && bunx next dev -p 3000' >/dev/null
+podman rm -f my-cv-dev >/dev/null 2>&1 || true
+podman-compose up -d --build

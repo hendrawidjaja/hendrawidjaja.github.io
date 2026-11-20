@@ -1,0 +1,21 @@
+version: "3"
+services:
+  cv-dev:
+    build:
+      context: .
+      dockerfile: Containerfile.dev
+    image: my-cv-dev
+    container_name: my-cv-dev
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - .:/app
+      - my-cv-dev-node-modules:/app/node_modules
+      - my-cv-dev-next:/app/.next
+    environment:
+      - NEXT_TELEMETRY_DISABLED=1
+    command: ["sh", "-c", "bun install && bun run dev"]
+
+volumes:
+  my-cv-dev-node-modules:
+  my-cv-dev-next:

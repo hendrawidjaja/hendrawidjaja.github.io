@@ -55,14 +55,14 @@ Edit:     RichTextEditor / forms --> CVClient handlers --> server actions
 if the file is missing or invalid, `readCVData()` throws a descriptive error
 instead of regenerating template data. Protect this file or restore from backup.
 
-### Where mutations happen — `app/actions.ts`
+### Where mutations happen — `../src/app`
 
 Every authenticated create/update/delete is a server action in one file:
 - verifies the in-memory session token
 - applies `sanitizeRichFields()` (see `docs/SECURITY.md`)
 - merges into the loaded `CVData` and rewrites the JSON file
 
-REST endpoints under `app/api/` are thin wrappers over the same actions and
+REST endpoints under `../src/app` are thin wrappers over the same actions and
 exist for external clients; the built-in UI calls the server actions directly.
 
 ## Rendering model

@@ -2,7 +2,7 @@ import { useAuth } from "../../context/AuthContext";
 import type { Project } from "../../types/cv";
 import { toRenderableHtml } from "../../utils/richText";
 import { BtnEditDelete } from "../BtnEditDelete";
-import { Code, ExternalLink, Github, Star } from "../Icons";
+import { Code, Star } from "../Icons";
 import { SectionShell } from "./SectionShell";
 
 interface SectionProjectsProps {
@@ -92,7 +92,7 @@ export const SectionProjects = ({
               )}
 
               <div
-                className="rich-text mt-3 line-clamp-5 min-h-[8.125rem] text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+                className="rich-text mt-3 line-clamp-5 min-h-32.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: Biome Problem
                 dangerouslySetInnerHTML={{ __html: toRenderableHtml(proj.description) }}
               />
@@ -111,47 +111,6 @@ export const SectionProjects = ({
                   ))}
                 </ul>
               )}
-
-              {/*<div className="mt-6 border-t border-slate-300 pt-4 dark:border-slate-800">*/}
-              {/*  {proj.technologies && proj.technologies.length > 0 && (*/}
-              {/*    <div className="mb-4 flex min-h-10 flex-wrap content-start items-start gap-1">*/}
-              {/*      {proj.technologies.map((t) => (*/}
-              {/*        <span*/}
-              {/*          className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[11px] text-slate-600 dark:bg-slate-800 dark:text-slate-300"*/}
-              {/*          key={t}*/}
-              {/*        >*/}
-              {/*          {t}*/}
-              {/*        </span>*/}
-              {/*      ))}*/}
-              {/*    </div>*/}
-              {/*  )}*/}
-
-              {/*  <div className="flex items-center gap-3 text-xs font-medium text-slate-600 dark:text-slate-300">*/}
-              {/*    {proj.demoUrl && (*/}
-              {/*      <a*/}
-              {/*        className="no-export no-print inline-flex items-center gap-1 text-blue-600 hover:underline dark:text-blue-400"*/}
-              {/*        href={proj.demoUrl}*/}
-              {/*        rel="noopener noreferrer"*/}
-              {/*        target="_blank"*/}
-              {/*      >*/}
-              {/*        <ExternalLink className="h-3.5 w-3.5" />*/}
-              {/*        <span>Live System</span>*/}
-              {/*      </a>*/}
-              {/*    )}*/}
-
-              {/*    {proj.githubUrl && (*/}
-              {/*      <a*/}
-              {/*        className="no-export no-print inline-flex items-center gap-1 transition-colors hover:text-slate-900 dark:hover:text-white"*/}
-              {/*        href={proj.githubUrl}*/}
-              {/*        rel="noopener noreferrer"*/}
-              {/*        target="_blank"*/}
-              {/*      >*/}
-              {/*        <Github className="h-3.5 w-3.5" />*/}
-              {/*        <span>Source Code</span>*/}
-              {/*      </a>*/}
-              {/*    )}*/}
-              {/*  </div>*/}
-              {/*</div>*/}
             </div>
           ))}
         </div>

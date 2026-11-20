@@ -1,9 +1,9 @@
+import { AvatarImage } from "@/src/ui/AvatarImage";
+import { Button } from "@/src/ui/Button";
 import { useAuth } from "../context/AuthContext";
 import type { CVProfile } from "../types/cv";
 import { toRenderableHtml } from "../utils/richText";
 import { Briefcase, Download, Edit, Github, Globe, Linkedin, Mail, MapPin, Phone } from "./Icons";
-import { AvatarImage } from "@/src/ui/AvatarImage";
-import { Button } from "@/src/ui/Button";
 
 interface HeroProps {
   onEditProfile: () => void;
@@ -166,9 +166,7 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
               </a>
             </div>
 
-            {profile.metrics.map((metric) => metric.label === "" && (
-              <>{metric.value}</>
-            ))}
+            {profile.metrics.map((metric) => metric.label === "" && <>{metric.value}</>)}
           </div>
 
           <div className="flex flex-col items-center lg:col-span-4 lg:items-end">
@@ -177,24 +175,6 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
             </div>
           </div>
         </div>
-
-        {/*{profile.metrics && profile.metrics.length > 0 && (*/}
-        {/*  <div className="mt-12 grid grid-cols-2 gap-6 border-t border-slate-300 pt-8 md:grid-cols-4 dark:border-slate-800/80">*/}
-        {/*    {profile.metrics.map((metric) => (*/}
-        {/*      <div className="flex flex-col" key={metric.id}>*/}
-        {/*        <span className="font-mono text-2xl font-bold tracking-tight text-slate-900 tabular-nums sm:text-3xl dark:text-white">*/}
-        {/*          {metric.value}*/}
-        {/*        </span>*/}
-        {/*        <span className="mt-1 text-xs font-semibold text-slate-700 sm:text-sm dark:text-slate-300">*/}
-        {/*          {metric.label}*/}
-        {/*        </span>*/}
-        {/*        <span className="text-xs leading-snug text-slate-500 dark:text-slate-400">*/}
-        {/*          {metric.context}                          123*/}
-        {/*        </span>*/}
-        {/*      </div>*/}
-        {/*    ))}*/}
-        {/*  </div>*/}
-        {/*)}*/}
       </div>
     </section>
   );

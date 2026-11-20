@@ -217,8 +217,15 @@ async function updateUserCredentials(
   next: { hash: string; iterations: number; salt: string; tokenVersion: number },
 ): Promise<void> {
   if (hasUserDatabase()) {
-    await updateUserPassword(user.username, next);
-    return;
+    try {
+      await updateUserPassword(user.username, next);
+      return;
+    } catch (err) {
+      console.warn(
+        "[auth] Postgres write failed, falling back to JSON file:",
+        err instanceof Error ? err.message : err,
+      );
+    }
   }
   const config: AuthConfig = {
     username: user.username,

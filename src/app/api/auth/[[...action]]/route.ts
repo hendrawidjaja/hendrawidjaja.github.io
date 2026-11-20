@@ -6,7 +6,7 @@ import {
   registerAction,
   registrationStatusAction,
   verifyAuthAction,
-} from "@/app/actions";
+} from "@/src/app/actions";
 import { checkRateLimit, clearFailures, recordFailure } from "@/src/server/rate-limit";
 
 /**

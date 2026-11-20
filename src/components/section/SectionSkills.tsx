@@ -1,5 +1,5 @@
-import { Button } from "@/src/ui/Button";
 import { useState } from "react";
+import { Button } from "@/src/ui/Button";
 import { useAuth } from "../../context/AuthContext";
 import type { SkillCategory } from "../../types/cv";
 import { Cpu, Edit, Plus, Sparkles, Trash2 } from "../Icons";
@@ -22,13 +22,6 @@ export const SectionSkills = ({
 
   const filteredCategories =
     activeTab === "all" ? categories : categories.filter((c) => c.id === activeTab);
-
-  const tabButtonClass = (isActive: boolean) =>
-    `shrink-0 rounded-lg px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors ${
-      isActive
-        ? "bg-white text-slate-900 shadow-xs dark:bg-slate-800 dark:text-white"
-        : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-    }`;
 
   return (
     <section className="border-b border-slate-300 py-12 sm:py-16 dark:border-slate-800" id="skills">

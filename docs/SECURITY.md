@@ -6,7 +6,7 @@ a valid, unexpired token whose credential version matches the current password.
 
 ## Authentication
 
-- Credentials are checked by `loginAction` (`app/actions.ts`); the error is a
+- Credentials are checked by `loginAction` (`../src/app`); the error is a
   generic "Invalid credentials" for both a wrong username and a wrong password.
 - **Password storage:** PBKDF2-SHA512, 210,000 iterations, 64-byte key, random
   16-byte salt. With `DATABASE_URL` set, hashes live in Postgres (`app_users`,
@@ -44,7 +44,7 @@ a valid, unexpired token whose credential version matches the current password.
 ## Rate limiting
 
 `src/server/rate-limit.ts` implements an in-memory fixed-window limiter used by
-`app/api/auth/[[...action]]/route.ts`:
+`../src/app`:
 
 | Endpoint | Key | Budget |
 |---|---|---|
@@ -67,7 +67,7 @@ a valid, unexpired token whose credential version matches the current password.
 CV fields (`summary`, `description`, `headline`, `tagline`, `highlights[]`) are
 rendered with `dangerouslySetInnerHTML`. The client editor is NOT trusted:
 everything is sanitized server-side before it can reach the JSON store
-(`sanitizeRichFields` in `app/actions.ts`, allowlist in `src/utils/richText.ts`).
+(`sanitizeRichFields` in `../src/app`, allowlist in `src/utils/richText.ts`).
 
 Allowlist (tags): `p, br, strong, b, em, i, u, s, ul, ol, li, a, mark, code, span, h1–h4`
 - `<a>` keeps only `href`, `rel`, `target` (validated `_blank`/`_self`/...)
@@ -103,7 +103,7 @@ Add one before public exposure.
 - Every mutating action calls `verifyEditorJwt`, not just `verifyJwt`: a token
   issued while the bootstrap password is still active can only change the
   password, not edit content.
-- REST routes (`app/api/*`) go through the same actions, so attackers bypassing
+- REST routes (`../src/app`) go through the same actions, so attackers bypassing
   the UI still pass sanitization and auth.
 - `GET /api/cv` is intentionally public and includes profile contact details
   (name, email, phone, location, LinkedIn) — that is the point of a public CV.

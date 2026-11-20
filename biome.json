@@ -36,7 +36,6 @@
       "**/*.json",
       "**/*.css",
       "!**/node_modules",
-      "!**/.next/**",
       "!**/out",
       "!**/dist",
       "!**/target",
@@ -72,9 +71,6 @@
     }
   },
   "tailwind": {
-    "mergeFunctions": [
-      "cn",
-      "twMerge"
-    ]
+    "mergeFunctions": ["cn", "twMerge"]
   }
 }

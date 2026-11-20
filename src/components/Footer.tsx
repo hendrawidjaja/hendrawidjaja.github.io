@@ -1,8 +1,7 @@
 import { WORDING } from "@/src/constant";
+import { Button } from "@/src/ui/Button";
 import { useAuth } from "../context/AuthContext";
 import { KeyRound, Lock, Unlock } from "./Icons";
-import { Button } from "@/src/ui/Button";
-
 
 const mutedButtonClass =
   "flex items-center gap-1 transition-colors hover:text-slate-900 dark:hover:text-white";

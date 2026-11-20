@@ -210,7 +210,7 @@ To sign in:
 
 ## Project Structure & Data Persistence
 
-- `app/`: Next.js App Router pages, server actions, and REST routes (`/api/cv/*`, `/api/auth/*`). Server actions handle all authenticated CV mutations.
+- `src/app`: Next.js App Router pages, server actions, and REST routes (`/api/cv/*`, `/api/auth/*`). Server actions handle all authenticated CV mutations.
 - `data/cv-data.json`: Local JSON file storing your custom CV data, created and updated automatically.
 - `data/auth-config.json`: Legacy salted password hash (only when `DATABASE_URL` is unset).
 - `src/server/user-db.ts`: Postgres user store (`app_users`), used when `DATABASE_URL` is set.

@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from "react";
 import { Button } from "@/src/ui/Button";
 import { Plus } from "../Icons";
 
@@ -18,7 +19,7 @@ export const SectionShell = ({
   addLabel,
   onAdd,
   children,
-}: SectionShellProps & { children: React.ReactNode }) => (
+}: SectionShellProps & PropsWithChildren) => (
   <section className="border-b border-slate-300 py-12 sm:py-16 dark:border-slate-800" id={id}>
     <div className="mx-auto max-w-6xl px-4 lg:px-8">
       <div className="mb-8 flex items-center justify-between gap-4">

@@ -9,7 +9,6 @@ interface HeaderProps {
   onOpenPdfModal: () => void;
   onToggleTheme: () => void;
 }
-
 export const Header = ({ isDark, onToggleTheme }: HeaderProps) => {
   const { isAuthenticated, isEditMode, toggleEditMode, logout } = useAuth();
 
@@ -43,34 +42,34 @@ export const Header = ({ isDark, onToggleTheme }: HeaderProps) => {
           </Button>
 
           {isAuthenticated && (
-            <Button
-              className="flex shrink-0 items-center gap-1 rounded-lg border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-all"
-              onClick={toggleEditMode}
-              title="Toggle edit mode"
-            >
-              {isEditMode ? (
-                <>
-                  <Edit className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                  <span>Editing Mode Active</span>
-                </>
-              ) : (
-                <>
-                  <Unlock className="h-3.5 w-3.5" />
-                  <span>Edit CV</span>
-                </>
-              )}
-            </Button>
-          )}
+            <>
+              <Button
+                className="flex shrink-0 items-center gap-1 rounded-lg border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-all"
+                onClick={toggleEditMode}
+                title="Toggle edit mode"
+              >
+                {isEditMode ? (
+                  <>
+                    <Edit className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                    <span>Editing Mode Active</span>
+                  </>
+                ) : (
+                  <>
+                    <Unlock className="h-3.5 w-3.5" />
+                    <span>Edit CV</span>
+                  </>
+                )}
+              </Button>
 
-          {isAuthenticated && (
-            <Button
-              aria-label="Sign out"
-              className="shrink-0 rounded-lg p-2 whitespace-nowrap text-slate-500 transition-colors hover:bg-slate-100 hover:text-rose-600 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-rose-400"
-              onClick={logout}
-              title="Sign out"
-            >
-              <LogOut className="h-4 w-4" />
-            </Button>
+              <Button
+                aria-label="Sign out"
+                className="shrink-0 rounded-lg p-2 whitespace-nowrap text-slate-500 transition-colors hover:bg-slate-100 hover:text-rose-600 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-rose-400"
+                onClick={logout}
+                title="Sign out"
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </>
           )}
         </div>
       </div>

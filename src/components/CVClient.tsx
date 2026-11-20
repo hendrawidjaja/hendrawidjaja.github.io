@@ -18,7 +18,7 @@ import {
   updateProfileAction,
   updateProjectAction,
   updateSkillCategoryAction,
-} from "@/app/actions";
+} from "@/src/app/actions";
 import { Footer } from "@/src/components/Footer";
 import { Header } from "@/src/components/Header";
 import { Hero } from "@/src/components/Hero";
@@ -52,7 +52,6 @@ interface DeleteConfig {
   action: (token: string, id: string) => Promise<void>;
   listKey: "experiences" | "education" | "skillCategories" | "projects" | "portfolio";
 }
-
 function CVInner({ initialData }: { initialData: CVData }) {
   const { showToast } = useToast();
   const { openLoginModal } = useAuth();
@@ -199,9 +198,8 @@ function CVInner({ initialData }: { initialData: CVData }) {
   } as const;
 
   /**
-   * A stored token can go invalid (expiry or server restart of older builds)
-   * without the client knowing. Recover interactively instead of throwing a
-   * bare "Unauthorized" into the console.
+   * A stored token can go invalid (expiry or server restart of older builds) without the client knowing.
+   * Recover interactively instead of throwing a bare "Unauthorized" into the console.
    */
   const handleAuthError = (err: unknown) => {
     if (err instanceof Error && err.message.includes("Unauthorized")) {

@@ -6,7 +6,7 @@ RUN bun install --frozen-lockfile
 
 FROM oven/bun:1 AS build
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /src/app/node_modules ./node_modules
 COPY . .
 ENV NEXT_OUTPUT_STANDALONE=true
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -26,11 +26,11 @@ RUN apk add --no-cache nodejs su-exec \
   && rm -rf /var/cache/apk/* /usr/share/man
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod 755 /usr/local/bin/docker-entrypoint.sh
-COPY --from=build --chown=app:app /app/.next/standalone ./
-COPY --from=build --chown=app:app /app/.next/static ./.next/static
-COPY --from=build --chown=app:app /app/public ./public
+COPY --from=build --chown=app:app /src/app/.next/standalone ./
+COPY --from=build --chown=app:app /src/app/.next/static ./.next/static
+COPY --from=build --chown=app:app /src/app/public ./public
 # Defaults for first boot on an empty volume (the volume hides ./data).
-COPY --from=build --chown=app:app /app/data /app/data-seed
+COPY --from=build --chown=app:app /src/app/data /app/data-seed
 EXPOSE 3000
 # Entrypoint seeds/chowns /app/data as root, then drops to `app`.
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

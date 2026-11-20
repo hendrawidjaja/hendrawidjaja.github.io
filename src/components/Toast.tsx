@@ -1,6 +1,7 @@
-import { Button } from "@/src/ui/Button";
+"use client";
 import type React from "react";
 import { createContext, useCallback, useContext, useState } from "react";
+import { Button } from "@/src/ui/Button";
 import { AlertCircle, CheckCircle2, Info, X } from "./Icons";
 
 export type ToastType = "success" | "error" | "info";

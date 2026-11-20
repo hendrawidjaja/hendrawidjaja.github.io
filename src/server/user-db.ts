@@ -1,4 +1,4 @@
-import type { Pool } from "pg";
+import { Pool } from "pg";
 
 /**
  * Postgres-backed user store.
@@ -47,8 +47,7 @@ function pool(): Promise<Pool> {
       if (!connectionString) {
         throw new Error("DATABASE_URL is not set");
       }
-      const { Pool: PgPool } = await import("pg");
-      const created = new PgPool({
+      const created = new Pool({
         connectionString,
         max: 3,
         // Hosted Postgres (Neon/Supabase/Render) requires TLS; local dev usually not.

@@ -30,7 +30,6 @@ h6,
 
 .rich-text a {
   color: #2563eb;
-  text-decoration: underline;
 }
 
 .dark .rich-text a {
@@ -48,7 +47,6 @@ button:not(:disabled),
 }
 
 .export-url,
-.no-print,
 .nl-badge-frame {
   display: none;
 }
@@ -66,6 +64,10 @@ html.exporting .export-url {
     background-color: #ffffff;
     color: #0f172a;
     print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none;
   }
 
   .print-only {
