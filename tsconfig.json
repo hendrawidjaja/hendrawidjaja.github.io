@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@/src": ["./src"],
       "@/components": ["./src/components"],
       "@/components/modal": ["./src/components/modal"],
       "@/ui": ["./src/ui"],
@@ -28,7 +29,8 @@
       "@/hooks": ["./src/hooks"],
       "@/services": ["./src/services"],
       "@/types": ["./src/types"],
-      "@/utils": ["./src/utils"]
+      "@/utils": ["./src/utils"],
+      "@/icons": ["./src/Icons"]
     }
   },
   "include": [

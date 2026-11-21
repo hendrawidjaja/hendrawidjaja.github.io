@@ -67,7 +67,10 @@
           "level": "error"
         }
       },
-      "preset": "recommended"
+      "preset": "recommended",
+      "a11y": {
+        "useValidAnchor": "off"
+      }
     }
   },
   "tailwind": {

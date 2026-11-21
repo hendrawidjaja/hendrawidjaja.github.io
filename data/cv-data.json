@@ -12,33 +12,7 @@
     "website": "https://www.github.com/hendrawidjaja",
     "avatarUrl": "/img_hendrawidjaja.png",
     "availableForHire": true,
-    "statusText": "Available for Frontend Roles or software engineer",
-    "metrics": [
-      {
-        "id": "m1",
-        "label": "Experience",
-        "value": "> 7+ ",
-        "context": "Across Germany and Indonesia"
-      },
-      {
-        "id": "m2",
-        "label": "Team Leadership",
-        "value": "> 15 Members",
-        "context": "Frontend & automation engineers led"
-      },
-      {
-        "id": "m3",
-        "label": "Core Stack",
-        "value": "React & Next",
-        "context": "TypeScript, Vite, Selenium, SEO"
-      },
-      {
-        "id": "m4",
-        "label": "Languages",
-        "value": "4 Spoken",
-        "context": "Indonesian, English, German, Mandarin"
-      }
-    ]
+    "statusText": "Available for Frontend Roles or software engineer"
   },
   "experiences": [
     {
@@ -50,9 +24,9 @@
       "startDate": "Jan 2022",
       "endDate": "Present",
       "current": true,
-      "summary": "In-house frontend developer. Led 7 members for an online marketplace for home living company.",
+      "summary": "In-house frontend developer. Led 10 members for an online marketplace for home living company.",
       "highlights": [
-        "Led 7 team members building the online marketplace web application.",
+        "Led 8 team members building the online marketplace web application.",
         "Developed internal reusable frontend UI library for modularity.",
         "Improved SEO metrics and core page speed performance.",
         "Led 2 automation team members in developing robust Selenium test suites."
@@ -267,7 +241,7 @@
       "role": "Lead Frontend Developer",
       "year": "2022 - Present",
       "highlights": [
-        "Led 7 frontend developers and 2 automation QA engineers.",
+        "Led 8 frontend developers and 2 automation QA engineers.",
         "Standardized component library and reduced page load times."
       ],
       "featured": true
