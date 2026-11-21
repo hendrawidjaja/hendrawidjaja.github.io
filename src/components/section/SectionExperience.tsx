@@ -1,10 +1,10 @@
-import { useAuth } from "../../context/AuthContext";
-import type { WorkExperience } from "../../types/cv";
-import { toRenderableHtml } from "../../utils/richText";
-import { BtnEditDelete } from "../BtnEditDelete";
-import { Building2, Calendar, MapPin } from "../Icons";
-import { CardShell } from "./CardShell";
-import { SectionShell } from "./SectionShell";
+import { BtnEditDelete } from "@/src/components/BtnEditDelete";
+import { Building2, Calendar, MapPin } from "@/src/components/Icons";
+import { CardShell } from "@/src/components/section/CardShell";
+import { SectionShell } from "@/src/components/section/SectionShell";
+import { useAuth } from "@/src/context/AuthContext";
+import type { WorkExperience } from "@/src/types/cv";
+import { toRenderableHtml } from "@/src/utils/richText";
 
 interface SectionExperienceProps {
   experiences: WorkExperience[];
@@ -42,7 +42,6 @@ export const SectionExperience = ({
               className="group page-break-avoid relative border-slate-200 pl-0 transition-colors sm:border-l-2 sm:pl-6 dark:border-slate-800"
               key={exp.id}
             >
-
               <CardShell>
                 <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-start">
                   <div>

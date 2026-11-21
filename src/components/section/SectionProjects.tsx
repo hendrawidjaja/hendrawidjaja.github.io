@@ -1,9 +1,9 @@
-import { useAuth } from "../../context/AuthContext";
-import type { Project } from "../../types/cv";
-import { toRenderableHtml } from "../../utils/richText";
-import { BtnEditDelete } from "../BtnEditDelete";
-import { Code, Star } from "../Icons";
-import { SectionShell } from "./SectionShell";
+import { BtnEditDelete } from "@/src/components/BtnEditDelete";
+import { Code, Star } from "@/src/components/Icons";
+import { SectionShell } from "@/src/components/section/SectionShell";
+import { useAuth } from "@/src/context/AuthContext";
+import type { Project } from "@/src/types/cv";
+import { toRenderableHtml } from "@/src/utils/richText";
 
 interface SectionProjectsProps {
   onAddProject: () => void;

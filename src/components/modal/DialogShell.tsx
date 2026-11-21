@@ -1,8 +1,8 @@
 "use client";
 
 import { type ComponentPropsWithoutRef, type ReactNode, useEffect, useRef } from "react";
+import { X } from "@/src/components/Icons";
 import { Button } from "@/src/ui/Button";
-import { X } from "../Icons";
 
 export interface DialogShellProps extends ComponentPropsWithoutRef<"dialog"> {
   header?: ReactNode;
@@ -41,7 +41,7 @@ export const DialogShell = ({
       ref={ref}
       {...rest}
     >
-      {header ? (
+      {header && (
         <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 dark:border-slate-800">
           {header}
           <Button
@@ -52,14 +52,6 @@ export const DialogShell = ({
             <X className="h-5 w-5" />
           </Button>
         </div>
-      ) : (
-        <Button
-          aria-label="Close"
-          className="absolute top-4 right-4 z-10 rounded-md p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-          onClick={onClose}
-        >
-          <X className="h-4 w-4" />
-        </Button>
       )}
       {children}
     </dialog>

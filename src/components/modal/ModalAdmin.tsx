@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { AlertCircle, Check, KeyRound, Lock, LogOut } from "@/src/components/Icons";
+import { DialogShell } from "@/src/components/modal/DialogShell";
+import { useToast } from "@/src/components/Toast";
+import { useAuth } from "@/src/context/AuthContext";
+import { changeAdminPassword, registrationStatus } from "@/src/services/api";
 import { Button } from "@/src/ui/Button";
 import { TextField } from "@/src/ui/TextField";
-import { useToast } from "../../components/Toast";
-import { useAuth } from "../../context/AuthContext";
-import { changeAdminPassword, registrationStatus } from "../../services/api";
-import { AlertCircle, Check, KeyRound, Lock, LogOut } from "../Icons";
-import { DialogShell } from "./DialogShell";
 
 type AuthMode = "login" | "register";
 
@@ -122,7 +122,10 @@ export const ModalAdmin = () => {
     setIsLoading(true);
     try {
       await register(registerState.username.trim(), registerState.password);
-      showToast(`Account "${registerState.username.trim()}" created. Edit Mode enabled.`, "success");
+      showToast(
+        `Account "${registerState.username.trim()}" created. Edit Mode enabled.`,
+        "success",
+      );
       setRegisterState({ username: "", password: "", confirmPass: "", error: null });
       setMode("login");
     } catch (err: unknown) {
@@ -190,7 +193,12 @@ export const ModalAdmin = () => {
   );
 
   return (
-    <DialogShell className="max-w-md" header={header} onClose={close} open={isLoginModalOpen || isPasswordModalOpen}>
+    <DialogShell
+      className="max-w-md"
+      header={header}
+      onClose={close}
+      open={isLoginModalOpen || isPasswordModalOpen}
+    >
       {isLoginModalOpen && (
         <div className="p-6">
           {isAuthenticated ? (

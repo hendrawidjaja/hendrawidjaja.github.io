@@ -1,6 +1,6 @@
+import { AlertTriangle } from "@/src/components/Icons";
+import { DialogShell } from "@/src/components/modal/DialogShell";
 import { Button } from "@/src/ui/Button";
-import { AlertTriangle } from "../Icons";
-import { DialogShell } from "./DialogShell";
 
 interface ModalDeleteConfirmProps {
   isDeleting: boolean;

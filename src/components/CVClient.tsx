@@ -27,6 +27,7 @@ import { ModalDeleteConfirm } from "@/src/components/modal/ModalDeleteConfirm";
 import type { EditableEntity, EditableEntityPayload } from "@/src/components/modal/ModalEditItem";
 import { ModalEditItem } from "@/src/components/modal/ModalEditItem";
 import { ModalPdfExport } from "@/src/components/modal/ModalPdfExport";
+import { ModalPortfolio } from "@/src/components/modal/ModalPortfolio";
 import { SectionEducation } from "@/src/components/section/SectionEducation";
 import { SectionExperience } from "@/src/components/section/SectionExperience";
 import { SectionPortfolio } from "@/src/components/section/SectionPortfolio";
@@ -58,6 +59,7 @@ function CVInner({ initialData }: { initialData: CVData }) {
   const [isDark, setIsDark] = useState<boolean>(false);
   const [cvData, setCvData] = useState<CVData>(initialData);
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
+  const [portfolioItem, setPortfolioItem] = useState<PortfolioItem | null>(null);
 
   interface EditModalState {
     data: EditableEntity | null;
@@ -94,8 +96,24 @@ function CVInner({ initialData }: { initialData: CVData }) {
     } catch {}
   }, []);
 
-  const toggleTheme = () => {
-    setIsDark((prev) => {
+  // Deep link: `?portfolio=<id>` opens that case study directly on load.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("portfolio");
+    if (!id) return;
+    const found = initialData.portfolio.find((entry) => entry.id === id);
+    if (found) setPortfolioItem(found);
+  }, [initialData.portfolio]);
+
+  const closePortfolio = () => {
+    setPortfolioItem(null);
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("portfolio")) {
+      url.searchParams.delete("portfolio");
+      window.history.replaceState(null, "", url);
+    }
+  };
+
+  const toggleTheme = () => {    setIsDark((prev) => {
       const next = !prev;
       if (next) {
         document.documentElement.classList.add("dark");
@@ -340,6 +358,7 @@ function CVInner({ initialData }: { initialData: CVData }) {
           onAddItem={() => openEdit("portfolio", null)}
           onDeleteItem={handleDeletePortfolioItem}
           onEditItem={(item) => openEdit("portfolio", item)}
+          onOpenItem={setPortfolioItem}
         />
 
         <SectionSkills
@@ -384,6 +403,8 @@ function CVInner({ initialData }: { initialData: CVData }) {
         onClose={() => setIsPdfModalOpen(false)}
         open={isPdfModalOpen}
       />
+
+      <ModalPortfolio item={portfolioItem} onClose={closePortfolio} open={Boolean(portfolioItem)} />
     </div>
   );
 }

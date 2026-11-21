@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import { WORDING } from "@/src/constant";
 import { Button } from "@/src/ui/Button";
 import { useAuth } from "../context/AuthContext";
@@ -5,6 +6,15 @@ import { KeyRound, Lock, Unlock } from "./Icons";
 
 const mutedButtonClass =
   "flex items-center gap-1 transition-colors hover:text-slate-900 dark:hover:text-white";
+
+const handleBackToTop = (e: MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault();
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "instant",
+  });
+};
 export const Footer = () => {
   const { isAuthenticated, openLoginModal, openPasswordModal, isEditMode, toggleEditMode } =
     useAuth();
@@ -49,12 +59,12 @@ export const Footer = () => {
               </Button>
 
               <Button
-                className={mutedButtonClass}
+                className={`${mutedButtonClass} ml-4`}
                 onClick={openPasswordModal}
                 title="Change admin password"
               >
                 <KeyRound className="h-3.5 w-3.5" />
-                <span>Password</span>
+                <span>Change Password</span>
               </Button>
             </>
           ) : (
@@ -66,6 +76,7 @@ export const Footer = () => {
           <a
             className="ml-4 flex shrink-0 items-center gap-1 text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
             href="#top"
+            onClick={handleBackToTop}
           >
             <span>Back to Top</span>
             <span aria-hidden="true">↑</span>

@@ -1,8 +1,8 @@
+import { Edit, LogOut, Moon, Sun, Unlock } from "@/src/components/Icons";
+import { Logo } from "@/src/components/Logo";
 import { MENU } from "@/src/constant";
+import { useAuth } from "@/src/context/AuthContext";
 import { Button } from "@/src/ui/Button";
-import { useAuth } from "../context/AuthContext";
-import { Edit, LogOut, Moon, Sun, Unlock } from "./Icons";
-import { Logo } from "./Logo";
 
 interface HeaderProps {
   isDark: boolean;

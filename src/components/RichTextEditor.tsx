@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Button } from "@/src/ui/Button";
 import { toRenderableHtml } from "../utils/richText";
 import {
   Bold,
@@ -11,7 +12,6 @@ import {
   Underline,
   Unlink,
 } from "./Icons";
-import { Button } from "@/src/ui/Button";
 
 interface RichTextEditorProps {
   label?: string;
@@ -79,6 +79,16 @@ const TOOLS: {
   },
 ];
 
+const INITIAL_FORMATS = {
+  bold: false,
+  italic: false,
+  orderedList: false,
+  strikethrough: false,
+  underline: false,
+  unorderedList: false,
+  olList: false,
+};
+
 /**
  * Small contentEditable editor built on the Selection/Range APIs. Formatting is applied by wrapping / unwrapping
  * DOM nodes directly — no deprecated `document.execCommand` and no external editor dependency.
@@ -96,15 +106,7 @@ export const RichTextEditor = ({
 }: RichTextEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const [isEmpty, setIsEmpty] = useState(!value?.trim());
-  const [activeFormats, setActiveFormats] = useState<ActiveFormats>({
-    bold: false,
-    italic: false,
-    orderedList: false,
-    strikethrough: false,
-    underline: false,
-    unorderedList: false,
-    olList: false,
-  });
+  const [activeFormats, setActiveFormats] = useState<ActiveFormats>({ ...INITIAL_FORMATS });
 
   const getEditor = useCallback(() => editorRef.current, []);
 
@@ -501,13 +503,7 @@ function toggleListFormat(el: HTMLElement, ordered: boolean): void {
 
 function readActiveFormats(el: HTMLElement | null): ActiveFormats {
   const empty: ActiveFormats = {
-    bold: false,
-    italic: false,
-    orderedList: false,
-    strikethrough: false,
-    underline: false,
-    unorderedList: false,
-    olList: false,
+    ...INITIAL_FORMATS,
   };
   if (!el || typeof window === "undefined") return empty;
 
@@ -542,6 +538,7 @@ function readActiveFormats(el: HTMLElement | null): ActiveFormats {
   const decoration = style.textDecorationLine || style.textDecoration;
   const linkAncestor = target.closest("a");
   const insideLink = Boolean(linkAncestor) && (el === linkAncestor || el.contains(linkAncestor));
+
   if (decoration.includes("underline") && !insideLink) empty.underline = true;
   if (decoration.includes("line-through")) empty.strikethrough = true;
   return empty;

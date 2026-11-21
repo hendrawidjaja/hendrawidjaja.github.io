@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
+import { Plus } from "@/src/components/Icons";
 import { Button } from "@/src/ui/Button";
-import { Plus } from "../Icons";
 
 interface SectionShellProps {
   addLabel: string;

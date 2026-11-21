@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react";
+import { Edit, Trash2 } from "@/src/components/Icons";
 import { Button } from "@/src/ui/Button";
-import { Edit, Trash2 } from "./Icons";
 
 interface BtnEditDeleteProps extends ComponentPropsWithoutRef<"button"> {
   deleteTitle?: string;

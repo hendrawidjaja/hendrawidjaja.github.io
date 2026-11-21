@@ -6,7 +6,6 @@
  * value MUST pass through `sanitizeRichText` on write (server) and is rendered through an allowlist on read. Plain-text
  * values saved before this feature existed keep rendering correctly without migration.
  */
-
 const ALLOWED_TAGS = new Set([
   "p",
   "br",

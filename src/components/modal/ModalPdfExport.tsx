@@ -1,10 +1,10 @@
 import { toJpeg } from "html-to-image";
 import jsPDF from "jspdf";
 import { useState } from "react";
+import { Download, FileText, Loader2, Printer } from "@/src/components/Icons";
+import { useToast } from "@/src/components/Toast";
+import type { CVData } from "@/src/types/cv";
 import { Button } from "@/src/ui/Button";
-import { useToast } from "../../components/Toast";
-import type { CVData } from "../../types/cv";
-import { Download, FileText, Loader2, Printer } from "../Icons";
 import { DialogShell } from "./DialogShell";
 
 interface ModalPdfExportProps {
@@ -54,7 +54,7 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
   const handleBrowserPrint = () => {
     onClose();
     setTimeout(() => {
-      withLightTheme(() => window.print()).then(r => console.log(r));
+      withLightTheme(() => window.print()).then((r) => console.log(r));
     }, 400);
   };
 
@@ -126,7 +126,9 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
 
         <div className="mb-6 rounded-xl">
           <div className="flex items-center justify-between pb-2 text-xs text-slate-600 dark:text-slate-300">
-            <span className="font-semibold text-slate-900 dark:text-white">{cvData.profile.name}</span>
+            <span className="font-semibold text-slate-900 dark:text-white">
+              {cvData.profile.name}
+            </span>
             <span className="font-mono text-slate-500">{cvData.profile.title}</span>
           </div>
         </div>

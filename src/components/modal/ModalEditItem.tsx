@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { RichTextEditor } from "@/src/components/RichTextEditor";
 import { Button } from "@/src/ui/Button";
 import { TextField } from "@/src/ui/TextField";
-import { RichTextEditor } from "../../components/RichTextEditor";
 import type {
   CVProfile,
   Education,

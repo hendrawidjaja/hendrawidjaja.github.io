@@ -3,7 +3,7 @@ import { Button } from "@/src/ui/Button";
 import { useAuth } from "../context/AuthContext";
 import type { CVProfile } from "../types/cv";
 import { toRenderableHtml } from "../utils/richText";
-import { Briefcase, Download, Edit, Github, Globe, Linkedin, Mail, MapPin, Phone } from "./Icons";
+import { Briefcase, Download, Edit, Github, Linkedin, Mail, MapPin, Phone } from "./Icons";
 
 interface HeroProps {
   onEditProfile: () => void;
@@ -134,18 +134,6 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
                   </span>
                 </a>
               )}
-
-              {profile.website && (
-                <a
-                  className="no-export no-print flex items-center gap-1.5 transition-colors hover:text-blue-600 dark:hover:text-blue-400"
-                  href={profile.website}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <Globe className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Portfolio</span>
-                </a>
-              )}
             </div>
 
             <div className="no-print no-export mt-8 flex flex-wrap items-center gap-3">
@@ -165,8 +153,6 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
                 <span>Inquire for Roles</span>
               </a>
             </div>
-
-            {profile.metrics.map((metric) => metric.label === "" && <>{metric.value}</>)}
           </div>
 
           <div className="flex flex-col items-center lg:col-span-4 lg:items-end">

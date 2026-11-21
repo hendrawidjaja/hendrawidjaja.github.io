@@ -1,9 +1,9 @@
-import { useAuth } from "../../context/AuthContext";
-import type { Education } from "../../types/cv";
-import { toRenderableHtml } from "../../utils/richText";
-import { BtnEditDelete } from "../BtnEditDelete";
-import { Award, Calendar, GraduationCap, MapPin } from "../Icons";
-import { SectionShell } from "./SectionShell";
+import { BtnEditDelete } from "@/src/components/BtnEditDelete";
+import { Award, Calendar, GraduationCap, MapPin } from "@/src/components/Icons";
+import { SectionShell } from "@/src/components/section/SectionShell";
+import { useAuth } from "@/src/context/AuthContext";
+import type { Education } from "@/src/types/cv";
+import { toRenderableHtml } from "@/src/utils/richText";
 
 interface SectionEducationProps {
   education: Education[];

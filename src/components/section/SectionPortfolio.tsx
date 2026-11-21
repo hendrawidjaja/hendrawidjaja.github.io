@@ -2,7 +2,7 @@ import { useAuth } from "../../context/AuthContext";
 import type { PortfolioItem } from "../../types/cv";
 import { toRenderableHtml } from "../../utils/richText";
 import { BtnEditDelete } from "../BtnEditDelete";
-import { ExternalLink, Images } from "../Icons";
+import { Images } from "../Icons";
 import { SectionShell } from "./SectionShell";
 
 interface SectionPortfolioProps {
@@ -10,6 +10,7 @@ interface SectionPortfolioProps {
   onAddItem: () => void;
   onDeleteItem: (id: string, title: string) => void;
   onEditItem: (item: PortfolioItem) => void;
+  onOpenItem: (item: PortfolioItem) => void;
 }
 
 /** Thumbnails per card before collapsing the rest into a "+N" overlay. */
@@ -20,6 +21,7 @@ export const SectionPortfolio = ({
   onAddItem,
   onEditItem,
   onDeleteItem,
+  onOpenItem,
 }: SectionPortfolioProps) => {
   const { isEditMode } = useAuth();
 
@@ -46,45 +48,70 @@ export const SectionPortfolio = ({
 
             return (
               <article
-                className="page-break-avoid flex flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-xs transition-all hover:border-slate-400 dark:border-slate-800/80 dark:bg-slate-900/60 dark:hover:border-slate-700"
+                className="page-break-avoid group relative flex flex-col overflow-hidden rounded-xl border border-slate-300 bg-white shadow-xs transition-all hover:border-slate-400 dark:border-slate-800/80 dark:bg-slate-900/60 dark:hover:border-slate-700"
                 key={item.id}
               >
-                {thumbnails.length > 0 && (
+                {isEditMode && (
                   <div
-                    className={`grid gap-0.5 bg-slate-100 dark:bg-slate-800 ${
-                      thumbnails.length === 1 ? "grid-cols-1" : "grid-cols-2"
-                    }`}
+                    className="absolute top-3 right-3 z-10"
+                    onClick={(event) => event.stopPropagation()}
+                    role="presentation"
                   >
-                    {thumbnails.map((src, index) => (
-                      <a
-                        className="group relative block aspect-video overflow-hidden"
-                        href={src}
-                        key={src}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
-                        <img
-                          alt={`${item.title} — preview ${index + 1}`}
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          loading="lazy"
-                          onError={(event) => {
-                            event.currentTarget.style.visibility = "hidden";
-                          }}
-                          src={src}
-                        />
-                        {hiddenCount > 0 && index === thumbnails.length - 1 && (
-                          <span className="absolute inset-0 grid place-items-center bg-slate-950/60 text-lg font-bold text-white">
-                            +{hiddenCount}
-                          </span>
-                        )}
-                      </a>
-                    ))}
+                    <BtnEditDelete
+                      deleteTitle="Remove portfolio item"
+                      editTitle="Edit portfolio item"
+                      onDelete={() => onDeleteItem(item.id, item.title)}
+                      onEdit={() => onEditItem(item)}
+                    />
                   </div>
                 )}
 
-                <div className="flex flex-1 flex-col p-6">
-                  <div className="flex items-start justify-between gap-2">
+                <div
+                  aria-haspopup="dialog"
+                  aria-label={`Open ${item.title} details`}
+                  className="flex flex-1 cursor-pointer flex-col text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                  onClick={() => onOpenItem(item)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      onOpenItem(item);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  {thumbnails.length > 0 && (
+                    <div
+                      className={`grid w-full gap-0.5 bg-slate-100 dark:bg-slate-800 ${
+                        thumbnails.length === 1 ? "grid-cols-1" : "grid-cols-2"
+                      }`}
+                    >
+                      {thumbnails.map((src, index) => (
+                        <div
+                          className="relative block aspect-video overflow-hidden"
+                          key={src}
+                        >
+                          {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
+                          <img
+                            alt={`${item.title} — preview ${index + 1}`}
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy"
+                            onError={(event) => {
+                              event.currentTarget.style.visibility = "hidden";
+                            }}
+                            src={src}
+                          />
+                          {hiddenCount > 0 && index === thumbnails.length - 1 && (
+                            <span className="absolute inset-0 grid place-items-center bg-slate-950/60 text-lg font-bold text-white">
+                              +{hiddenCount}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="flex w-full flex-1 flex-col p-6">
                     <div className="flex items-start gap-3">
                       <div className="mt-0.5 shrink-0 rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                         <Images className="h-4 w-4" />
@@ -102,55 +129,38 @@ export const SectionPortfolio = ({
                       </div>
                     </div>
 
-                    {isEditMode && (
-                      <BtnEditDelete
-                        deleteTitle="Remove portfolio item"
-                        editTitle="Edit portfolio item"
-                        onDelete={() => onDeleteItem(item.id, item.title)}
-                        onEdit={() => onEditItem(item)}
+                    {item.tagline && (
+                      <p className="mt-2 text-xs font-semibold text-blue-600 dark:text-blue-400">
+                        {item.tagline}
+                      </p>
+                    )}
+
+                    {item.description && (
+                      <div
+                        className="rich-text mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized server-side before storage
+                        dangerouslySetInnerHTML={{ __html: toRenderableHtml(item.description) }}
+                        onClick={(event) => {
+                          // Let links inside the description work instead of opening the dialog.
+                          if ((event.target as HTMLElement).closest("a")) event.stopPropagation();
+                        }}
                       />
                     )}
-                  </div>
 
-                  {item.tagline && (
-                    <p className="mt-2 text-xs font-semibold text-blue-600 dark:text-blue-400">
-                      {item.tagline}
-                    </p>
-                  )}
-
-                  {item.description && (
-                    <div
-                      className="rich-text mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
-                      // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized server-side before storage
-                      dangerouslySetInnerHTML={{ __html: toRenderableHtml(item.description) }}
-                    />
-                  )}
-
-                  <div className="mt-auto pt-6">
-                    {item.technologies && item.technologies.length > 0 && (
-                      <div className="mb-4 flex flex-wrap content-start items-start gap-1">
-                        {item.technologies.map((technology) => (
-                          <span
-                            className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[11px] text-slate-600 dark:bg-slate-800 dark:text-slate-300"
-                            key={technology}
-                          >
-                            {technology}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {item.link && (
-                      <a
-                        className="no-export no-print inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline dark:text-blue-400"
-                        href={item.link}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5" />
-                        <span>View Project</span>
-                      </a>
-                    )}
+                    <div className="mt-auto pt-6">
+                      {item.technologies && item.technologies.length > 0 && (
+                        <div className="flex flex-wrap content-start items-start gap-1">
+                          {item.technologies.map((technology) => (
+                            <span
+                              className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[11px] text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                              key={technology}
+                            >
+                              {technology}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </article>

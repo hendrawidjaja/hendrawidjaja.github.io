@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { Cpu, Edit, Plus, Sparkles, Trash2 } from "@/src/components/Icons";
+import { useAuth } from "@/src/context/AuthContext";
+import type { SkillCategory } from "@/src/types/cv";
 import { Button } from "@/src/ui/Button";
-import { useAuth } from "../../context/AuthContext";
-import type { SkillCategory } from "../../types/cv";
-import { Cpu, Edit, Plus, Sparkles, Trash2 } from "../Icons";
 
 interface SectionSkillsProps {
   categories: SkillCategory[];
@@ -18,7 +18,7 @@ export const SectionSkills = ({
   onDeleteCategory,
 }: SectionSkillsProps) => {
   const { isEditMode } = useAuth();
-  const [activeTab, setActiveTab] = useState<string>("all");
+  const [activeTab, _] = useState<string>("all");
 
   const filteredCategories =
     activeTab === "all" ? categories : categories.filter((c) => c.id === activeTab);
