@@ -22,14 +22,15 @@
       "location": "Jakarta, Indonesia",
       "type": "Full-time",
       "startDate": "Jan 2022",
-      "endDate": "Present",
-      "current": true,
+      "endDate": "Mar 2026",
+      "current": false,
       "summary": "In-house frontend developer. Led 10 members for an online marketplace for home living company.",
       "highlights": [
-        "Led 8 team members building the online marketplace web application.",
+        "Led 7 team members building the online marketplace web application.",
         "Developed internal reusable frontend UI library for modularity.",
-        "Improved SEO metrics and core page speed performance.",
-        "Led 2 automation team members in developing robust Selenium test suites."
+        "Led 2 team members to develop New Discovery",
+        "Led 2 automation team members in developing robust Selenium test suites.",
+        "Improved SEO metrics and core page speed performance."
       ],
       "technologies": ["React", "Next.js", "Vite", "Selenium", "JavaScript", "SEO"]
     },
@@ -87,7 +88,7 @@
       "id": "exp-5",
       "role": "FullStack Developer",
       "company": "Compador GmbH",
-      "location": "Jakarta, Indonesia",
+      "location": "Berlin, Germany",
       "type": "Full-time",
       "startDate": "Feb 2017",
       "endDate": "Feb 2018",
@@ -126,7 +127,7 @@
       "endYear": "Oct 2016",
       "honors": "Graduated in Berlin, Germany",
       "highlights": [
-        "Studies in software engineering, media informatics, web development, and interactive digital systems."
+        "Studies in software engineering, media informatics, web development, law including rights and interactive digital systems."
       ]
     },
     {
@@ -160,7 +161,7 @@
         },
         {
           "name": "Next.js",
-          "level": "Expert",
+          "level": "Intermediate",
           "featured": true
         },
         {
@@ -180,22 +181,22 @@
         },
         {
           "name": "Java & Vaadin",
-          "level": "Proficient",
+          "level": "Intermediate",
           "featured": true
         },
         {
           "name": "Selenium & Automation",
-          "level": "Proficient",
+          "level": "Intermediate",
           "featured": true
         },
         {
           "name": "SEO & Page Speed",
-          "level": "Expert",
+          "level": "Intermediate",
           "featured": true
         },
         {
           "name": "Figma",
-          "level": "Proficient",
+          "level": "Intermediate",
           "featured": false
         },
         {

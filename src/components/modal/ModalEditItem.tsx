@@ -780,6 +780,16 @@ export const ModalEditItem = ({
                 </Button>
               </div>
 
+              <p className="mb-2 text-[11px] leading-snug text-slate-500 dark:text-slate-400">
+                Files in{" "}
+                <code>
+                  public/img/portfolio/
+                  {initialData && "id" in initialData ? initialData.id : "<id>"}/
+                </code>{" "}
+                load automatically, sorted by filename. The URLs below are a fallback when that
+                folder is empty.
+              </p>
+
               {(formData.images || []).map((image: string, index: number) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: image order is editable by design
                 <div className="mb-2 flex items-center gap-2" key={index}>

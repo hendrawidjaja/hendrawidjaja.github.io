@@ -44,7 +44,6 @@ export const SectionPortfolio = ({
           {items.map((item) => {
             const images = item.images ?? [];
             const thumbnails = images.slice(0, MAX_THUMBNAILS);
-            const hiddenCount = images.length - thumbnails.length;
 
             return (
               <article
@@ -87,10 +86,7 @@ export const SectionPortfolio = ({
                       }`}
                     >
                       {thumbnails.map((src, index) => (
-                        <div
-                          className="relative block aspect-video overflow-hidden"
-                          key={src}
-                        >
+                        <div className="relative block aspect-video overflow-hidden" key={src}>
                           {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
                           <img
                             alt={`${item.title} — preview ${index + 1}`}
@@ -101,11 +97,6 @@ export const SectionPortfolio = ({
                             }}
                             src={src}
                           />
-                          {hiddenCount > 0 && index === thumbnails.length - 1 && (
-                            <span className="absolute inset-0 grid place-items-center bg-slate-950/60 text-lg font-bold text-white">
-                              +{hiddenCount}
-                            </span>
-                          )}
                         </div>
                       ))}
                     </div>

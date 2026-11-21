@@ -244,13 +244,54 @@ async function updateUserCredentials(
  * fallback seed. If the file is missing or corrupt, fail loudly instead of
  * silently overwriting it with template data.
  */
+/** Portfolio images live in one folder per item id: `public/img/portfolio/<id>/`. */
+const PORTFOLIO_IMAGE_ROOT = path.join(process.cwd(), "public", "img", "portfolio");
+
+/** Files the gallery understands; anything else in the folder is ignored. */
+const PORTFOLIO_IMAGE_EXTENSIONS = new Set([
+  ".avif",
+  ".gif",
+  ".jpeg",
+  ".jpg",
+  ".jxl",
+  ".png",
+  ".svg",
+  ".webp",
+]);
+
+/**
+ * List a portfolio item's images from its id folder, sorted by filename so the
+ * admin controls the gallery order with `01-`, `02-` prefixes. Stored URLs are
+ * the fallback when the folder is missing or unreadable (e.g. a serverless
+ * bundle that only ships the committed files).
+ */
+function portfolioImagesFromFolder(id: string, stored: string[]): string[] {
+  try {
+    const files = fs
+      .readdirSync(path.join(PORTFOLIO_IMAGE_ROOT, id))
+      .filter((file) => PORTFOLIO_IMAGE_EXTENSIONS.has(path.extname(file).toLowerCase()))
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    if (files.length > 0) return files.map((file) => `/img/portfolio/${id}/${file}`);
+  } catch {
+    // Folder absent: fall back to the URLs stored in cv-data.json.
+  }
+  return stored;
+}
+
 function readCVData(): CVData {
   if (!fs.existsSync(DATA_FILE)) {
     throw new Error(`CV data file missing: ${DATA_FILE}. Restore it from backup or recreate it.`);
   }
   try {
     const raw = fs.readFileSync(DATA_FILE, "utf-8");
-    return JSON.parse(raw) as CVData;
+    const data = JSON.parse(raw) as CVData;
+    return {
+      ...data,
+      portfolio: (data.portfolio ?? []).map((item) => ({
+        ...item,
+        images: portfolioImagesFromFolder(item.id, item.images ?? []),
+      })),
+    };
   } catch (error) {
     throw new Error(
       `CV data file unreadable or invalid JSON at ${DATA_FILE}: ${error instanceof Error ? error.message : String(error)}`,

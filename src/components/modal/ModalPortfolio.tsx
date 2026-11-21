@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
-import { ExternalLink, Images } from "@/src/components/Icons";
+import { ExternalLink, Images, Link as LinkIcon } from "@/src/components/Icons";
 import { DialogShell } from "@/src/components/modal/DialogShell";
 import { useToast } from "@/src/components/Toast";
 import type { PortfolioItem } from "@/src/types/cv";
@@ -85,33 +84,30 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
         </div>
 
         {item.images && item.images.length > 0 && (
-          <div className="mt-auto w-full px-6 pb-2">
-            <div className="mb-3 text-[11px] font-semibold tracking-wide text-slate-400 uppercase dark:text-slate-500">
-              Images
-            </div>
-            <div className="flex snap-x snap-mandatory scrollbar-none gap-3 overflow-x-auto pb-4 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-              {item.images.map((src, index) => (
-                <a
-                  className="group shrink-0 snap-start overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800"
-                  href={src}
-                  key={src}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
-                  <img
-                    alt={`${item.title} — preview ${index + 1}`}
-                    className="h-40 w-64 object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                    onError={(event) => {
-                      event.currentTarget.style.visibility = "hidden";
-                    }}
-                    src={src}
-                  />
-                </a>
-              ))}
-            </div>
+          // <div className="mt-auto w-full px-6 pb-2">
+          <div className="mt-auto flex w-full snap-x snap-mandatory gap-3 overflow-x-auto px-6 py-4">
+            {item.images.map((src, index) => (
+              <a
+                className="group shrink-0 snap-start overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800"
+                href={src}
+                key={src}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
+                <img
+                  alt={`${item.title} — preview ${index + 1}`}
+                  className="h-40 w-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(event) => {
+                    event.currentTarget.style.visibility = "hidden";
+                  }}
+                  src={src}
+                />
+              </a>
+            ))}
           </div>
+          // </div>
         )}
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-6 py-4 dark:border-slate-800">
@@ -120,7 +116,7 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
               className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/60"
               onClick={copyLink}
             >
-              <Link className="h-3.5 w-3.5" href="" />
+              <LinkIcon className="h-3.5 w-3.5" />
               <span>{copied ? "Copied!" : "Copy link"}</span>
             </Button>
 
