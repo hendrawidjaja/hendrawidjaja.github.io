@@ -3,16 +3,10 @@ import jsPDF from "jspdf";
 import { useState } from "react";
 import { PDF_PAGE, PDF_SETTING } from "@/constant";
 import { Download, FileText, Loader2, Printer } from "@/src/components/Icons";
+import type { ModalPdfExportProps } from "@/src/components/modal/interface";
 import { useToast } from "@/src/components/Toast";
-import type { CVData } from "@/src/types/cv";
 import { Button } from "@/src/ui/Button";
 import { DialogShell } from "./DialogShell";
-
-interface ModalPdfExportProps {
-  cvData: CVData;
-  onClose: () => void;
-  open: boolean;
-}
 
 export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) => {
   const { showToast } = useToast();

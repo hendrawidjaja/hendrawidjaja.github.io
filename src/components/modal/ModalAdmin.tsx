@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AlertCircle, Check, KeyRound, Lock, LogOut } from "@/src/components/Icons";
 import { DialogShell } from "@/src/components/modal/DialogShell";
+import type { LoginState, PasswordState, RegisterState } from "@/src/components/modal/interface";
 import { useToast } from "@/src/components/Toast";
 import { useAuth } from "@/src/context/AuthContext";
 import { changeAdminPassword, registrationStatus } from "@/src/services/api";
@@ -8,27 +9,6 @@ import { Button } from "@/src/ui/Button";
 import { TextField } from "@/src/ui/TextField";
 
 type AuthMode = "login" | "register";
-
-interface LoginState {
-  error: string | null;
-  isLoading: boolean;
-  password: string;
-  username: string;
-}
-
-interface PasswordState {
-  confirmPass: string;
-  currentPass: string;
-  error: string | null;
-  newPass: string;
-}
-
-interface RegisterState {
-  confirmPass: string;
-  error: string | null;
-  password: string;
-  username: string;
-}
 
 export const ModalAdmin = () => {
   const {
@@ -185,8 +165,8 @@ export const ModalAdmin = () => {
           {isRegisterMode
             ? "First account setup — registration closes once a user exists"
             : isLoginModalOpen
-              ? "Sign in to edit, add, or remove CV content"
-              : "Update credentials for CV management"}
+              ? "Sign in to add, edit, or remove content"
+              : "Update credentials"}
         </p>
       </div>
     </div>

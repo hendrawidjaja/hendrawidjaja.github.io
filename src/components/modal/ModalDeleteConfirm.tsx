@@ -1,15 +1,7 @@
 import { AlertTriangle } from "@/src/components/Icons";
 import { DialogShell } from "@/src/components/modal/DialogShell";
+import type { ModalDeleteConfirmProps } from "@/src/components/modal/interface";
 import { Button } from "@/src/ui/Button";
-
-interface ModalDeleteConfirmProps {
-  isDeleting: boolean;
-  itemName: string;
-  itemType: string;
-  onCancel: () => void;
-  onConfirm: () => void;
-  open: boolean;
-}
 
 export const ModalDeleteConfirm = ({
   isDeleting,

@@ -3,16 +3,10 @@
 import { useState } from "react";
 import { ExternalLink, Images, Link as LinkIcon } from "@/src/components/Icons";
 import { DialogShell } from "@/src/components/modal/DialogShell";
+import type { ModalPortfolioProps } from "@/src/components/modal/interface";
 import { useToast } from "@/src/components/Toast";
-import type { PortfolioItem } from "@/src/types/cv";
 import { Button } from "@/src/ui/Button";
 import { toRenderableHtml } from "@/src/utils/richText";
-
-interface ModalPortfolioProps {
-  item: PortfolioItem | null;
-  onClose: () => void;
-  open: boolean;
-}
 
 const PARAM = "portfolio";
 

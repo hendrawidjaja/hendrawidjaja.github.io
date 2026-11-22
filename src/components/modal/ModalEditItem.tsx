@@ -5,53 +5,16 @@ import {
   INITIAL_PORTFOLIO,
   INITIAL_PROJECT,
 } from "@/constant";
+import type { EditItemModalProps } from "@/src/components/modal/interface";
 import { RichTextEditor } from "@/src/components/RichTextEditor";
 import { Button } from "@/src/ui/Button";
 import { TextField } from "@/src/ui/TextField";
-import type {
-  CVProfile,
-  Education,
-  ModalType,
-  PortfolioItem,
-  Project,
-  SkillCategory,
-  WorkExperience,
-} from "../../types/cv";
+import type { CVProfile } from "../../types/cv";
 import { AlertCircle, GraduationCap, Plus, Trash2, Upload, X } from "../Icons";
 import { DialogShell } from "./DialogShell";
 
-export type EditableEntity =
-  | CVProfile
-  | WorkExperience
-  | Education
-  | SkillCategory
-  | Project
-  | PortfolioItem;
-
-type EditableEntityPayload =
-  | Partial<WorkExperience>
-  | Partial<Education>
-  | Partial<SkillCategory>
-  | Partial<Project>
-  | Partial<PortfolioItem>;
-
-export type { EditableEntityPayload };
-
 const labelClass = "mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300";
 const gridClass = "grid grid-cols-1 gap-4 sm:grid-cols-2";
-
-interface EditItemModalProps {
-  initialData?: EditableEntity | null;
-  onClose: () => void;
-  onSaveEntity: (
-    kind: Exclude<ModalType, "profile">,
-    data: EditableEntityPayload,
-    isNew: boolean,
-  ) => Promise<void>;
-  onSaveProfile: (profile: CVProfile) => Promise<void>;
-  open: boolean;
-  type: ModalType;
-}
 
 type AnyForm = Record<string, any>;
 
