@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import type { PropsWithChildren } from "react";
 
-const dmSans = DM_Sans({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-dm-sans",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     template: `%s | ${TITLE}`,
   },
   description: DESCRIPTION,
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
   openGraph: {
     title: {
       default: TITLE,
@@ -39,7 +44,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html className={dmSans.variable} lang="id" translate="no">
+    <html className={montserrat.variable} dir="ltr" lang="id" translate="no">
       <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
         {children}
       </body>

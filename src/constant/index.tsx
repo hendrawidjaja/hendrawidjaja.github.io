@@ -1,5 +1,8 @@
 export const WORDING = {
   FULLNAME: "Hendra Widjaja",
+  EDIT_CV: "Edit CV",
+  BACK_TO_TOP: "Back to Top",
+  CHANGE_PASSWORD: "Change Password",
 };
 
 export const MENU = [
@@ -11,7 +14,7 @@ export const MENU = [
   { href: "#contact", text: "Contact" },
 ];
 
-const INITIAL_EXPERIENCE = {
+export const INITIAL_EXPERIENCE = {
   company: "",
   current: true,
   endDate: "Present",
@@ -24,12 +27,12 @@ const INITIAL_EXPERIENCE = {
   type: "Full-time",
 };
 
-const INITIAL_SKILL_CATEGORY = {
+export const INITIAL_SKILL_CATEGORY = {
   name: "",
   skills: [{ name: "", level: "Expert", featured: true }],
 };
 
-const INITIAL_EDUCATION = {
+export const INITIAL_EDUCATION = {
   degree: "",
   endYear: "2024",
   field: "",
@@ -40,7 +43,7 @@ const INITIAL_EDUCATION = {
   startYear: "2020",
 };
 
-const INITIAL_PROJECT = {
+export const INITIAL_PROJECT = {
   demoUrl: "",
   description: "",
   featured: false,
@@ -51,4 +54,25 @@ const INITIAL_PROJECT = {
   technologies: [],
   title: "",
   year: "2026",
+};
+
+export const INITIAL_PORTFOLIO = {
+  description: "",
+  images: [""],
+  link: "",
+  tagline: "",
+  technologies: [],
+  title: "",
+  year: "2026",
+};
+
+export const PDF_PAGE = {
+  HEIGHT: 297,
+  WIDTH: 210,
+};
+export const PDF_SETTING = {
+  pixelRatio: 3,
+  backgroundColor: "#ffffff",
+  cacheBust: true,
+  quality: 0.6,
 };

@@ -48,7 +48,7 @@ export const SectionEducation = ({
                       /* biome-ignore lint/performance/noImgElement: uploaded or local institution logo */
                       <img
                         alt=""
-                        className="h-10 w-auto max-w-40 object-contain"
+                        className="h-16 w-16 object-contain"
                         loading="lazy"
                         src={edu.logo}
                       />

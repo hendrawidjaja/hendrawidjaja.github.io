@@ -1,6 +1,7 @@
 import { toJpeg } from "html-to-image";
 import jsPDF from "jspdf";
 import { useState } from "react";
+import { PDF_PAGE, PDF_SETTING } from "@/constant";
 import { Download, FileText, Loader2, Printer } from "@/src/components/Icons";
 import { useToast } from "@/src/components/Toast";
 import type { CVData } from "@/src/types/cv";
@@ -12,16 +13,6 @@ interface ModalPdfExportProps {
   onClose: () => void;
   open: boolean;
 }
-
-const imgWidth = 210;
-const pageHeight = 297;
-
-const PDFSetting = {
-  pixelRatio: 3,
-  backgroundColor: "#ffffff",
-  cacheBust: true,
-  quality: 0.6,
-};
 
 export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) => {
   const { showToast } = useToast();
@@ -47,7 +38,7 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
       return await run();
     } finally {
       restore();
-      setTimeout(restore, 1000);
+      setTimeout(restore, 2000);
     }
   };
 
@@ -70,7 +61,7 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
       const dataUrl = await withLightTheme(() =>
         toJpeg(cvElement, {
           filter: (node) => !(node instanceof HTMLElement && node.classList.contains("no-export")),
-          ...PDFSetting,
+          ...PDF_SETTING,
         }),
       );
 
@@ -80,18 +71,18 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
       const contentHeight = cvElement.scrollHeight;
       const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
 
-      const imgHeight = (contentHeight * imgWidth) / contentWidth;
+      const imgHeight = (contentHeight * PDF_PAGE.WIDTH) / contentWidth;
       let heightLeft = imgHeight;
       let position = 0;
 
-      pdf.addImage(dataUrl, "JPEG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      pdf.addImage(dataUrl, "JPEG", 0, position, PDF_PAGE.WIDTH, imgHeight);
+      heightLeft -= PDF_PAGE.HEIGHT;
 
       while (heightLeft > 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(dataUrl, "JPEG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+        pdf.addImage(dataUrl, "JPEG", 0, position, PDF_PAGE.WIDTH, imgHeight);
+        heightLeft -= PDF_PAGE.HEIGHT;
       }
 
       const fileName = `CV_${cvData.profile.name}.pdf`;

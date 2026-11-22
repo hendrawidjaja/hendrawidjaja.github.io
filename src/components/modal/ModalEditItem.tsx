@@ -1,4 +1,10 @@
 import { useEffect, useState } from "react";
+import {
+  INITIAL_EDUCATION,
+  INITIAL_EXPERIENCE,
+  INITIAL_PORTFOLIO,
+  INITIAL_PROJECT,
+} from "@/constant";
 import { RichTextEditor } from "@/src/components/RichTextEditor";
 import { Button } from "@/src/ui/Button";
 import { TextField } from "@/src/ui/TextField";
@@ -86,27 +92,11 @@ export const ModalEditItem = ({
     } else {
       if (type === "experience") {
         setFormData({
-          company: "",
-          current: true,
-          endDate: "Present",
-          highlights: [""],
-          location: "",
-          role: "",
-          startDate: "2024",
-          summary: "",
-          technologies: [],
-          type: "Full-time",
+          ...INITIAL_EXPERIENCE,
         });
       } else if (type === "education") {
         setFormData({
-          degree: "",
-          endYear: "2024",
-          field: "",
-          highlights: [""],
-          honors: "",
-          institution: "",
-          location: "",
-          startYear: "2020",
+          ...INITIAL_EDUCATION,
         });
       } else if (type === "skillCategory") {
         setFormData({
@@ -115,26 +105,11 @@ export const ModalEditItem = ({
         });
       } else if (type === "project") {
         setFormData({
-          demoUrl: "",
-          description: "",
-          featured: false,
-          githubUrl: "",
-          highlights: [""],
-          role: "Lead Architect",
-          tagline: "",
-          technologies: [],
-          title: "",
-          year: "2024",
+          ...INITIAL_PROJECT,
         });
       } else if (type === "portfolio") {
         setFormData({
-          description: "",
-          images: [""],
-          link: "",
-          tagline: "",
-          technologies: [],
-          title: "",
-          year: "2026",
+          ...INITIAL_PORTFOLIO,
         });
       } else if (type === "profile") {
         setFormData({});
@@ -496,7 +471,7 @@ export const ModalEditItem = ({
             />
 
             <div className="flex items-center gap-3">
-              <div className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+              <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
                 {formData.logo ? (
                   /* biome-ignore lint/performance/noImgElement: logo preview */
                   <img alt="" className="h-full w-full object-contain" src={formData.logo} />

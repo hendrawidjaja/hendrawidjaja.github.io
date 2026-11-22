@@ -55,16 +55,16 @@ export const Footer = () => {
                 onClick={toggleEditMode}
               >
                 <Unlock className="h-3.5 w-3.5" />
-                <span>{isEditMode ? "Exit Edit Mode" : "Edit CV"}</span>
+                <span>{isEditMode ? "Exit Edit Mode" : WORDING.EDIT_CV}</span>
               </Button>
 
               <Button
                 className={`${mutedButtonClass} ml-4`}
                 onClick={openPasswordModal}
-                title="Change admin password"
+                title={WORDING.CHANGE_PASSWORD}
               >
                 <KeyRound className="h-3.5 w-3.5" />
-                <span>Change Password</span>
+                <span>{WORDING.CHANGE_PASSWORD}</span>
               </Button>
             </>
           ) : (
@@ -78,7 +78,7 @@ export const Footer = () => {
             href="#top"
             onClick={handleBackToTop}
           >
-            <span>Back to Top</span>
+            <span>{WORDING.BACK_TO_TOP}</span>
             <span aria-hidden="true">↑</span>
           </a>
         </div>

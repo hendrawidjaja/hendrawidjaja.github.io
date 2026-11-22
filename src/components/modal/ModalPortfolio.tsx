@@ -25,6 +25,7 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
   const copyLink = async () => {
     const url = new URL(window.location.href);
     url.searchParams.set(PARAM, item.id);
+
     try {
       await navigator.clipboard.writeText(url.toString());
       setCopied(true);

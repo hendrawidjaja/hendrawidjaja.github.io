@@ -85,8 +85,17 @@ export const SectionPortfolio = ({
                   <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                     {thumbnails.length === 0 ? (
                       <div className="grid h-full w-full place-items-center">
-                        {/* biome-ignore lint/performance/noImgElement: static site logo */}
-                        <img alt="" className="w-1/4 opacity-60" src="/logo.svg" />
+                        {/* Masked glyph takes the theme's slate, no baked-in dark square. */}
+                        <span
+                          aria-hidden="true"
+                          className="block aspect-square w-[12%] bg-slate-400 opacity-60 dark:bg-slate-500"
+                          style={{
+                            maskImage: "url(/logo-glyph.svg)",
+                            maskPosition: "center",
+                            maskRepeat: "no-repeat",
+                            maskSize: "contain",
+                          }}
+                        />
                       </div>
                     ) : (
                       <div
