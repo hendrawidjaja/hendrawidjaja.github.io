@@ -44,7 +44,17 @@ export const SectionEducation = ({
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5 shrink-0 rounded-lg bg-blue-50 p-2.5 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-                    <GraduationCap className="h-5 w-5" />
+                    {edu.logo ? (
+                      /* biome-ignore lint/performance/noImgElement: uploaded or local institution logo */
+                      <img
+                        alt=""
+                        className="h-10 w-auto max-w-40 object-contain"
+                        loading="lazy"
+                        src={edu.logo}
+                      />
+                    ) : (
+                      <GraduationCap className="h-5 w-5" />
+                    )}
                   </div>
                   <div>
                     <h3 className="text-base leading-tight font-bold text-slate-900 sm:text-lg dark:text-white">

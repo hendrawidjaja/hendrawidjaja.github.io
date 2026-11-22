@@ -45,6 +45,8 @@ export interface Education {
   id: string;
   institution: string;
   location: string;
+  /** Uploaded logo (data URL) or the resolved fallback from `public/img/education/`. */
+  logo?: string;
   startYear: string;
 }
 
@@ -55,6 +57,10 @@ export interface SkillCategory {
     name: string;
     level?: string;
     featured?: boolean;
+    /** Resolved at read time from `public/img/skills/<slug>.<ext>`. */
+    icon?: string;
+    /** Uploaded logo (data URL); when set it wins over the resolved icon. */
+    logo?: string;
   }>;
 }
 

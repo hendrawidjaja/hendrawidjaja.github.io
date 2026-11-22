@@ -14,7 +14,6 @@ interface ModalPortfolioProps {
   open: boolean;
 }
 
-/** Keep the modal and the shareable URL in agreement on the item key. */
 const PARAM = "portfolio";
 
 export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => {
@@ -84,7 +83,6 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
         </div>
 
         {item.images && item.images.length > 0 && (
-          // <div className="mt-auto w-full px-6 pb-2">
           <div className="mt-auto flex w-full snap-x snap-mandatory gap-3 overflow-x-auto px-6 py-4">
             {item.images.map((src, index) => (
               <a
@@ -107,7 +105,6 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
               </a>
             ))}
           </div>
-          // </div>
         )}
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-6 py-4 dark:border-slate-800">

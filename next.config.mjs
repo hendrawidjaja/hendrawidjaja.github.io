@@ -7,6 +7,13 @@ const nextConfig = {
   // auto-externalizes `pg`; listing it explicitly guards against that list
   // changing.)
   serverExternalPackages: ['pg'],
+  // Dev-only self-restart. Bun's Node shim reports a fixed ~268 MB V8 heap
+  // limit regardless of the host, so Next's "80% of heap used" check fires
+  // within minutes and restarts the server mid-request. The container has
+  // ~2 GB, so keep the process alive instead of restarting every few requests.
+  experimental: {
+    devMemoryThresholdRestart: false,
+  },
   // Serve images as-is instead of pulling Next's sharp/libvips optimizer into
   // the runtime image. The CV has one local avatar; the ~18 MB saved is worth
   // more than image resizing here.

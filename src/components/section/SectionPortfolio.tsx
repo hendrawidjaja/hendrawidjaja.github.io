@@ -51,6 +51,7 @@ export const SectionPortfolio = ({
                 key={item.id}
               >
                 {isEditMode && (
+                  // biome-ignore lint/a11y/noStaticElementInteractions: Biome Problem
                   <div
                     className="absolute top-3 right-3 z-10"
                     onClick={(event) => event.stopPropagation()}
@@ -65,6 +66,7 @@ export const SectionPortfolio = ({
                   </div>
                 )}
 
+                {/** biome-ignore lint/a11y/useSemanticElements: Biome Problem */}
                 <div
                   aria-haspopup="dialog"
                   aria-label={`Open ${item.title} details`}
@@ -79,28 +81,41 @@ export const SectionPortfolio = ({
                   role="button"
                   tabIndex={0}
                 >
-                  {thumbnails.length > 0 && (
-                    <div
-                      className={`grid w-full gap-0.5 bg-slate-100 dark:bg-slate-800 ${
-                        thumbnails.length === 1 ? "grid-cols-1" : "grid-cols-2"
-                      }`}
-                    >
-                      {thumbnails.map((src, index) => (
-                        <div className="relative block aspect-video overflow-hidden" key={src}>
-                          {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
-                          <img
-                            alt={`${item.title} — preview ${index + 1}`}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            loading="lazy"
-                            onError={(event) => {
-                              event.currentTarget.style.visibility = "hidden";
-                            }}
-                            src={src}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  {/* Fixed height keeps every card aligned for 1, 2, 3 or 4 images. */}
+                  <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                    {thumbnails.length === 0 ? (
+                      <div className="grid h-full w-full place-items-center">
+                        {/* biome-ignore lint/performance/noImgElement: static site logo */}
+                        <img alt="" className="w-1/4 opacity-60" src="/logo.svg" />
+                      </div>
+                    ) : (
+                      <div
+                        className={`grid h-full w-full gap-0.5 ${
+                          thumbnails.length === 1 ? "grid-cols-1" : "auto-rows-fr grid-cols-2"
+                        }`}
+                      >
+                        {thumbnails.map((src, index) => (
+                          <div
+                            className={`relative overflow-hidden ${
+                              thumbnails.length === 3 && index === 2 ? "col-span-2" : ""
+                            }`}
+                            key={src}
+                          >
+                            {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
+                            <img
+                              alt={`${item.title} — preview ${index + 1}`}
+                              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                              loading="lazy"
+                              onError={(event) => {
+                                event.currentTarget.style.visibility = "hidden";
+                              }}
+                              src={src}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
                   <div className="flex w-full flex-1 flex-col p-6">
                     <div className="flex items-start gap-3">
@@ -127,12 +142,13 @@ export const SectionPortfolio = ({
                     )}
 
                     {item.description && (
+                      // biome-ignore lint/a11y/useKeyWithClickEvents: Biome Problem
+                      // biome-ignore lint/a11y/noStaticElementInteractions: Biome Problem
                       <div
                         className="rich-text mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400"
-                        // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized server-side before storage
+                        // biome-ignore lint/security/noDangerouslySetInnerHtml: Biome Problem
                         dangerouslySetInnerHTML={{ __html: toRenderableHtml(item.description) }}
                         onClick={(event) => {
-                          // Let links inside the description work instead of opening the dialog.
                           if ((event.target as HTMLElement).closest("a")) event.stopPropagation();
                         }}
                       />

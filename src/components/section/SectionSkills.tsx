@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Cpu, Edit, Plus, Sparkles, Trash2 } from "@/src/components/Icons";
+import { Cpu, Edit, Plus, Trash2 } from "@/src/components/Icons";
 import { useAuth } from "@/src/context/AuthContext";
 import type { SkillCategory } from "@/src/types/cv";
 import { Button } from "@/src/ui/Button";
@@ -99,8 +99,18 @@ export const SectionSkills = ({
                       }`}
                       key={skill.name}
                     >
-                      {skill.featured && (
-                        <Sparkles className="h-3 w-3 shrink-0 text-blue-600 dark:text-blue-400" />
+                      {skill.icon ? (
+                        /* biome-ignore lint/performance/noImgElement: local skill logo */
+                        <img
+                          alt=""
+                          className="h-4 w-4 shrink-0 object-contain dark:brightness-125"
+                          loading="lazy"
+                          src={skill.icon}
+                        />
+                      ) : (
+                        <span className="grid h-4 w-4 shrink-0 place-items-center rounded-sm bg-slate-200 text-[9px] font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                          {skill.name.trim().charAt(0).toUpperCase()}
+                        </span>
                       )}
                       <span>{skill.name}</span>
                       {skill.level && (

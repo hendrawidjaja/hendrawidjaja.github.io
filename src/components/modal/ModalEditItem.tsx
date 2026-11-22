@@ -11,7 +11,7 @@ import type {
   SkillCategory,
   WorkExperience,
 } from "../../types/cv";
-import { AlertCircle, Plus, Trash2, X } from "../Icons";
+import { AlertCircle, GraduationCap, Plus, Trash2, Upload, X } from "../Icons";
 import { DialogShell } from "./DialogShell";
 
 export type EditableEntity =
@@ -60,6 +60,25 @@ export const ModalEditItem = ({
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState<AnyForm>({});
   const [saveError, setSaveError] = useState<string | null>(null);
+
+  /**
+   * Read an uploaded logo into a data URL; it is stored inside the record, so
+   * nothing else has to be deployed. Blank leaves the automatic logo in charge.
+   */
+  const uploadLogo = (file: File | undefined, apply: (src: string) => void) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setSaveError("Logo must be an image file");
+      return;
+    }
+    if (file.size > 500 * 1024) {
+      setSaveError("Logo must be 500 KB or smaller");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => apply(String(reader.result));
+    reader.readAsDataURL(file);
+  };
 
   useEffect(() => {
     if (initialData) {
@@ -476,6 +495,45 @@ export const ModalEditItem = ({
               value={formData.institution || ""}
             />
 
+            <div className="flex items-center gap-3">
+              <div className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+                {formData.logo ? (
+                  /* biome-ignore lint/performance/noImgElement: logo preview */
+                  <img alt="" className="h-full w-full object-contain" src={formData.logo} />
+                ) : (
+                  <GraduationCap className="h-5 w-5 text-slate-400" />
+                )}
+              </div>
+              <div>
+                <label className="cursor-pointer text-xs font-medium text-blue-600 hover:underline dark:text-blue-400">
+                  {formData.logo ? "Replace logo" : "Upload logo"}
+                  <input
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(event) =>
+                      uploadLogo(event.target.files?.[0], (logo) =>
+                        setFormData({ ...formData, logo }),
+                      )
+                    }
+                    type="file"
+                  />
+                </label>
+                {formData.logo && (
+                  <button
+                    className="ml-3 text-xs text-slate-500 hover:text-rose-500"
+                    onClick={() => setFormData({ ...formData, logo: "" })}
+                    type="button"
+                  >
+                    Remove
+                  </button>
+                )}
+                <p className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+                  Blank uses <code>public/img/education/&lt;institution&gt;.svg</code>, else the
+                  graduation cap.
+                </p>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
               <TextField
                 className="location"
@@ -541,6 +599,12 @@ export const ModalEditItem = ({
                 </Button>
               </div>
 
+              <p className="mb-2 text-[11px] leading-snug text-slate-500 dark:text-slate-400">
+                Upload a logo per skill. Left blank, it uses{" "}
+                <code>public/img/skills/&lt;skill-name&gt;.svg</code> (lowercase, spaces dashed),
+                then a letter badge.
+              </p>
+
               {/** biome-ignore lint/suspicious/noExplicitAny: Biome Problem */}
               {(formData.skills || []).map((skill: any, index: number) => (
                 <div
@@ -587,6 +651,48 @@ export const ModalEditItem = ({
                     />
                     <span>Featured</span>
                   </label>
+
+                  <label
+                    className="flex cursor-pointer items-center gap-1 rounded p-1 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
+                    title="Upload a logo (blank keeps the automatic logo)"
+                  >
+                    {skill.logo || skill.icon ? (
+                      /* biome-ignore lint/performance/noImgElement: logo preview */
+                      <img
+                        alt=""
+                        className="h-4 w-4 object-contain"
+                        src={skill.logo || skill.icon}
+                      />
+                    ) : (
+                      <Upload className="h-4 w-4" />
+                    )}
+                    <input
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(event) =>
+                        uploadLogo(event.target.files?.[0], (logo) => {
+                          const next = [...formData.skills];
+                          next[index] = { ...next[index], logo };
+                          setFormData({ ...formData, skills: next });
+                        })
+                      }
+                      type="file"
+                    />
+                  </label>
+
+                  {skill.logo && (
+                    <Button
+                      className="rounded p-1 text-slate-400 hover:text-rose-500"
+                      onClick={() => {
+                        const next = [...formData.skills];
+                        next[index] = { ...next[index], logo: "" };
+                        setFormData({ ...formData, skills: next });
+                      }}
+                      title="Remove uploaded logo"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </Button>
+                  )}
 
                   <Button
                     className="rounded p-1 text-slate-400 hover:text-rose-500"
