@@ -82,7 +82,7 @@ export const SectionPortfolio = ({
                   tabIndex={0}
                 >
                   {/* Fixed height keeps every card aligned for 1, 2, 3 or 4 images. */}
-                  <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                  <div className="no-print relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                     {thumbnails.length === 0 ? (
                       <div className="grid h-full w-full place-items-center">
                         {/* Masked glyph takes the theme's slate, no baked-in dark square. */}

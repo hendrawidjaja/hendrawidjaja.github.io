@@ -156,7 +156,7 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
           </div>
 
           <div className="flex flex-col items-center lg:col-span-4 lg:items-end">
-            <div className="relative h-48 w-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md sm:h-56 sm:w-56 lg:h-64 lg:w-64 dark:border-slate-800 dark:bg-slate-900">
+            <div className="relative h-48 w-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md sm:h-56 sm:w-56 lg:h-64 lg:w-64 print:h-24 print:w-24 dark:border-slate-800 dark:bg-slate-900">
               <AvatarImage name={profile.name} src={profile.avatarUrl} />
             </div>
           </div>

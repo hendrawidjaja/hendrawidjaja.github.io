@@ -37,6 +37,10 @@ cp "$repo_root/scripts/github-pages/page.tsx" "$work/src/app/page.tsx"
 cp "$repo_root/scripts/github-pages/mutations.ts" "$work/src/services/mutations.ts"
 
 cd "$work"
+# The temp copy has no `.git`; hand next.config the commit count from the repo.
+APP_VERSION="$(
+  git -C "$repo_root" rev-list --count HEAD 2>/dev/null | sed 's/^/0./;s/$/.0/'
+)" \
 STATIC_EXPORT=1 \
   STATIC_BASE_PATH="$base_path" \
   NEXT_PUBLIC_READ_ONLY=1 \

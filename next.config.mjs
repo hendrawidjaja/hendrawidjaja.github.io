@@ -1,11 +1,38 @@
+import { execSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+
 // `STATIC_EXPORT=1` builds the read-only site that GitHub Pages serves.
 // scripts/build-github-pages.sh removes the API routes and server-action page
 // from a temp copy first, because static export cannot contain them.
 const isStaticExport = process.env.STATIC_EXPORT === '1';
 const staticBasePath = process.env.STATIC_BASE_PATH || '';
 
+/**
+ * Footer version: `0.<commit count>.0`, so every commit bumps the minor tick.
+ * APP_VERSION wins (the static build runs from a copy without `.git`), and a
+ * checkout without git history falls back to package.json.
+ */
+function appVersion() {
+  if (process.env.APP_VERSION) return process.env.APP_VERSION;
+  try {
+    const count = execSync('git rev-list --count HEAD', {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    if (/^\d+$/.test(count)) return `0.${count}.0`;
+  } catch {
+    // No git binary or no repository (dev container, tarball builds).
+  }
+  try {
+    return JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')).version;
+  } catch {
+    return '0.0.0';
+  }
+}
+
 const nextConfig = {
   reactStrictMode: true,
+  env: { NEXT_PUBLIC_APP_VERSION: appVersion() },
   output: isStaticExport ? 'export' : 'standalone',
   basePath: isStaticExport ? staticBasePath : '',
   trailingSlash: isStaticExport,

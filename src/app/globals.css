@@ -98,6 +98,19 @@ html.exporting .export-url {
     margin-top: 1rem;
   }
 
+  /* Compact print layout: a CV should fit a handful of A4 sheets, not 10+. */
+  #cv-printable-area section {
+    padding-block: 0.75rem;
+  }
+
+  #cv-printable-area .page-break-avoid {
+    padding: 0.75rem;
+  }
+
+  #cv-printable-area > :last-child {
+    padding-bottom: 0;
+  }
+
   .print-shadow-none {
     border-color: #e2e8f0;
     box-shadow: none;

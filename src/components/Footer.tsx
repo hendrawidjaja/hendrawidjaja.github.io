@@ -10,6 +10,9 @@ const mutedButtonClass =
 /** The GitHub Pages build has no auth or API routes, so hide the editor entry point. */
 const READ_ONLY = process.env.NEXT_PUBLIC_READ_ONLY === "1";
 
+/** Injected by next.config.mjs: `0.<commit count>.0`. */
+const VERSION = process.env.NEXT_PUBLIC_APP_VERSION;
+
 const handleBackToTop = (e: MouseEvent<HTMLAnchorElement>) => {
   e.preventDefault();
   window.scrollTo({
@@ -24,7 +27,7 @@ export const Footer = () => {
 
   return (
     <footer
-      className="border-t border-slate-300 bg-white py-12 transition-colors dark:border-slate-800 dark:bg-slate-950"
+      className="no-print border-t border-slate-300 bg-white py-12 transition-colors dark:border-slate-800 dark:bg-slate-950"
       id="contact"
     >
       <div className="no-print mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 md:flex-row lg:px-8">
@@ -75,6 +78,12 @@ export const Footer = () => {
               <Lock className="h-3.5 w-3.5" />
             </Button>
           )}
+
+          {VERSION ? (
+            <span className="ml-4 font-mono text-xs text-slate-400 dark:text-slate-500">
+              v{VERSION}
+            </span>
+          ) : null}
 
           <a
             className="ml-4 flex shrink-0 items-center gap-1 text-sm text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
