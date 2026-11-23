@@ -365,3 +365,6 @@ $RECYCLE.BIN/
 .env.*
 !.env.example
 .neon
+.agents
+opencode.jsonc
+.next
