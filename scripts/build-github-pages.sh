@@ -11,8 +11,10 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 out_dir="${1:-out-github-pages}"
 # Project pages live at https://<user>.github.io/<repo>/, so assets need the
-# repo name as base path. Set STATIC_BASE_PATH='' for a user/organisation site.
-base_path="${STATIC_BASE_PATH-/CV}"
+# repo name as base path. A user/organisation site (repo `<user>.github.io`) is
+# served from the domain root and needs no base path. The workflow picks the
+# right one; the local default is the root-served case.
+base_path="${STATIC_BASE_PATH-}"
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
