@@ -40,7 +40,7 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
         )}
 
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-12 print:grid-cols-12 print:gap-6">
-          <div className="flex flex-col lg:col-span-8 print:col-span-8">
+          <div className="flex flex-col lg:col-span-8 print:col-span-10">
             {/* Toggle: the checkbox in Edit Profile Info shows/hides this whole line. */}
             {profile.availableForHire && (
               <div className="mb-3 flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -155,8 +155,15 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
             </div>
           </div>
 
-          <div className="flex flex-col items-center lg:col-span-4 lg:items-end print:col-span-4 print:items-start">
-            <div className="relative h-48 w-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md sm:h-56 sm:w-56 lg:h-64 lg:w-64 print:h-24 print:w-24 dark:border-slate-800 dark:bg-slate-900">
+          
+          {/* Printed beside the name, not the 1/3-width screen column; the top
+              margin lines it up with the h1 under the optional status line. */}
+          <div
+            className={`flex flex-col items-center lg:col-span-4 lg:items-end print:col-span-2 print:items-start${
+              profile.availableForHire ? " print:mt-7" : ""
+            }`}
+          >
+            <div className="relative h-48 w-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md sm:h-56 sm:w-56 lg:h-64 lg:w-64 print:h-20 print:w-20 dark:border-slate-800 dark:bg-slate-900">
               <AvatarImage name={profile.name} src={profile.avatarUrl} />
             </div>
           </div>

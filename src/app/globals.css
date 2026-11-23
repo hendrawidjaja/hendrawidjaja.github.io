@@ -101,7 +101,7 @@ html.exporting .export-url {
 
   /* Compact print layout: a CV should fit a handful of A4 sheets, not 10+. */
   #cv-printable-area section {
-    padding-block: 0.75rem;
+    padding-block: 1.5rem;
   }
 
   /* The screen gutter was doubling up with @page margin; the paper edge is enough. */
