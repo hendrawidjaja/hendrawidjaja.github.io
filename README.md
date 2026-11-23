@@ -1,4 +1,4 @@
-# Executive Career CV & Portfolio (Bun Ready)
+# Hendra's CV
 
 A full-stack, modern executive career CV showcase and resume builder featuring authentication, live CRUD management across career sections, and publication-ready PDF export.
 
