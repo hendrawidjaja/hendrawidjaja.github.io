@@ -1,96 +1,30 @@
-import { toJpeg } from "html-to-image";
-import jsPDF from "jspdf";
-import { useState } from "react";
-import { PDF_PAGE, PDF_SETTING } from "@/constant";
-import { Download, FileText, Loader2, Printer } from "@/src/components/Icons";
+import { FileText, Printer } from "@/src/components/Icons";
 import type { ModalPdfExportProps } from "@/src/components/modal/interface";
-import { useToast } from "@/src/components/Toast";
 import { Button } from "@/src/ui/Button";
 import { DialogShell } from "./DialogShell";
 
+/**
+ * Exporting goes through the browser's print dialog ("Save as PDF") instead of
+ * rasterising the page with html-to-image: the old route sliced one tall JPEG
+ * at arbitrary A4 offsets, so cards were cut in half and the `<picture>` avatar
+ * never got inlined. Print keeps real text/links and honours the
+ * `page-break-avoid` rules in globals.css.
+ */
 export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) => {
-  const { showToast } = useToast();
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
-
-  const withLightTheme = async <T,>(run: () => T | Promise<T>): Promise<T> => {
+  const handleSaveAsPdf = () => {
     const root = document.documentElement;
     const wasDark = root.classList.contains("dark");
+    // The printed page is always light, whatever the on-screen theme.
     if (wasDark) root.classList.remove("dark");
-    root.classList.add("exporting");
+
+    onClose();
+    setTimeout(() => window.print(), 400);
 
     const restore = () => {
       if (wasDark) root.classList.add("dark");
-      root.classList.remove("exporting");
       window.removeEventListener("afterprint", restore);
     };
-
     window.addEventListener("afterprint", restore);
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return await run();
-    } finally {
-      restore();
-      setTimeout(restore, 2000);
-    }
-  };
-
-  const handleBrowserPrint = () => {
-    onClose();
-    setTimeout(() => {
-      withLightTheme(() => window.print()).then((r) => console.log(r));
-    }, 400);
-  };
-
-  const handleDownloadDirectPdf = async () => {
-    setIsGenerating(true);
-    setStatusMessage("Preparing high-resolution document...");
-
-    try {
-      const cvElement = document.getElementById("cv-printable-area");
-      if (!cvElement) throw new Error("Could not locate CV content for PDF conversion");
-
-      setStatusMessage("Rendering typography and layout...");
-      const dataUrl = await withLightTheme(() =>
-        toJpeg(cvElement, {
-          filter: (node) => !(node instanceof HTMLElement && node.classList.contains("no-export")),
-          ...PDF_SETTING,
-        }),
-      );
-
-      setStatusMessage("Compiling multi-page PDF pages...");
-
-      const contentWidth = cvElement.offsetWidth || 1200;
-      const contentHeight = cvElement.scrollHeight;
-      const pdf = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-
-      const imgHeight = (contentHeight * PDF_PAGE.WIDTH) / contentWidth;
-      let heightLeft = imgHeight;
-      let position = 0;
-
-      pdf.addImage(dataUrl, "JPEG", 0, position, PDF_PAGE.WIDTH, imgHeight);
-      heightLeft -= PDF_PAGE.HEIGHT;
-
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(dataUrl, "JPEG", 0, position, PDF_PAGE.WIDTH, imgHeight);
-        heightLeft -= PDF_PAGE.HEIGHT;
-      }
-
-      const fileName = `CV_${cvData.profile.name}.pdf`;
-      pdf.save(fileName);
-      showToast(`Exported "${fileName}" successfully!`, "success");
-      onClose();
-    } catch (err: unknown) {
-      console.error("PDF generation error:", err);
-      const msg = err instanceof Error ? err.message : "PDF export failed";
-      showToast(msg, "error");
-    } finally {
-      setIsGenerating(false);
-      setStatusMessage("");
-    }
   };
 
   const header = (
@@ -102,7 +36,7 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
       <div className="header">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white">Export PDF Resume</h3>
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Download an ATS system formatted publication-ready resume
+          Pick "Save as PDF" in the print dialog
         </p>
       </div>
     </div>
@@ -120,38 +54,17 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
           </div>
         </div>
 
-        {isGenerating ? (
-          <div className="space-y-3 p-6 text-center">
-            <Loader2 className="mx-auto h-8 w-8 animate-spin text-blue-600 dark:text-blue-400" />
-            <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-              {statusMessage || "Generating PDF document..."}
-            </p>
-            <p className="text-xs text-slate-500">
-              Capturing high-density vector canvas and generating multi-page PDF
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <Button
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow"
-              onClick={handleDownloadDirectPdf}
-            >
-              <Download className="h-4 w-4" />
-              <span>Direct Download PDF File</span>
-            </Button>
-
-            <Button
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/60"
-              onClick={handleBrowserPrint}
-            >
-              <Printer className="h-4 w-4 text-slate-500" />
-              <span>Print or Save via Browser Dialog</span>
-            </Button>
-          </div>
-        )}
+        <Button
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow"
+          onClick={handleSaveAsPdf}
+        >
+          <Printer className="h-4 w-4" />
+          <span>Save as PDF</span>
+        </Button>
 
         <p className="mt-4 text-center text-[11px] text-slate-400 dark:text-slate-500">
-          Exported documents respect ISO A4 standard pagination and include full metadata.
+          A4 pages, selectable text, no section cut in half. Choose "Save as PDF" as the printer
+          destination.
         </p>
       </div>
     </DialogShell>

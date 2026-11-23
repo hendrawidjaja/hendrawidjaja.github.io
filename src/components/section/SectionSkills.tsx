@@ -54,7 +54,7 @@ export const SectionSkills = ({
             {isEditMode && 'Click "Add Skill Category" to build your competencies.'}
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="print-stack grid grid-cols-1 gap-6 md:grid-cols-2">
             {filteredCategories.map((cat) => (
               <div
                 className="page-break-avoid flex flex-col justify-between rounded-xl border border-slate-300 bg-white p-6 shadow-xs transition-all hover:border-slate-400 dark:border-slate-800/80 dark:bg-slate-900/60 dark:hover:border-slate-700"

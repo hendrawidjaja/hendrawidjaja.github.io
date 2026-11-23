@@ -66,13 +66,3 @@ export const INITIAL_PORTFOLIO = {
   year: "2026",
 };
 
-export const PDF_PAGE = {
-  HEIGHT: 297,
-  WIDTH: 210,
-};
-export const PDF_SETTING = {
-  pixelRatio: 3,
-  backgroundColor: "#ffffff",
-  cacheBust: true,
-  quality: 0.6,
-};

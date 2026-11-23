@@ -40,7 +40,7 @@ export const SectionPortfolio = ({
           {isEditMode && 'Click "Add Portfolio" to showcase screenshots and visuals.'}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="print-stack grid grid-cols-1 gap-6 lg:grid-cols-2">
           {items.map((item) => {
             const images = item.images ?? [];
             const thumbnails = images.slice(0, MAX_THUMBNAILS);

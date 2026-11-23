@@ -35,7 +35,7 @@ export const SectionProjects = ({
           {isEditMode && 'Click "Add Project" to highlight your flagship initiatives.'}
         </div>
       ) : (
-        <div className="grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="print-stack grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((proj) => (
             <div
               className={`page-break-avoid flex flex-col ${"rounded-xl border border-slate-300 bg-white p-6 shadow-xs transition-all hover:border-slate-400 dark:border-slate-800/80 dark:bg-slate-900/60 dark:hover:border-slate-700"}`}
