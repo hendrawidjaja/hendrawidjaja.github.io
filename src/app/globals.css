@@ -58,7 +58,8 @@ html.exporting .export-url {
 @media print {
   @page {
     size: A4;
-    margin: 8mm;
+    /* Narrower left/right gutter; vertical stays as before. */
+    margin: 12mm 8mm;
   }
 
   .export-url {
@@ -88,19 +89,14 @@ html.exporting .export-url {
     page-break-inside: avoid;
   }
 
-  /* Two CSS columns pack the cards without the splitting Chrome does to grid
-     items: children stay whole because of break-inside: avoid, and the flow
-     continues onto the next page. */
+  /* One column so every card reads at full width; children stay whole because
+     Chrome splits grid items despite break-inside: avoid. */
   .print-stack {
     display: block;
-    columns: 2;
-    column-gap: 0.75rem;
   }
 
-  .print-stack > * {
-    margin-bottom: 0.75rem;
-    break-inside: avoid;
-    page-break-inside: avoid;
+  .print-stack > * + * {
+    margin-top: 1rem;
   }
 
   /* Compact print layout: a CV should fit a handful of A4 sheets, not 10+. */
@@ -108,26 +104,17 @@ html.exporting .export-url {
     padding-block: 0.75rem;
   }
 
-  /* The screen gutter is doubled up by @page margin; use the paper width. */
+  /* The screen gutter was doubling up with @page margin; the paper edge is enough. */
   #cv-printable-area section > div {
     padding-inline: 0;
   }
 
   #cv-printable-area .page-break-avoid {
-    padding: 0.6rem;
+    padding: 0.75rem;
   }
 
   #cv-printable-area > :last-child {
     padding-bottom: 0;
-  }
-
-  /* Paper headlines: the screen sizes (sm: variants apply at 703px) are oversized. */
-  #cv-printable-area h1 {
-    font-size: 1.6rem;
-  }
-
-  #cv-printable-area h2 {
-    font-size: 1.15rem;
   }
 
   .print-shadow-none {
