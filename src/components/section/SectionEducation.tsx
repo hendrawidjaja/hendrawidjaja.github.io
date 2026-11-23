@@ -31,7 +31,7 @@ export const SectionEducation = ({
     >
       {education.length === 0 ? (
         <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 dark:border-slate-700">
-          No education entries yet.{" "}
+          No education entries yet.
           {isEditMode && 'Click "Add Education" to add your academic background.'}
         </div>
       ) : (
@@ -41,13 +41,13 @@ export const SectionEducation = ({
               className={`page-break-avoid flex flex-col justify-between ${"rounded-xl border border-slate-300 bg-white p-6 shadow-xs transition-all hover:border-slate-400 dark:border-slate-800/80 dark:bg-slate-900/60 dark:hover:border-slate-700"}`}
               key={edu.id}
             >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex items-start gap-3">
+              <div className="flex w-full justify-between gap-2">
+                <div className="flex gap-3">
                   <div className="mt-0.5 shrink-0 rounded-lg bg-blue-50 p-2.5 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                     {edu.logo ? (
                       /* biome-ignore lint/performance/noImgElement: uploaded or local institution logo */
                       <img
-                        alt=""
+                        alt="logo"
                         className="h-16 w-16 object-contain"
                         loading="lazy"
                         src={edu.logo}
@@ -56,7 +56,8 @@ export const SectionEducation = ({
                       <GraduationCap className="h-5 w-5" />
                     )}
                   </div>
-                  <div>
+
+                  <div className="relative">
                     <h3 className="text-base leading-tight font-bold text-slate-900 sm:text-lg dark:text-white">
                       {edu.degree}
                     </h3>
