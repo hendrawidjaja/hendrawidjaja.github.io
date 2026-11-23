@@ -183,18 +183,13 @@ read-only/immutable); only accounts and passwords move to Postgres.
 
 ## Default Admin Credentials
 
-Both stores start with the same bootstrap account:
-
-- **Username**: `admin`
-- **Password**: `admin123`
-
 With `DATABASE_URL`, the account is created in Postgres the first time a login
 is attempted. Public registration is disabled, so this account exists before
 anyone else can register.
 
 To sign in:
 1. Click the **Admin** button (lock icon) in the top right or bottom footer.
-2. Enter `admin` and `admin123`.
+2. Enter `admin` and `password`.
 3. Because that is the bootstrap password, the app immediately opens the
    password dialog. Choose a password of **at least 12 characters**; editing is
    locked until you do.

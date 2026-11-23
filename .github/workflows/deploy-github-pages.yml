@@ -37,6 +37,11 @@ jobs:
         run: ./scripts/build-github-pages.sh out
         env:
           STATIC_BASE_PATH: ${{ steps.base.outputs.path }}
+      - uses: actions/configure-pages@v5
+        with:
+          # Enables Pages with "GitHub Actions" as the source if it is off,
+          # instead of failing the deploy with a 404.
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
