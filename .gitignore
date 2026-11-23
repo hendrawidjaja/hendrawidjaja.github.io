@@ -249,6 +249,8 @@ web_modules/
 # Next.js build output
 .next
 out
+# GitHub Pages static export (scripts/build-github-pages.sh)
+out-github-pages
 
 # Nuxt.js build / generate output
 .nuxt

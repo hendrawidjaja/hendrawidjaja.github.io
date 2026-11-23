@@ -13,6 +13,9 @@ const TITLE = "Hendra's CV & Portfolio";
 const DESCRIPTION =
   "Hendra's Professional career CV showcase with experiences, education, skills, and projects, and pixel-perfect PDF export.";
 
+// Static export (GitHub Pages) serves from a subpath; Next does not prefix metadata icons for us.
+const basePath = process.env.STATIC_BASE_PATH || "";
+
 export const metadata: Metadata = {
   title: {
     default: TITLE,
@@ -20,9 +23,9 @@ export const metadata: Metadata = {
   },
   description: DESCRIPTION,
   icons: {
-    icon: "/logo.svg",
-    shortcut: "/logo.svg",
-    apple: "/logo.svg",
+    icon: `${basePath}/logo.svg`,
+    shortcut: `${basePath}/logo.svg`,
+    apple: `${basePath}/logo.svg`,
   },
   openGraph: {
     title: {

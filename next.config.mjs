@@ -1,6 +1,14 @@
+// `STATIC_EXPORT=1` builds the read-only site that GitHub Pages serves.
+// scripts/build-github-pages.sh removes the API routes and server-action page
+// from a temp copy first, because static export cannot contain them.
+const isStaticExport = process.env.STATIC_EXPORT === '1';
+const staticBasePath = process.env.STATIC_BASE_PATH || '';
+
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
+  output: isStaticExport ? 'export' : 'standalone',
+  basePath: isStaticExport ? staticBasePath : '',
+  trailingSlash: isStaticExport,
   poweredByHeader: false,
   // `pg` has optional native bindings; keep it external so Node resolves it at
   // runtime instead of bundling it into the server output. (Next also
@@ -41,6 +49,8 @@ const nextConfig = {
     pollIntervalMs: 2000,
   },
   async headers() {
+    // Static export ignores response headers; GitHub Pages sets its own.
+    if (isStaticExport) return [];
     // Baseline hardening headers. A strict CSP is deliberately omitted: the
     // App Router relies on inline bootstrap scripts, so a nonce-based policy
     // needs a proxy layer — revisit before public exposure (docs/SECURITY.md).

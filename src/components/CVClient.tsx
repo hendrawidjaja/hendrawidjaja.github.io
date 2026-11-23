@@ -18,7 +18,7 @@ import {
   updateProfileAction,
   updateProjectAction,
   updateSkillCategoryAction,
-} from "@/src/app/actions";
+} from "@/src/services/mutations";
 import { Footer } from "@/src/components/Footer";
 import { Header } from "@/src/components/Header";
 import { Hero } from "@/src/components/Hero";

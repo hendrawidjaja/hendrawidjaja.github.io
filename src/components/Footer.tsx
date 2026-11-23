@@ -7,6 +7,9 @@ import { KeyRound, Lock, Unlock } from "./Icons";
 const mutedButtonClass =
   "flex items-center gap-1 transition-colors hover:text-slate-900 dark:hover:text-white";
 
+/** The GitHub Pages build has no auth or API routes, so hide the editor entry point. */
+const READ_ONLY = process.env.NEXT_PUBLIC_READ_ONLY === "1";
+
 const handleBackToTop = (e: MouseEvent<HTMLAnchorElement>) => {
   e.preventDefault();
   window.scrollTo({
@@ -48,7 +51,7 @@ export const Footer = () => {
         </p>
 
         <div className="order-3 flex items-center gap-2">
-          {isAuthenticated ? (
+          {READ_ONLY ? null : isAuthenticated ? (
             <>
               <Button
                 className="flex items-center gap-1 text-blue-600 hover:underline md:ml-auto dark:text-blue-400"
