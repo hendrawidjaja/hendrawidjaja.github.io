@@ -24,7 +24,7 @@ import { Header } from "@/src/components/Header";
 import { Hero } from "@/src/components/Hero";
 import { ModalAdmin } from "@/src/components/modal/ModalAdmin";
 import { ModalDeleteConfirm } from "@/src/components/modal/ModalDeleteConfirm";
-import type { EditableEntity, EditableEntityPayload } from "@/src/components/modal/ModalEditItem";
+import type { EditableEntity, EditableEntityPayload } from "@/src/components/modal/interface";
 import { ModalEditItem } from "@/src/components/modal/ModalEditItem";
 import { ModalPdfExport } from "@/src/components/modal/ModalPdfExport";
 import { ModalPortfolio } from "@/src/components/modal/ModalPortfolio";

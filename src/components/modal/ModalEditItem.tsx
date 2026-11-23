@@ -105,23 +105,17 @@ export const ModalEditItem = ({
     ? `Add New ${type === "skillCategory" ? "Skill Category" : type}`
     : `Edit ${type === "skillCategory" ? "Skill Category" : type}`;
 
-  return (
-    <DialogShell className="max-w-3xl" onClose={onClose} open={open}>
-      <div className="flex items-center justify-between border-b border-slate-300 px-6 py-4 dark:border-slate-800">
-        <div>
-          <h3 className="text-lg font-bold text-slate-900 capitalize dark:text-white">{title}</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Update details and save changes immediately to the CV server
-          </p>
-        </div>
-        <Button
-          className="rounded-md p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-          onClick={onClose}
-        >
-          <X className="h-5 w-5" />
-        </Button>
-      </div>
+  const header = (
+    <div className="header">
+      <h3 className="text-lg font-bold text-slate-900 capitalize dark:text-white">{title}</h3>
+      <p className="text-xs text-slate-500 dark:text-slate-400">
+        Update and save changes immediately to the CV
+      </p>
+    </div>
+  );
 
+  return (
+    <DialogShell className="max-w-3xl" header={header} onClose={onClose} open={open}>
       <form action={handleSubmit} className="max-h-[75vh] space-y-4 overflow-y-auto p-6">
         {type === "profile" && (
           <div className="space-y-4">
@@ -509,6 +503,7 @@ export const ModalEditItem = ({
           <div className="space-y-4">
             <TextField
               className="category-name"
+              id="category-name"
               label="Category Name *"
               onChange={(v) => setFormData({ ...formData, name: v })}
               placeholder="e.g. Systems & Core Languages"
@@ -551,7 +546,7 @@ export const ModalEditItem = ({
                   key={index}
                 >
                   <input
-                    className="flex-1 rounded border border-slate-300 bg-white px-2.5 py-1 text-xs dark:border-slate-600 dark:bg-slate-800"
+                    className="flex-1 rounded border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                     onChange={(e) => {
                       const next = [...formData.skills];
                       next[index] = { ...next[index], name: e.target.value };
@@ -563,7 +558,7 @@ export const ModalEditItem = ({
                     value={skill.name || ""}
                   />
                   <select
-                    className="rounded border border-slate-300 bg-white px-2 py-1 text-xs dark:border-slate-600 dark:bg-slate-800"
+                    className="rounded border border-slate-300 bg-white px-2 py-1 text-xs text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                     onChange={(e) => {
                       const next = [...formData.skills];
                       next[index] = { ...next[index], level: e.target.value };

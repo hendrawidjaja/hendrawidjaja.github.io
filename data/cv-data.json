@@ -32,7 +32,14 @@
         "Led 2 automation team members in developing robust Selenium test suites.",
         "Improved SEO metrics and core page speed performance."
       ],
-      "technologies": ["React", "Next.js", "Vite", "Selenium", "JavaScript", "SEO"]
+      "technologies": [
+        "React",
+        "Next.js",
+        "Vite",
+        "Selenium",
+        "JavaScript",
+        "SEO"
+      ]
     },
     {
       "id": "exp-2",
@@ -49,7 +56,13 @@
         "Built monitoring dashboard for real-time chat application metrics.",
         "Conducted comprehensive web and mobile testing."
       ],
-      "technologies": ["Ionic", "AngularJS", "Firebase", "React", "Mobile Testing"]
+      "technologies": [
+        "Ionic",
+        "AngularJS",
+        "Firebase",
+        "React",
+        "Mobile Testing"
+      ]
     },
     {
       "id": "exp-3",
@@ -66,7 +79,12 @@
         "Built comprehensive administrative interfaces covering B2C and B2B workflows.",
         "Integrated Firebase real-time data persistence."
       ],
-      "technologies": ["React", "JavaScript", "Firebase", "Mobile Web"]
+      "technologies": [
+        "React",
+        "JavaScript",
+        "Firebase",
+        "Mobile Web"
+      ]
     },
     {
       "id": "exp-4",
@@ -82,7 +100,14 @@
         "Collaborated with 10 developers on high-traffic European e-commerce campaign pages.",
         "Built internal tool to bind components by drag & drop for rapid promotional campaign assembly."
       ],
-      "technologies": ["HTML", "CSS", "JavaScript", "NodeJS", "React", "Firebase"]
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "NodeJS",
+        "React",
+        "Firebase"
+      ]
     },
     {
       "id": "exp-5",
@@ -98,7 +123,13 @@
         "Engineered industrial machine control interface for automated letter sorting machines.",
         "Built internal enterprise operations dashboard."
       ],
-      "technologies": ["Java", "Vaadin", "HTML", "CSS", "JavaScript"]
+      "technologies": [
+        "Java",
+        "Vaadin",
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ]
     },
     {
       "id": "exp-6",
@@ -113,7 +144,12 @@
       "highlights": [
         "<p>Built interactive digital configurator software for building and architectural visualization.</p>"
       ],
-      "technologies": ["PHP", "HTML", "CSS", "JavaScript"]
+      "technologies": [
+        "PHP",
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ]
     }
   ],
   "education": [
@@ -128,7 +164,8 @@
       "honors": "Graduated in Berlin, Germany",
       "highlights": [
         "Studies in software engineering, media informatics, web development, law including rights and interactive digital systems."
-      ]
+      ],
+      "logo": "/img/education/htw-berlin.svg"
     },
     {
       "id": "edu-2",
@@ -141,7 +178,8 @@
       "honors": "Certified",
       "highlights": [
         "Specialized training in Typo3 CMS extension architecture and enterprise template workflows."
-      ]
+      ],
+      "logo": "/img/education/typo3.svg"
     }
   ],
   "skillCategories": [
@@ -151,58 +189,69 @@
       "skills": [
         {
           "name": "JavaScript (ES6+)",
-          "level": "Expert",
-          "featured": true
+          "level": "Proficient",
+          "featured": true,
+          "icon": "/img/skills/javascript.svg"
         },
         {
           "name": "React",
           "level": "Expert",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/react.svg"
         },
         {
           "name": "Next.js",
           "level": "Intermediate",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/next-js.svg"
         },
         {
           "name": "Vite",
           "level": "Expert",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/vite.svg"
         },
         {
           "name": "HTML5 / CSS3",
           "level": "Expert",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/html5-css3.svg"
         },
         {
           "name": "jQuery",
           "level": "Expert",
-          "featured": false
+          "featured": false,
+          "icon": "/img/skills/jquery.svg"
         },
         {
           "name": "Java & Vaadin",
-          "level": "Intermediate",
-          "featured": true
+          "level": "Familiar",
+          "featured": true,
+          "icon": "/img/skills/java-vaadin.svg"
         },
         {
           "name": "Selenium & Automation",
           "level": "Intermediate",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/selenium-automation.svg"
         },
         {
           "name": "SEO & Page Speed",
           "level": "Intermediate",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/seo-page-speed.svg"
         },
         {
           "name": "Figma",
           "level": "Intermediate",
-          "featured": false
+          "featured": false,
+          "icon": "/img/skills/figma.svg"
         },
         {
           "name": "Jira & Agile",
           "level": "Expert",
-          "featured": false
+          "featured": false,
+          "icon": "/img/skills/jira-agile.svg"
         }
       ]
     },
@@ -213,22 +262,26 @@
         {
           "name": "Bahasa Indonesia (Native)",
           "level": "Expert",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/bahasa-indonesia.svg"
         },
         {
           "name": "English (Professional)",
           "level": "Expert",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/english.svg"
         },
         {
           "name": "German / Deutsch (Professional)",
           "level": "Proficient",
-          "featured": true
+          "featured": true,
+          "icon": "/img/skills/german-deutsch.svg"
         },
         {
           "name": "Mandarin (Conversational)",
           "level": "Familiar",
-          "featured": false
+          "featured": false,
+          "icon": "/img/skills/mandarin.svg"
         }
       ]
     }
@@ -267,7 +320,9 @@
       "description": "Chat application with live administrative monitoring dashboard built across mobile and web platforms with cross-platform testing.",
       "role": "Lead Developer",
       "year": "2021",
-      "highlights": ["Led 5 engineers building real-time messaging pipeline and metrics console."],
+      "highlights": [
+        "Led 5 engineers building real-time messaging pipeline and metrics console."
+      ],
       "featured": false
     },
     {
@@ -277,7 +332,9 @@
       "description": "Food & beverage application enabling users to view menus, reserve tables, and complete digital payments directly on mobile devices.",
       "role": "Senior Frontend Developer",
       "year": "2020",
-      "highlights": ["Covered end-to-end user journeys for both dining guests and venue managers."],
+      "highlights": [
+        "Covered end-to-end user journeys for both dining guests and venue managers."
+      ],
       "featured": false
     }
   ],
@@ -288,11 +345,18 @@
       "tagline": "End-to-end home-living marketplace frontend",
       "year": "2022 - Present",
       "description": "Redesigned and shipped the buyer and seller web experience for an Indonesian home-living marketplace, including a reusable internal frontend UI library, accelerated page speed, and automated Selenium test coverage across critical checkout flows.",
-      "technologies": ["React", "Next.js", "Vite", "Selenium", "SEO", "TypeScript", "HTML/CSS"],
+      "technologies": [
+        "React",
+        "Next.js",
+        "Vite",
+        "Selenium",
+        "SEO",
+        "TypeScript",
+        "HTML/CSS"
+      ],
       "images": [
-        "/img/portfolio/renos-home.jpg",
-        "/img/portfolio/renos-product.jpg",
-        "/img/portfolio/renos-checkout.jpg"
+        "/img/portfolio/case-1/Renos-Flashsale.png",
+        "/img/portfolio/case-1/Renos-Home.png"
       ]
     },
     {
@@ -301,8 +365,19 @@
       "tagline": "Visual campaign assembly for non-technical marketers",
       "year": "2018 - 2019",
       "description": "Internal campaign creation tool for Douglas Perfumeries (Germany) letting marketing teams compose promotional pages by dragging and dropping components, supporting multi-country European rollouts and meet&greet branding events.",
-      "technologies": ["React", "JavaScript", "NodeJS", "Firebase", "HTML/CSS"],
-      "images": ["/img/portfolio/douglas-builder.jpg", "/img/portfolio/douglas-canvas.jpg"]
+      "technologies": [
+        "React",
+        "JavaScript",
+        "NodeJS",
+        "Firebase",
+        "HTML/CSS"
+      ],
+      "images": [
+        "/img/portfolio/case-2/douglas-home.png",
+        "/img/portfolio/case-2/douglas-product card.png",
+        "/img/portfolio/case-2/douglas-promotion 1.png",
+        "/img/portfolio/case-2/douglas-promotion 2.png"
+      ]
     },
     {
       "id": "case-3",
@@ -310,8 +385,18 @@
       "tagline": "Real-time messaging with live admin monitoring",
       "year": "2021",
       "description": "Cross-platform chat application with a live administrative monitoring dashboard spanning mobile and web, including real-time metrics and comprehensive web and mobile testing.",
-      "technologies": ["Ionic", "AngularJS", "Firebase", "React"],
-      "images": ["/img/portfolio/hello-chat.jpg", "/img/portfolio/hello-dashboard.jpg"]
+      "technologies": [
+        "Ionic",
+        "AngularJS",
+        "Firebase",
+        "React"
+      ],
+      "images": [
+        "/img/portfolio/case-3/HiApp-chat.jpg",
+        "/img/portfolio/case-3/HiApp-group.webp",
+        "/img/portfolio/case-3/HiApp-home.webp",
+        "/img/portfolio/case-3/HiApp-organized.webp"
+      ]
     },
     {
       "id": "case-4",
@@ -319,8 +404,12 @@
       "tagline": "B2C & B2B mobile dining platform",
       "year": "2020",
       "description": "Food & beverage application letting users view menus, reserve tables, and complete digital payments on mobile, covering both dining-guest and venue-manager workflows with Firebase persistence.",
-      "technologies": ["React", "JavaScript", "Firebase"],
-      "images": ["/img/portfolio/musteat-menu.jpg", "/img/portfolio/musteat-payment.jpg"]
+      "technologies": [
+        "React",
+        "JavaScript",
+        "Firebase"
+      ],
+      "images": []
     }
   ]
 }

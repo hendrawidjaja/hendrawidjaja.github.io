@@ -18,7 +18,7 @@ export const ModalDeleteConfirm = ({
           <AlertTriangle className="h-5 w-5" />
         </div>
 
-        <div>
+        <div className="header">
           <h3 className="text-base font-bold text-slate-900 dark:text-white">Delete {itemType}?</h3>
           <p className="text-xs text-slate-500 dark:text-slate-400">
             This action will permanently remove this entry.

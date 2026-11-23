@@ -2,6 +2,7 @@
 
 import { type ComponentPropsWithoutRef, type ReactNode, useEffect, useRef } from "react";
 import { X } from "@/src/components/Icons";
+import { useKeyPress } from "@/src/hook/useKeypress";
 import { Button } from "@/src/ui/Button";
 
 export interface DialogShellProps extends ComponentPropsWithoutRef<"dialog"> {
@@ -34,6 +35,8 @@ export const DialogShell = ({
     d.addEventListener("close", handler);
     return () => d.removeEventListener("close", handler);
   }, [onClose]);
+
+  useKeyPress("Escape", onClose, { enabled: open });
 
   return (
     <dialog

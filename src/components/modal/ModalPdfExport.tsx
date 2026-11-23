@@ -93,22 +93,24 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
     }
   };
 
+  const header = (
+    <div className="flex items-center gap-3">
+      <div className="rounded-xl bg-blue-50 p-3 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+        <FileText className="h-6 w-6" />
+      </div>
+
+      <div className="header">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Export PDF Resume</h3>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
+          Download an ATS system formatted publication-ready resume
+        </p>
+      </div>
+    </div>
+  );
+
   return (
-    <DialogShell onClose={onClose} open={open}>
+    <DialogShell header={header} onClose={onClose} open={open}>
       <div className="p-6">
-        <div className="mb-6 flex items-center gap-3">
-          <div className="rounded-xl bg-blue-50 p-3 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-            <FileText className="h-6 w-6" />
-          </div>
-
-          <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">Export PDF Resume</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
-              Download a publication-ready resume formatted for executive recruiters and ATS systems
-            </p>
-          </div>
-        </div>
-
         <div className="mb-6 rounded-xl">
           <div className="flex items-center justify-between pb-2 text-xs text-slate-600 dark:text-slate-300">
             <span className="font-semibold text-slate-900 dark:text-white">

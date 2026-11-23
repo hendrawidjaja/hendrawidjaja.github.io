@@ -153,7 +153,7 @@ export const ModalAdmin = () => {
         {isLoginModalOpen ? <Lock className="h-4 w-4" /> : <KeyRound className="h-4 w-4" />}
       </div>
 
-      <div>
+      <div className="header">
         <h3 className="text-base font-bold text-slate-900 dark:text-white">
           {isRegisterMode
             ? "Create Admin Account"

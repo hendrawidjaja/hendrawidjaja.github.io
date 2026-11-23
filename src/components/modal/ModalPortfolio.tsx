@@ -30,31 +30,36 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
     }
   };
 
+  const header = (
+    <div className="flex items-start gap-3">
+      <div className="mt-0.5 shrink-0 rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+        <Images className="h-5 w-5" />
+      </div>
+
+      <div className="header">
+        <h3 className="text-lg leading-tight font-bold text-slate-900 dark:text-white">
+          {item.title}
+        </h3>
+
+        {item.year && (
+          <span className="font-mono text-xs text-slate-400 tabular-nums dark:text-slate-500">
+            {item.year}
+          </span>
+        )}
+
+        {item.tagline && (
+          <p className="mt-1 text-sm font-semibold text-blue-600 dark:text-blue-400">
+            {item.tagline}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+
   return (
-    <DialogShell className="max-w-3xl" onClose={onClose} open={open}>
+    <DialogShell className="max-w-3xl" header={header} onClose={onClose} open={open}>
       <div className="flex max-h-[80vh] flex-col">
         <div className="overflow-y-auto px-6 pt-6">
-          <div className="mb-5 flex items-start gap-3">
-            <div className="mt-0.5 shrink-0 rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-              <Images className="h-5 w-5" />
-            </div>
-            <div>
-              <h3 className="text-lg leading-tight font-bold text-slate-900 dark:text-white">
-                {item.title}
-              </h3>
-              {item.year && (
-                <span className="font-mono text-xs text-slate-400 tabular-nums dark:text-slate-500">
-                  {item.year}
-                </span>
-              )}
-              {item.tagline && (
-                <p className="mt-1 text-sm font-semibold text-blue-600 dark:text-blue-400">
-                  {item.tagline}
-                </p>
-              )}
-            </div>
-          </div>
-
           {item.description && (
             <div
               className="rich-text text-sm leading-relaxed text-slate-600 dark:text-slate-300"

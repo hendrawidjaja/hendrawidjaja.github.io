@@ -4,6 +4,7 @@ export interface TextFieldProps {
   autoComplete?: string;
   className?: string;
   disabled?: boolean;
+  id?: string;
   label?: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -19,6 +20,7 @@ const labelClass = "mb-1 block text-xs font-medium text-slate-700 dark:text-slat
 export const TextField = ({
   autoComplete,
   className = "text-field",
+  id,
   label,
   value,
   onChange,
@@ -27,7 +29,8 @@ export const TextField = ({
   required,
   disabled,
 }: TextFieldProps) => {
-  const inputId = useId();
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
   return (
     <div className={className}>
       {label && (
