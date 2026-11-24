@@ -66,15 +66,16 @@ export function AvatarImage({ src, name, alt, className }: AvatarImageProps) {
 
   if (state.attempt === "base") {
     return (
-      // biome-ignore lint/performance/noImgElement: <picture> needs a plain <img> for format negotiation
-      <img
+      <Image
         alt={alt ?? name}
         className={imageClass}
+        height={500}
         loading="eager"
         onError={handleError}
         onLoad={handleLoad}
         referrerPolicy="no-referrer"
         src={src}
+        width={500}
       />
     );
   }
@@ -86,14 +87,16 @@ export function AvatarImage({ src, name, alt, className }: AvatarImageProps) {
     <picture className="contents">
       {jxl && <source srcSet={jxl} type="image/jxl" />}
       {webp && <source srcSet={webp} type="image/webp" />}
-      <img
+      <Image
         alt={alt ?? name}
         className={imageClass}
+        height={500}
         loading="eager"
         onError={handleError}
         onLoad={handleLoad}
         referrerPolicy="no-referrer"
         src={src}
+        width={500}
       />
     </picture>
   );

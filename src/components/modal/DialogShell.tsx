@@ -1,15 +1,10 @@
 "use client";
 
-import { type ComponentPropsWithoutRef, type ReactNode, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { X } from "@/src/components/Icons";
+import type { DialogShellProps } from "@/src/components/modal/interface";
 import { useKeyPress } from "@/src/hook/useKeypress";
 import { Button } from "@/src/ui/Button";
-
-export interface DialogShellProps extends ComponentPropsWithoutRef<"dialog"> {
-  header?: ReactNode;
-  onClose: () => void;
-  open: boolean;
-}
 
 export const DialogShell = ({
   children,
@@ -32,6 +27,7 @@ export const DialogShell = ({
     const d = ref.current;
     if (!d) return;
     const handler = () => onClose();
+
     d.addEventListener("close", handler);
     return () => d.removeEventListener("close", handler);
   }, [onClose]);

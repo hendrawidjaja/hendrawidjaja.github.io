@@ -11,9 +11,8 @@ const montserrat = Montserrat({
 
 const TITLE = "Hendra's CV & Portfolio";
 const DESCRIPTION =
-  "Hendra's Professional career CV showcase with experiences, education, skills, and projects, and pixel-perfect PDF export.";
+  "Hendra's career CV showcase with experiences, education, skills, and projects, and pixel-perfect PDF export.";
 
-// Static export (GitHub Pages) serves from a subpath; Next does not prefix metadata icons for us.
 const basePath = process.env.STATIC_BASE_PATH || "";
 
 export const metadata: Metadata = {

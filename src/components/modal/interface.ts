@@ -1,3 +1,4 @@
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import type {
   CVData,
   CVProfile,
@@ -8,6 +9,12 @@ import type {
   SkillCategory,
   WorkExperience,
 } from "@/src/types/cv";
+
+export interface DialogShellProps extends ComponentPropsWithoutRef<"dialog"> {
+  header?: ReactNode;
+  onClose: () => void;
+  open: boolean;
+}
 
 export interface RegisterState {
   confirmPass: string;

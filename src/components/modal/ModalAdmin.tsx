@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { IconSize } from "@/constant";
 import { AlertCircle, Check, KeyRound, Lock, LogOut } from "@/src/components/Icons";
 import { DialogShell } from "@/src/components/modal/DialogShell";
 import type { LoginState, PasswordState, RegisterState } from "@/src/components/modal/interface";
@@ -7,7 +8,6 @@ import { useAuth } from "@/src/context/AuthContext";
 import { changeAdminPassword, registrationStatus } from "@/src/services/api";
 import { Button } from "@/src/ui/Button";
 import { TextField } from "@/src/ui/TextField";
-import { IconSize } from "@/constant";
 
 type AuthMode = "login" | "register";
 
@@ -162,6 +162,7 @@ export const ModalAdmin = () => {
               ? "Admin Authentication"
               : "Change Admin Password"}
         </h3>
+
         <p className="text-xs text-slate-500 dark:text-slate-400">
           {isRegisterMode
             ? "First account setup — registration closes once a user exists"
