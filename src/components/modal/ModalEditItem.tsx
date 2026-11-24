@@ -1,5 +1,7 @@
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
+  IconSize,
   INITIAL_EDUCATION,
   INITIAL_EXPERIENCE,
   INITIAL_PORTFOLIO,
@@ -229,7 +231,7 @@ export const ModalEditItem = ({
                   />
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute top-0.5 left-0.5 h-4 w-4 translate-x-0 rounded-full bg-white shadow-md transition-transform peer-checked:translate-x-4"
+                    className={`pointer-events-none absolute top-0.5 left-0.5 ${IconSize} translate-x-0 rounded-full bg-white shadow-md transition-transform peer-checked:translate-x-4`}
                   />
                 </span>
                 <label
@@ -344,7 +346,7 @@ export const ModalEditItem = ({
                     })
                   }
                 >
-                  <Plus className="h-3 w-3" /> Add Highlight
+                  <Plus className={IconSize} /> Add Highlight
                 </Button>
               </div>
 
@@ -372,7 +374,7 @@ export const ModalEditItem = ({
                       setFormData({ ...formData, highlights: next });
                     }}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className={IconSize} />
                   </Button>
                 </div>
               ))}
@@ -430,8 +432,13 @@ export const ModalEditItem = ({
             <div className="flex items-center gap-3">
               <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
                 {formData.logo ? (
-                  /* biome-ignore lint/performance/noImgElement: logo preview */
-                  <img alt="" className="h-full w-full object-contain" src={formData.logo} />
+                  <Image
+                    alt="Institution"
+                    className="h-full w-full object-contain"
+                    fill
+                    src={formData.logo}
+                    unoptimized
+                  />
                 ) : (
                   <GraduationCap className="h-5 w-5 text-slate-400" />
                 )}
@@ -528,7 +535,7 @@ export const ModalEditItem = ({
                     })
                   }
                 >
-                  <Plus className="h-3 w-3" /> Add Skill
+                  <Plus className={IconSize} /> Add Skill
                 </Button>
               </div>
 
@@ -590,14 +597,16 @@ export const ModalEditItem = ({
                     title="Upload a logo (blank keeps the automatic logo)"
                   >
                     {skill.logo || skill.icon ? (
-                      /* biome-ignore lint/performance/noImgElement: logo preview */
-                      <img
-                        alt=""
+                      <Image
+                        alt="logo skill"
                         className="h-4 w-4 object-contain"
+                        fill
+                        sizes="100vw"
                         src={skill.logo || skill.icon}
+                        unoptimized
                       />
                     ) : (
-                      <Upload className="h-4 w-4" />
+                      <Upload className={IconSize} />
                     )}
                     <input
                       accept="image/*"
@@ -623,7 +632,7 @@ export const ModalEditItem = ({
                       }}
                       title="Remove uploaded logo"
                     >
-                      <X className="h-3.5 w-3.5" />
+                      <X className={IconSize} />
                     </Button>
                   )}
 
@@ -635,7 +644,7 @@ export const ModalEditItem = ({
                       setFormData({ ...formData, skills: next });
                     }}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className={IconSize} />
                   </Button>
                 </div>
               ))}
@@ -746,7 +755,7 @@ export const ModalEditItem = ({
                 className="portfolio-title"
                 label="Piece Title *"
                 onChange={(v) => setFormData({ ...formData, title: v })}
-                placeholder="e.g. Renos Marketplace Redesign"
+                placeholder="e.g. Renos Marketplace"
                 required
                 value={formData.title || ""}
               />
@@ -815,7 +824,7 @@ export const ModalEditItem = ({
                     })
                   }
                 >
-                  <Plus className="h-3 w-3" /> Add Image
+                  <Plus className={IconSize} /> Add Image
                 </Button>
               </div>
 
@@ -834,14 +843,16 @@ export const ModalEditItem = ({
                 <div className="mb-2 flex items-center gap-2" key={index}>
                   <div className="h-12 w-16 shrink-0 overflow-hidden rounded border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
                     {image ? (
-                      /* biome-ignore lint/performance/noImgElement: editor preview of an admin-supplied URL */
-                      <img
+                      <Image
                         alt={`${formData.title || "Portfolio"} preview ${index + 1}`}
                         className="h-full w-full object-cover"
+                        fill
                         onError={(event) => {
                           event.currentTarget.style.visibility = "hidden";
                         }}
+                        sizes="100vw"
                         src={image}
+                        unoptimized
                       />
                     ) : (
                       <span className="grid h-full place-items-center text-[10px] text-slate-400">
@@ -870,7 +881,7 @@ export const ModalEditItem = ({
                       setFormData({ ...formData, images: next });
                     }}
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className={IconSize} />
                   </Button>
                 </div>
               ))}
@@ -881,7 +892,7 @@ export const ModalEditItem = ({
         <div className="flex items-center justify-end gap-3 border-t border-slate-300 pt-4 dark:border-slate-800">
           {saveError && (
             <p className="mr-auto flex items-center gap-1.5 text-xs text-red-600 dark:text-red-400">
-              <AlertCircle className="h-3.5 w-3.5" />
+              <AlertCircle className={IconSize} />
               {saveError}
             </p>
           )}

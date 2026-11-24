@@ -1,5 +1,5 @@
 import type { MouseEvent } from "react";
-import { WORDING } from "@/src/constant";
+import { IconSize, WORDING } from "@/src/constant";
 import { Button } from "@/src/ui/Button";
 import { useAuth } from "../context/AuthContext";
 import { KeyRound, Lock, Unlock } from "./Icons";
@@ -60,7 +60,7 @@ export const Footer = () => {
                 className="flex items-center gap-1 text-blue-600 hover:underline md:ml-auto dark:text-blue-400"
                 onClick={toggleEditMode}
               >
-                <Unlock className="h-3.5 w-3.5" />
+                <Unlock className={IconSize} />
                 <span>{isEditMode ? "Exit Edit Mode" : WORDING.EDIT_CV}</span>
               </Button>
 
@@ -69,13 +69,13 @@ export const Footer = () => {
                 onClick={openPasswordModal}
                 title={WORDING.CHANGE_PASSWORD}
               >
-                <KeyRound className="h-3.5 w-3.5" />
+                <KeyRound className={IconSize} />
                 <span>{WORDING.CHANGE_PASSWORD}</span>
               </Button>
             </>
           ) : (
             <Button className={`${mutedButtonClass} md:ml-auto`} onClick={openLoginModal}>
-              <Lock className="h-3.5 w-3.5" />
+              <Lock className={IconSize} />
             </Button>
           )}
 

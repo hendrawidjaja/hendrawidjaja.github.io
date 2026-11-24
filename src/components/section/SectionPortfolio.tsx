@@ -1,9 +1,11 @@
+import Image from "next/image";
 import { useAuth } from "../../context/AuthContext";
 import type { PortfolioItem } from "../../types/cv";
 import { toRenderableHtml } from "../../utils/richText";
 import { BtnEditDelete } from "../BtnEditDelete";
 import { Images } from "../Icons";
 import { SectionShell } from "./SectionShell";
+import { IconSize } from "@/constant";
 
 interface SectionPortfolioProps {
   items: PortfolioItem[];
@@ -110,15 +112,16 @@ export const SectionPortfolio = ({
                             }`}
                             key={src}
                           >
-                            {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
-                            <img
+                            <Image
                               alt={`${item.title} — preview ${index + 1}`}
                               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                              loading="lazy"
+                              fill
                               onError={(event) => {
                                 event.currentTarget.style.visibility = "hidden";
                               }}
+                              sizes="100vw"
                               src={src}
+                              unoptimized
                             />
                           </div>
                         ))}
@@ -129,7 +132,7 @@ export const SectionPortfolio = ({
                   <div className="flex w-full flex-1 flex-col p-6">
                     <div className="flex items-start gap-3">
                       <div className="mt-0.5 shrink-0 rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-                        <Images className="h-4 w-4" />
+                        <Images className={IconSize} />
                       </div>
 
                       <div>

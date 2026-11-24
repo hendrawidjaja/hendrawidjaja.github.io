@@ -1,3 +1,5 @@
+import Image from "next/image";
+import { IconSize } from "@/constant";
 import { BtnEditDelete } from "@/src/components/BtnEditDelete";
 import { Award, Calendar, GraduationCap, MapPin } from "@/src/components/Icons";
 import { SectionShell } from "@/src/components/section/SectionShell";
@@ -45,12 +47,13 @@ export const SectionEducation = ({
                 <div className="flex gap-3">
                   <div className="mt-0.5 shrink-0 rounded-lg bg-blue-50 p-2.5 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
                     {edu.logo ? (
-                      /* biome-ignore lint/performance/noImgElement: uploaded or local institution logo */
-                      <img
+                      <Image
                         alt="logo"
-                        className="h-16 w-16 object-contain"
-                        loading="lazy"
+                        className="h-12 w-12 object-contain"
+                        height={1}
                         src={edu.logo}
+                        unoptimized
+                        width={1}
                       />
                     ) : (
                       <GraduationCap className="h-5 w-5" />
@@ -87,7 +90,7 @@ export const SectionEducation = ({
                       ·
                     </span>
                     <span className="flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />
+                      <MapPin className={IconSize} />
                       {edu.location}
                     </span>
                   </>
@@ -96,14 +99,14 @@ export const SectionEducation = ({
                   ·
                 </span>
                 <span className="flex items-center gap-1 font-mono tabular-nums">
-                  <Calendar className="h-3 w-3" />
+                  <Calendar className={IconSize} />
                   {edu.startYear} — {edu.endYear}
                 </span>
               </div>
 
               {edu.honors && (
                 <div className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-amber-700 dark:text-amber-400">
-                  <Award className="h-3.5 w-3.5" />
+                  <Award className={IconSize} />
                   <span>{edu.honors}</span>
                 </div>
               )}

@@ -1,3 +1,4 @@
+import { IconSize } from "@/constant";
 import { AvatarImage } from "@/src/ui/AvatarImage";
 import { Button } from "@/src/ui/Button";
 import { useAuth } from "../context/AuthContext";
@@ -68,7 +69,7 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
                   onClick={onEditProfile}
                   title="Edit Profile"
                 >
-                  <Edit className="h-4 w-4" />
+                  <Edit className={IconSize} />
                 </Button>
               )}
             </div>
@@ -86,21 +87,21 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
             <div className="mt-6 flex flex-wrap items-center gap-y-2 text-xs text-slate-600 sm:text-sm dark:text-slate-400">
               {profile.location && (
                 <div className="mr-4 flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                  <MapPin className={`${IconSize} text-slate-400`} />
                   <span>{profile.location}</span>
                 </div>
               )}
 
               {profile.email && (
                 <a className={sharedClass} href={`mailto:${profile.email}`}>
-                  <Mail className="h-3.5 w-3.5 text-slate-400" />
+                  <Mail className={`${IconSize} text-slate-400`} />
                   <span>{profile.email}</span>
                 </a>
               )}
 
               {profile.phone && (
                 <a className={sharedClass} href={`tel:${profile.phone}`}>
-                  <Phone className="h-3.5 w-3.5 text-slate-400" />
+                  <Phone className={`${IconSize} text-slate-400`} />
                   <span>{profile.phone}</span>
                 </a>
               )}
@@ -112,7 +113,7 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  <Linkedin className="h-3.5 w-3.5 text-slate-400" />
+                  <Linkedin className={`${IconSize} text-slate-400`} />
                   <span>LinkedIn</span>
                   <span className="export-url text-slate-400">
                     {profile.linkedin.replace(/^https?:\/\//, "")}
@@ -127,7 +128,7 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  <Github className="h-3.5 w-3.5 text-slate-400" />
+                  <Github className={`${IconSize} text-slate-400`} />
                   <span>GitHub</span>
                   <span className="export-url text-slate-400">
                     {profile.github.replace(/^https?:\/\//, "")}
@@ -141,7 +142,7 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
                 className="flex shrink-0 items-center gap-2 rounded-lg bg-blue-600 px-3.5 py-2 text-xs font-medium whitespace-nowrap text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:text-sm dark:bg-blue-600 dark:hover:bg-blue-500"
                 onClick={onOpenPdfModal}
               >
-                <Download className="h-4 w-4" />
+                <Download className={IconSize} />
                 <span>Export PDF Resume</span>
               </Button>
 
@@ -149,21 +150,20 @@ export const Hero = ({ profile, onEditProfile, onOpenPdfModal }: HeroProps) => {
                 className="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800/80"
                 href={`mailto:${profile.email}`}
               >
-                <Briefcase className="h-4 w-4 text-slate-500" />
+                <Briefcase className={`${IconSize} text-slate-500`} />
                 <span>Inquire for Roles</span>
               </a>
             </div>
           </div>
 
-          
           {/* Printed beside the name, not the 1/3-width screen column; the top
               margin lines it up with the h1 under the optional status line. */}
           <div
             className={`flex flex-col items-center lg:col-span-4 lg:items-end print:col-span-2 print:items-start${
-              profile.availableForHire ? " print:mt-7" : ""
+              profile.availableForHire ? "print:mt-7" : ""
             }`}
           >
-            <div className="relative h-48 w-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md sm:h-56 sm:w-56 lg:h-64 lg:w-64 print:h-20 print:w-20 dark:border-slate-800 dark:bg-slate-900">
+            <div className="relative h-48 w-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-md sm:h-56 sm:w-56 lg:h-64 lg:w-64 dark:border-slate-800 dark:bg-slate-900 print:h-20 print:w-20">
               <AvatarImage name={profile.name} src={profile.avatarUrl} />
             </div>
           </div>

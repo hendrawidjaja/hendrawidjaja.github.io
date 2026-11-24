@@ -3,6 +3,7 @@ import type React from "react";
 import { createContext, useCallback, useContext, useState } from "react";
 import { Button } from "@/src/ui/Button";
 import { AlertCircle, CheckCircle2, Info, X } from "./Icons";
+import { IconSize } from "@/constant";
 
 export type ToastType = "success" | "error" | "info";
 interface ToastItem {
@@ -65,7 +66,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
               className="p-1 text-slate-400 transition-colors hover:text-white"
               onClick={() => removeToast(toast.id)}
             >
-              <X className="h-4 w-4" />
+              <X className={IconSize} />
             </Button>
           </div>
         ))}

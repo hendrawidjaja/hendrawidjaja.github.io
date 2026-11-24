@@ -1,3 +1,5 @@
+export const IconSize = "h-4 w-4";
+
 export const WORDING = {
   FULLNAME: "Hendra Widjaja",
   EDIT_CV: "Edit CV",
@@ -65,4 +67,3 @@ export const INITIAL_PORTFOLIO = {
   title: "",
   year: "2026",
 };
-

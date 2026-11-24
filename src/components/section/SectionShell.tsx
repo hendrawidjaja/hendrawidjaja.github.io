@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react";
+import { IconSize } from "@/constant";
 import { Plus } from "@/src/components/Icons";
 import { Button } from "@/src/ui/Button";
 
@@ -35,7 +36,7 @@ export const SectionShell = ({
             className="no-print flex items-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
             onClick={onAdd}
           >
-            <Plus className="h-3.5 w-3.5" />
+            <Plus className={IconSize} />
             <span>{addLabel}</span>
           </Button>
         )}

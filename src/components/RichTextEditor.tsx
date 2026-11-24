@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { type KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import { IconSize } from "@/constant";
 import { Button } from "@/src/ui/Button";
 import { toRenderableHtml } from "../utils/richText";
 import {
@@ -142,6 +143,7 @@ export const RichTextEditor = ({
       toggleInlineFormat(el, family);
       emitChange();
     },
+
     [emitChange, getEditor],
   );
 
@@ -196,7 +198,7 @@ export const RichTextEditor = ({
   }, [emitChange, getEditor]);
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
+    (e: KeyboardEvent<HTMLDivElement>) => {
       if (!(e.metaKey || e.ctrlKey) || e.shiftKey || e.altKey) return;
       const shortcuts: Record<string, InlineKey> = {
         b: "bold",
@@ -249,7 +251,7 @@ export const RichTextEditor = ({
             onMouseDown={(e) => e.preventDefault()}
             title={title}
           >
-            <IconCmp className="h-3.5 w-3.5" />
+            <IconCmp className={IconSize} />
           </Button>
         ))}
 
@@ -262,7 +264,7 @@ export const RichTextEditor = ({
           onMouseDown={(e) => e.preventDefault()}
           title="Insert link"
         >
-          <Link className="h-3.5 w-3.5" />
+          <Link className={IconSize} />
         </Button>
 
         <Button
@@ -272,7 +274,7 @@ export const RichTextEditor = ({
           onMouseDown={(e) => e.preventDefault()}
           title="Remove link"
         >
-          <Unlink className="h-3.5 w-3.5" />
+          <Unlink className={IconSize} />
         </Button>
 
         <Button
@@ -282,7 +284,7 @@ export const RichTextEditor = ({
           onMouseDown={(e) => e.preventDefault()}
           title="Clear formatting"
         >
-          <Eraser className="h-3.5 w-3.5" />
+          <Eraser className={IconSize} />
         </Button>
       </div>
 

@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { useState } from "react";
+import { IconSize } from "@/constant";
 import { Cpu, Edit, Plus, Trash2 } from "@/src/components/Icons";
 import { useAuth } from "@/src/context/AuthContext";
 import type { SkillCategory } from "@/src/types/cv";
@@ -42,7 +44,7 @@ export const SectionSkills = ({
               className="no-print flex items-center gap-1.5 self-start rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 sm:self-auto"
               onClick={onAddCategory}
             >
-              <Plus className="h-3.5 w-3.5" />
+              <Plus className={IconSize} />
               <span>Add Skill Category</span>
             </Button>
           )}
@@ -62,7 +64,7 @@ export const SectionSkills = ({
               >
                 <div className="mb-4 flex items-center justify-between border-b border-slate-300 pb-3 dark:border-slate-800">
                   <div className="flex items-center gap-2">
-                    <Cpu className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    <Cpu className={`${IconSize} text-blue-600 dark:text-blue-400`} />
                     <h3 className="text-base font-bold text-slate-900 dark:text-white">
                       {cat.name}
                     </h3>
@@ -75,7 +77,7 @@ export const SectionSkills = ({
                         onClick={() => onEditCategory(cat)}
                         title="Edit this category"
                       >
-                        <Edit className="h-3.5 w-3.5" />
+                        <Edit className={IconSize} />
                       </Button>
 
                       <Button
@@ -83,7 +85,7 @@ export const SectionSkills = ({
                         onClick={() => onDeleteCategory(cat.id, cat.name)}
                         title="Remove this category"
                       >
-                        <Trash2 className="h-3.5 w-3.5" />
+                        <Trash2 className={IconSize} />
                       </Button>
                     </div>
                   )}
@@ -100,12 +102,13 @@ export const SectionSkills = ({
                       key={skill.name}
                     >
                       {skill.icon ? (
-                        /* biome-ignore lint/performance/noImgElement: local skill logo */
-                        <img
-                          alt=""
+                        <Image
+                          alt="icon-skill"
                           className="h-4 w-4 shrink-0 object-contain dark:brightness-125"
-                          loading="lazy"
+                          height={16}
                           src={skill.icon}
+                          unoptimized
+                          width={16}
                         />
                       ) : (
                         <span className="grid h-4 w-4 shrink-0 place-items-center rounded-sm bg-slate-200 text-[9px] font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-300">

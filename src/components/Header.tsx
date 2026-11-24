@@ -1,6 +1,6 @@
 import { Edit, LogOut, Moon, Sun, Unlock } from "@/src/components/Icons";
 import { Logo } from "@/src/components/Logo";
-import { MENU } from "@/src/constant";
+import { IconSize, MENU } from "@/src/constant";
 import { useAuth } from "@/src/context/AuthContext";
 import { Button } from "@/src/ui/Button";
 
@@ -50,12 +50,12 @@ export const Header = ({ isDark, onToggleTheme }: HeaderProps) => {
               >
                 {isEditMode ? (
                   <>
-                    <Edit className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
+                    <Edit className={`${IconSize} text-blue-600 dark:text-blue-400`} />
                     <span>Editing Mode Active</span>
                   </>
                 ) : (
                   <>
-                    <Unlock className="h-3.5 w-3.5" />
+                    <Unlock className={IconSize} />
                     <span>Edit CV</span>
                   </>
                 )}
@@ -67,7 +67,7 @@ export const Header = ({ isDark, onToggleTheme }: HeaderProps) => {
                 onClick={logout}
                 title="Sign out"
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className={IconSize} />
               </Button>
             </>
           )}

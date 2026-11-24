@@ -4,6 +4,7 @@ import { SectionShell } from "@/src/components/section/SectionShell";
 import { useAuth } from "@/src/context/AuthContext";
 import type { Project } from "@/src/types/cv";
 import { toRenderableHtml } from "@/src/utils/richText";
+import { IconSize } from "@/constant";
 
 interface SectionProjectsProps {
   onAddProject: () => void;
@@ -44,7 +45,7 @@ export const SectionProjects = ({
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-2">
                   <div className="shrink-0 rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-                    <Code className="h-4 w-4" />
+                    <Code className={IconSize} />
                   </div>
                   <div>
                     <h3 className="min-h-10 text-base leading-tight font-bold text-slate-900 dark:text-white">
@@ -61,7 +62,7 @@ export const SectionProjects = ({
                 <div className="flex items-center gap-1">
                   {proj.featured && (
                     <span className="text-amber-500" title="Featured Project">
-                      <Star className="h-4 w-4 fill-amber-500" />
+                      <Star className={`${IconSize} fill-amber-500`} />
                     </span>
                   )}
 

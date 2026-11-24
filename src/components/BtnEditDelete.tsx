@@ -1,4 +1,5 @@
 import type { ComponentPropsWithoutRef } from "react";
+import { IconSize } from "@/constant";
 import { Edit, Trash2 } from "@/src/components/Icons";
 import { Button } from "@/src/ui/Button";
 
@@ -24,7 +25,7 @@ export const BtnEditDelete = ({
       onClick={onEdit}
       title={editTitle}
     >
-      <Edit className="h-3.5 w-3.5" />
+      <Edit className={IconSize} />
     </Button>
 
     <Button
@@ -32,7 +33,7 @@ export const BtnEditDelete = ({
       onClick={onDelete}
       title={deleteTitle}
     >
-      <Trash2 className="h-3.5 w-3.5" />
+      <Trash2 className={IconSize} />
     </Button>
   </div>
 );

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { type SyntheticEvent, useState } from "react";
 
 type Attempt = "picture" | "base" | "failed";

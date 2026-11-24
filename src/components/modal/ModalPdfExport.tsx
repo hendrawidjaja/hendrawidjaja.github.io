@@ -2,6 +2,7 @@ import { FileText, Printer } from "@/src/components/Icons";
 import type { ModalPdfExportProps } from "@/src/components/modal/interface";
 import { Button } from "@/src/ui/Button";
 import { DialogShell } from "./DialogShell";
+import { IconSize } from "@/constant";
 
 /**
  * Exporting goes through the browser's print dialog ("Save as PDF") instead of
@@ -58,7 +59,7 @@ export const ModalPdfExport = ({ onClose, cvData, open }: ModalPdfExportProps) =
           className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow"
           onClick={handleSaveAsPdf}
         >
-          <Printer className="h-4 w-4" />
+          <Printer className={IconSize} />
           <span>Save as PDF</span>
         </Button>
 

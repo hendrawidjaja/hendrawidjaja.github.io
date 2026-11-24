@@ -1,14 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
+import { IconSize } from "@/constant";
 import { ExternalLink, Images, Link as LinkIcon } from "@/src/components/Icons";
 import { DialogShell } from "@/src/components/modal/DialogShell";
 import type { ModalPortfolioProps } from "@/src/components/modal/interface";
 import { useToast } from "@/src/components/Toast";
 import { Button } from "@/src/ui/Button";
 import { toRenderableHtml } from "@/src/utils/richText";
-
-const PARAM = "portfolio";
 
 export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => {
   const { showToast } = useToast();
@@ -18,7 +18,7 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
 
   const copyLink = async () => {
     const url = new URL(window.location.href);
-    url.searchParams.set(PARAM, item.id);
+    url.searchParams.set("portfolio", item.id);
 
     try {
       await navigator.clipboard.writeText(url.toString());
@@ -92,15 +92,16 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                {/* biome-ignore lint/performance/noImgElement: portfolio images are arbitrary admin-supplied URLs */}
-                <img
+                <Image
                   alt={`${item.title} — preview ${index + 1}`}
                   className="h-40 w-64 object-cover transition-transform duration-300 group-hover:scale-105"
-                  loading="lazy"
+                  height={40}
                   onError={(event) => {
                     event.currentTarget.style.visibility = "hidden";
                   }}
                   src={src}
+                  unoptimized
+                  width={64}
                 />
               </a>
             ))}
@@ -113,7 +114,7 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
               className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700/60"
               onClick={copyLink}
             >
-              <LinkIcon className="h-3.5 w-3.5" />
+              <LinkIcon className={IconSize} />
               <span>{copied ? "Copied!" : "Copy link"}</span>
             </Button>
 
@@ -124,7 +125,7 @@ export const ModalPortfolio = ({ item, onClose, open }: ModalPortfolioProps) => 
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <ExternalLink className="h-3.5 w-3.5" />
+                <ExternalLink className={IconSize} />
                 <span>View Project</span>
               </a>
             )}

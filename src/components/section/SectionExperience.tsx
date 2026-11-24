@@ -1,3 +1,4 @@
+import { IconSize } from "@/constant";
 import { BtnEditDelete } from "@/src/components/BtnEditDelete";
 import { Building2, Calendar, MapPin } from "@/src/components/Icons";
 import { CardShell } from "@/src/components/section/CardShell";
@@ -51,14 +52,14 @@ export const SectionExperience = ({
 
                     <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
                       <span className="flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400">
-                        <Building2 className="h-3.5 w-3.5" />
+                        <Building2 className={IconSize} />
                         {exp.company}
                       </span>
                       <span aria-hidden="true" className="text-slate-300 dark:text-slate-600">
                         ·
                       </span>
                       <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
-                        <MapPin className="h-3.5 w-3.5" />
+                        <MapPin className={IconSize} />
                         {exp.location}
                       </span>
 
@@ -75,9 +76,9 @@ export const SectionExperience = ({
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4">
                     <span className="flex items-center gap-1 font-mono text-xs text-slate-500 tabular-nums sm:text-sm dark:text-slate-400">
-                      <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                      <Calendar className={`${IconSize} text-slate-400`} />
                       <span>
                         {exp.startDate} — {exp.current ? "Present" : exp.endDate}
                       </span>
@@ -122,6 +123,7 @@ export const SectionExperience = ({
                     <span className="mr-1 text-xs font-medium text-slate-400 dark:text-slate-500">
                       Tech Stack:
                     </span>
+
                     {exp.technologies.map((tech) => (
                       <span
                         className="rounded border border-slate-200 bg-slate-100 px-2 py-0.5 font-mono text-xs text-slate-700 dark:border-slate-700/60 dark:bg-slate-800 dark:text-slate-300"

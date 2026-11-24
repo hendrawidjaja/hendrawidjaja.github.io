@@ -7,6 +7,7 @@ import { useAuth } from "@/src/context/AuthContext";
 import { changeAdminPassword, registrationStatus } from "@/src/services/api";
 import { Button } from "@/src/ui/Button";
 import { TextField } from "@/src/ui/TextField";
+import { IconSize } from "@/constant";
 
 type AuthMode = "login" | "register";
 
@@ -150,7 +151,7 @@ export const ModalAdmin = () => {
   const header = (
     <div className="flex items-center gap-2.5">
       <div className="rounded-lg bg-blue-50 p-2 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-        {isLoginModalOpen ? <Lock className="h-4 w-4" /> : <KeyRound className="h-4 w-4" />}
+        {isLoginModalOpen ? <Lock className={IconSize} /> : <KeyRound className={IconSize} />}
       </div>
 
       <div className="header">
@@ -184,7 +185,7 @@ export const ModalAdmin = () => {
           {isAuthenticated ? (
             <div className="space-y-4">
               <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-xs text-emerald-800 sm:text-sm dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">
-                <Check className="h-4 w-4 shrink-0 text-emerald-600" />
+                <Check className={`${IconSize} shrink-0 text-emerald-600`} />
                 <span>
                   You are currently authenticated as <strong>{username ?? "admin"}</strong>.
                 </span>
@@ -199,7 +200,7 @@ export const ModalAdmin = () => {
                     closeLoginModal();
                   }}
                 >
-                  <LogOut className="h-4 w-4" />
+                  <LogOut className={IconSize} />
                   <span>Sign Out</span>
                 </Button>
 
@@ -215,7 +216,7 @@ export const ModalAdmin = () => {
             <form action={handleRegisterSubmit} className="space-y-4">
               {registerState.error && (
                 <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-300">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <AlertCircle className={`${IconSize} shrink-0`} />
                   <span>{registerState.error}</span>
                 </div>
               )}
@@ -269,7 +270,7 @@ export const ModalAdmin = () => {
             <form action={handleLoginSubmit} className="space-y-4">
               {loginState.error && (
                 <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-300">
-                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <AlertCircle className={`${IconSize} shrink-0`} />
                   <span>{loginState.error}</span>
                 </div>
               )}
@@ -330,7 +331,7 @@ export const ModalAdmin = () => {
         <form action={handlePasswordSubmit} className="space-y-4 p-6">
           {passState.error && (
             <div className="flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 dark:border-rose-800 dark:bg-rose-950/50 dark:text-rose-300">
-              <AlertCircle className="h-4 w-4 shrink-0" />
+              <AlertCircle className={`${IconSize} shrink-0`} />
               <span>{passState.error}</span>
             </div>
           )}
