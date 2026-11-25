@@ -64,8 +64,13 @@
     "rules": {
       "nursery": {
         "useTailwindSortedClasses": {
-          "level": "error"
-        }
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "functions": ["clsx", "cva", "tw"]
+          }
+        },
+        "useTailwindShorthandClasses": "warn"
       },
       "preset": "recommended",
       "a11y": {
@@ -74,6 +79,7 @@
     }
   },
   "tailwind": {
-    "mergeFunctions": ["cn", "twMerge"]
+    "mergeFunctions": ["cn", "twMerge"],
+    "stylesheet": "src/app.css"
   }
 }

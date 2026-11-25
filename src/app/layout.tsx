@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import type { PropsWithChildren } from "react";
 
@@ -49,6 +50,11 @@ export default function RootLayout({ children }: PropsWithChildren) {
     <html className={montserrat.variable} dir="ltr" lang="id" translate="no">
       <body className="bg-slate-50 text-slate-900 antialiased selection:bg-blue-600 selection:text-white">
         {children}
+        <Script
+          data-website-id="872f19d5-d4b6-4d3e-81aa-b1114f34e2ff"
+          defer
+          src="https://cloud.umami.is/script.js"
+        />
       </body>
     </html>
   );
